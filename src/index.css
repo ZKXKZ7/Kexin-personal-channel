@@ -1,0 +1,110 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-slate-950 text-slate-200 antialiased;
+    font-feature-settings: 'kern' 1, 'liga' 1;
+  }
+
+  ::selection {
+    @apply bg-sky-500/35 text-white;
+  }
+}
+
+/* 飘雪：原生 CSS 动画，避免仅靠 Tailwind 类名拼接时偶发不生效；略大尺寸便于肉眼可见 */
+@keyframes sf-drift-1 {
+  from {
+    transform: translate3d(0, -12vh, 0);
+  }
+  to {
+    transform: translate3d(18px, 118vh, 0);
+  }
+}
+@keyframes sf-drift-2 {
+  from {
+    transform: translate3d(0, -16vh, 0);
+  }
+  to {
+    transform: translate3d(-26px, 120vh, 0);
+  }
+}
+@keyframes sf-drift-3 {
+  from {
+    transform: translate3d(0, -8vh, 0);
+  }
+  to {
+    transform: translate3d(32px, 115vh, 0);
+  }
+}
+@keyframes sf-drift-4 {
+  from {
+    transform: translate3d(0, -18vh, 0);
+  }
+  to {
+    transform: translate3d(-16px, 122vh, 0);
+  }
+}
+@keyframes sf-drift-5 {
+  from {
+    transform: translate3d(0, -10vh, 0);
+  }
+  to {
+    transform: translate3d(12px, 116vh, 0);
+  }
+}
+
+.sf-layer {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  overflow: hidden;
+}
+
+.sf-layer__glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 120% 80% at 50% -20%,
+    rgba(56, 189, 248, 0.1),
+    transparent 55%
+  );
+}
+
+.sf-flake {
+  position: absolute;
+  top: -6vh;
+  border-radius: 9999px;
+  background: #f0f9ff;
+  box-shadow:
+    0 0 10px rgba(186, 230, 253, 0.75),
+    0 0 20px rgba(56, 189, 248, 0.25);
+  will-change: transform;
+}
+
+.sf-flake--1 {
+  animation: sf-drift-1 var(--sf-dur, 28s) linear infinite;
+  animation-delay: var(--sf-delay, 0s);
+}
+.sf-flake--2 {
+  animation: sf-drift-2 var(--sf-dur, 32s) linear infinite;
+  animation-delay: var(--sf-delay, 0s);
+}
+.sf-flake--3 {
+  animation: sf-drift-3 var(--sf-dur, 36s) linear infinite;
+  animation-delay: var(--sf-delay, 0s);
+}
+.sf-flake--4 {
+  animation: sf-drift-4 var(--sf-dur, 30s) linear infinite;
+  animation-delay: var(--sf-delay, 0s);
+}
+.sf-flake--5 {
+  animation: sf-drift-5 var(--sf-dur, 40s) linear infinite;
+  animation-delay: var(--sf-delay, 0s);
+}
