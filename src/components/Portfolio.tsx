@@ -1,4 +1,10 @@
-import { projects } from '../data/content';
+import { portfolioModules } from '../data/content';
+
+const cardStarfield =
+  'pointer-events-none absolute inset-0 rounded-xl opacity-[0.5] bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.13)_0.75px,transparent_1.1px)] bg-[length:28px_32px] [mask-image:linear-gradient(to_bottom,black_45%,transparent)]';
+
+const cardClass =
+  'group relative flex h-full min-h-[14rem] flex-col overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] p-5 shadow-[0_0_0_1px_rgba(255,255,255,0.02)_inset] transition duration-300 will-change-transform hover:-translate-y-0.5 hover:border-sky-400/25 hover:shadow-[0_12px_40px_rgba(56,189,248,0.1)] sm:p-6';
 
 export function Portfolio() {
   return (
@@ -8,33 +14,36 @@ export function Portfolio() {
           <p className="text-sm font-semibold text-sky-300">工作学习</p>
           <h2 className="text-3xl font-bold tracking-tight text-slate-50 sm:text-4xl">Portfolio</h2>
           <p className="text-base leading-relaxed text-slate-400">
-            一些我在产品、AI 与体验设计交叉点上做过或正在做的方向 —— 留白多一点，信息更清楚一点。
+            北邮篇章、职业探索与边界之外：三张星空卡片对应三个阶段，标签与说明集中在同一张卡内。
           </p>
         </header>
 
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
-          {projects.map((p) => {
-            const Icon = p.icon;
+        <div className="grid items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+          {portfolioModules.map((mod) => {
+            const Icon = mod.icon;
             return (
-              <article
-                key={p.title}
-                className="group flex flex-col rounded-xl border border-white/10 bg-white/[0.03] p-5 shadow-[0_0_0_1px_rgba(255,255,255,0.02)_inset] transition duration-300 will-change-transform hover:-translate-y-0.5 hover:border-sky-400/25 hover:shadow-[0_12px_40px_rgba(56,189,248,0.08)] sm:p-6"
-              >
-                <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl border border-sky-400/25 bg-white/5 text-sky-300">
-                  <Icon className="h-5 w-5" strokeWidth={1.75} aria-hidden />
+              <article key={mod.title} className={cardClass}>
+                <div className={cardStarfield} aria-hidden />
+                <div className="relative z-[1] flex flex-1 flex-col">
+                  <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl border border-sky-400/25 bg-white/5 text-sky-300">
+                    <Icon className="h-5 w-5" strokeWidth={1.75} aria-hidden />
+                  </div>
+                  <h3 className="text-lg font-semibold text-slate-100">{mod.title}</h3>
+                  <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-400">{mod.description}</p>
+                  <ul
+                    className="mt-5 flex flex-wrap gap-2 border-t border-white/10 pt-4"
+                    aria-label={`${mod.title} 标签`}
+                  >
+                    {mod.tags.map((t) => (
+                      <li
+                        key={t}
+                        className="rounded-full border border-sky-400/20 bg-sky-500/10 px-2.5 py-0.5 text-xs font-medium text-sky-200/90"
+                      >
+                        {t}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <h3 className="text-lg font-semibold text-slate-100">{p.title}</h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-400">{p.description}</p>
-                <ul className="mt-5 flex flex-wrap gap-2">
-                  {p.tags.map((t) => (
-                    <li
-                      key={t}
-                      className="rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-xs font-medium text-slate-400"
-                    >
-                      {t}
-                    </li>
-                  ))}
-                </ul>
               </article>
             );
           })}

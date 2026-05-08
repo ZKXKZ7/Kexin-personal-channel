@@ -1,46 +1,35 @@
 import type { LucideIcon } from 'lucide-react';
-import {
-  Bot,
-  Globe2,
-  Layers,
-  Sparkles,
-  MapPin,
-  Plane,
-  Tent,
-  Train,
-} from 'lucide-react';
+import { Layers, MapPin, Plane, Tent, Train, GraduationCap, Megaphone } from 'lucide-react';
 
-export type ProjectItem = {
+/** 单块 Portfolio 模块卡：在 content 里改文案、标签或 icon 即可 */
+export type PortfolioModule = {
   title: string;
   description: string;
   tags: string[];
   icon: LucideIcon;
 };
 
-export const projects: ProjectItem[] = [
+export const portfolioModules: PortfolioModule[] = [
   {
-    title: 'LLM Product Lab',
-    description: '从用户旅程出发，探索大模型在内容创作与协作场景中的可落地形态。',
-    tags: ['University', 'Research'],
-    icon: Sparkles,
+    title: 'Chapters of BUPT',
+    description:
+      '在北邮的学科训练与学术轨道：从校园与课程到竞赛、课题与论文导向的探索，把问题定义清楚再动手实现。（可按你的经历改写）',
+    tags: ['University', 'Academic Orbit'],
+    icon: GraduationCap,
   },
   {
-    title: 'Global Social Insights',
-    description: '长期深度使用海内外社交产品，沉淀跨文化产品洞察与增长假设。',
-    tags: ['Bytedance Intern', 'Product'],
-    icon: Globe2,
-  },
-  {
-    title: 'AI Workflow Toolkit',
-    description: '把 AI 嵌入日常工作流：提示工程、评测与轻量自动化的一体化实践。',
-    tags: ['AI', 'Engineering'],
-    icon: Bot,
-  },
-  {
-    title: 'Design Systems Play',
-    description: '组件化思维 + 高留白排版，让复杂信息在页面里依然“呼吸”。',
-    tags: ['UX', 'Frontend'],
+    title: 'Career Exploration',
+    description:
+      '在百度、字节、保时捷数字产品与产品视角下的迭代与沉淀：需求拆解、实验验证与跨团队推进。（替换为你的岗位与成果描述。）',
+    tags: ['Baidu', 'Bytedance', 'Porsche Digital', 'Product'],
     icon: Layers,
+  },
+  {
+    title: 'Beyond the Margin',
+    description:
+      '在公关与外联方向负责传播叙事与活动落地：把复杂信息讲清楚，把现场办成可记忆的体验。（可按你的学生工作改写）',
+    tags: ['Public Relations Department'],
+    icon: Megaphone,
   },
 ];
 
