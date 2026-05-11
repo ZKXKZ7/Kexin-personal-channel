@@ -72,7 +72,7 @@ export function LifeLog() {
                 <p className="text-sm text-slate-400">点按每一段旅程，展开相册详情</p>
               </div>
             </div>
-            <ul className="grid grid-cols-2 gap-3 sm:gap-4">
+            <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
               {travelTrips.map((trip) => {
                 const Icon = trip.icon;
                 return (

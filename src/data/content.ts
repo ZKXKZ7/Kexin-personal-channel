@@ -1,15 +1,17 @@
 import type { LucideIcon } from 'lucide-react';
 import {
   Layers,
-  MapPin,
-  Plane,
-  Tent,
-  Train,
   GraduationCap,
   Megaphone,
   Music,
   Activity,
   Languages,
+  Landmark,
+  Mountain,
+  Wine,
+  Snowflake,
+  Pizza,
+  TreePalm,
 } from 'lucide-react';
 
 /** 单块 Portfolio 模块卡：在 content 里改文案、标签或 icon 即可 */
@@ -64,45 +66,63 @@ export type TravelTrip = {
 
 export const travelTrips: TravelTrip[] = [
   {
-    id: 'kyoto',
-    name: '京都慢行',
-    region: 'Japan',
-    icon: Train,
+    id: 'uk',
+    name: '英国',
+    region: 'United Kingdom',
+    icon: Landmark,
     photos: [
-      { id: '1', label: '清晨町屋', gradient: 'from-[#E8ECF8] to-[#D4DCF0]' },
-      { id: '2', label: '竹林小径', gradient: 'from-[#EEF2EA] to-[#DDE5D8]' },
-      { id: '3', label: '鸭川黄昏', gradient: 'from-[#F5E8DC] to-[#E8D4C4]' },
+      { id: '1', label: 'London', gradient: 'from-[#1e293b] to-[#334155]' },
+      { id: '2', label: 'Countryside', gradient: 'from-[#1c1917] to-[#44403c]' },
     ],
   },
   {
-    id: 'alps',
-    name: '阿尔卑斯徒步',
-    region: 'Europe',
-    icon: Tent,
+    id: 'xinjiang',
+    name: '新疆',
+    region: 'Xinjiang',
+    icon: Mountain,
     photos: [
-      { id: '1', label: '山脊线', gradient: 'from-[#E3EDF5] to-[#CED9E8]' },
-      { id: '2', label: '湖畔营地', gradient: 'from-[#E8F0F6] to-[#D0E0ED]' },
+      { id: '1', label: 'Desert & peaks', gradient: 'from-[#78350f] to-[#92400e]' },
+      { id: '2', label: 'Highway', gradient: 'from-[#0c4a6e] to-[#075985]' },
     ],
   },
   {
-    id: 'coast',
-    name: '海岸线公路',
-    region: 'Pacific',
-    icon: Plane,
+    id: 'france',
+    name: '法国',
+    region: 'France',
+    icon: Wine,
     photos: [
-      { id: '1', label: '一号公路', gradient: 'from-[#E5EAF5] to-[#D5DFF0]' },
-      { id: '2', label: '海边小镇', gradient: 'from-[#F2EBE3] to-[#E5D9CC]' },
-      { id: '3', label: '落日', gradient: 'from-[#F8E8DC] to-[#EDD4C4]' },
+      { id: '1', label: 'Paris', gradient: 'from-[#312e81] to-[#4c1d95]' },
+      { id: '2', label: 'Vineyards', gradient: 'from-[#14532d] to-[#166534]' },
     ],
   },
   {
-    id: 'city',
-    name: '城市漫游',
-    region: 'East Asia',
-    icon: MapPin,
+    id: 'switzerland',
+    name: '瑞士',
+    region: 'Switzerland',
+    icon: Snowflake,
     photos: [
-      { id: '1', label: '夜景', gradient: 'from-[#E6E8F2] to-[#D2D6E8]' },
-      { id: '2', label: '咖啡馆一角', gradient: 'from-[#F3EEE6] to-[#E5DDD0]' },
+      { id: '1', label: 'Alps', gradient: 'from-[#164e63] to-[#155e75]' },
+      { id: '2', label: 'Lakes', gradient: 'from-[#0e7490] to-[#0891b2]' },
+    ],
+  },
+  {
+    id: 'italy',
+    name: '意大利',
+    region: 'Italy',
+    icon: Pizza,
+    photos: [
+      { id: '1', label: 'Rome', gradient: 'from-[#7c2d12] to-[#9a3412]' },
+      { id: '2', label: 'Coast', gradient: 'from-[#0c4a6e] to-[#0369a1]' },
+    ],
+  },
+  {
+    id: 'indonesia',
+    name: '印尼',
+    region: 'Indonesia',
+    icon: TreePalm,
+    photos: [
+      { id: '1', label: 'Islands', gradient: 'from-[#134e4a] to-[#115e59]' },
+      { id: '2', label: 'Beach', gradient: 'from-[#1e3a8a] to-[#1d4ed8]' },
     ],
   },
 ];
@@ -135,7 +155,12 @@ export const lifeInterestTrips: TravelTrip[] = [
         gradient: 'from-[#134e4a] to-[#115e59]',
         videoSrc: '/media/WeChat_20260511231321.mp4',
       },
-      { id: '2', label: '街舞', gradient: 'from-[#164e63] to-[#155e75]' },
+      {
+        id: '2',
+        label: '街舞',
+        gradient: 'from-[#164e63] to-[#155e75]',
+        videoSrc: '/media/WeChat_20260511234357.mp4',
+      },
     ],
   },
   {

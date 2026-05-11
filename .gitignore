@@ -2,3 +2,7 @@ node_modules
 dist
 *.local
 .DS_Store
+
+# >100MB — GitHub rejects; keep a copy locally as public/media/WeChat_20260511234357.mp4 for dev/deploy
+public/media/WeChat_20260511234357.mp4
+pictures/WeChat_20260511234357.mp4
