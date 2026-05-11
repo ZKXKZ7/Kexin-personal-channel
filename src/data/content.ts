@@ -1,5 +1,16 @@
 import type { LucideIcon } from 'lucide-react';
-import { Layers, MapPin, Plane, Tent, Train, GraduationCap, Megaphone } from 'lucide-react';
+import {
+  Layers,
+  MapPin,
+  Plane,
+  Tent,
+  Train,
+  GraduationCap,
+  Megaphone,
+  Music,
+  Activity,
+  Languages,
+} from 'lucide-react';
 
 /** 单块 Portfolio 模块卡：在 content 里改文案、标签或 icon 即可 */
 export type PortfolioModule = {
@@ -33,13 +44,22 @@ export const portfolioModules: PortfolioModule[] = [
   },
 ];
 
+/** 弹窗内单张卡片：渐变占位，或可选 videoSrc（站点根路径，如 /media/foo.mp4） */
+export type TripPhoto = {
+  id: string;
+  label: string;
+  gradient: string;
+  videoSrc?: string;
+};
+
 export type TravelTrip = {
   id: string;
   name: string;
   region: string;
   icon: LucideIcon;
-  /** Placeholder gradients — no external image dependency */
-  photos: { id: string; label: string; gradient: string }[];
+  photos: TripPhoto[];
+  /** 弹窗顶部说明；省略则用旅程默认文案；设为空字符串则不显示该段 */
+  modalIntro?: string;
 };
 
 export const travelTrips: TravelTrip[] = [
@@ -87,26 +107,48 @@ export const travelTrips: TravelTrip[] = [
   },
 ];
 
-/** Deterministic pseudo-contribution grid (52 weeks x 7 days), values 0–3 */
-export function getRunningContributionPattern(): number[][] {
-  const cols = 52;
-  const rows = 7;
-  const out: number[][] = [];
-  let seed = 1337;
-  const rnd = () => {
-    seed = (seed * 16807) % 2147483647;
-    return seed / 2147483647;
-  };
-  for (let c = 0; c < cols; c++) {
-    const col: number[] = [];
-    for (let r = 0; r < rows; r++) {
-      const v = rnd();
-      if (v < 0.45) col.push(0);
-      else if (v < 0.72) col.push(1);
-      else if (v < 0.9) col.push(2);
-      else col.push(3);
-    }
-    out.push(col);
-  }
-  return out;
-}
+/** Music / Sports / French — 与 Travel 同结构，供 Life Log 与弹窗复用 */
+export const lifeInterestTrips: TravelTrip[] = [
+  {
+    id: 'music',
+    name: 'Music',
+    region: 'Hiphop · R&B',
+    icon: Music,
+    modalIntro:
+      '记录常听的流派、练耳与现场：下面是示意卡片，可在 content 中替换为你的歌单、演出或练习笔记。',
+    photos: [
+      { id: '1', label: '歌单快照', gradient: 'from-[#1e293b] to-[#334155]' },
+      { id: '2', label: '现场氛围', gradient: 'from-[#312e81] to-[#4c1d95]' },
+      { id: '3', label: '练习片段', gradient: 'from-[#0f172a] to-[#1e3a5f]' },
+    ],
+  },
+  {
+    id: 'sports',
+    name: 'Sports',
+    region: 'Rock climbing · Dancing',
+    icon: Activity,
+    modalIntro: '',
+    photos: [
+      {
+        id: '1',
+        label: '攀岩',
+        gradient: 'from-[#134e4a] to-[#115e59]',
+        videoSrc: '/media/WeChat_20260511231321.mp4',
+      },
+      { id: '2', label: '街舞', gradient: 'from-[#164e63] to-[#155e75]' },
+    ],
+  },
+  {
+    id: 'french',
+    name: 'French',
+    region: 'Study · Immersion',
+    icon: Languages,
+    modalIntro:
+      '法语学习与应用场景：听力、口语与阅读材料可替换为你在 content 中配置的标签与说明。',
+    photos: [
+      { id: '1', label: '词汇本', gradient: 'from-[#4c0519] to-[#831843]' },
+      { id: '2', label: '听力材料', gradient: 'from-[#1c1917] to-[#44403c]' },
+      { id: '3', label: '口语练习', gradient: 'from-[#292524] to-[#57534e]' },
+    ],
+  },
+];

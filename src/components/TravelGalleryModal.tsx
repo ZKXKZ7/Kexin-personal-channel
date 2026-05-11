@@ -1,6 +1,36 @@
 import { useEffect } from 'react';
 import { X } from 'lucide-react';
-import type { TravelTrip } from '../data/content';
+import type { TravelTrip, TripPhoto } from '../data/content';
+
+function GalleryFigure({ ph }: { ph: TripPhoto }) {
+  const hasVideo = Boolean(ph.videoSrc?.trim());
+
+  return (
+    <figure
+      className={`overflow-hidden rounded-xl border border-white/10 ${
+        hasVideo ? 'bg-slate-950' : `bg-gradient-to-br ${ph.gradient}`
+      }`}
+    >
+      <div className="aspect-[4/3] w-full">
+        {hasVideo ? (
+          <video
+            className="h-full w-full object-cover"
+            src={ph.videoSrc}
+            controls
+            playsInline
+            preload="metadata"
+            aria-label={ph.label}
+          />
+        ) : (
+          <div className={`h-full w-full bg-gradient-to-br ${ph.gradient}`} />
+        )}
+      </div>
+      <figcaption className="border-t border-white/10 bg-slate-950/80 px-3 py-2 text-xs font-medium text-slate-300">
+        {ph.label}
+      </figcaption>
+    </figure>
+  );
+}
 
 type Props = {
   trip: TravelTrip | null;
@@ -24,6 +54,11 @@ export function TravelGalleryModal({ trip, onClose }: Props) {
 
   if (!trip) return null;
 
+  const defaultModalIntro =
+    '点击下方卡片查看每一段旅程的“快照”（示意渐变占位，可替换为真实照片）。';
+  const modalIntroResolved =
+    trip.modalIntro === undefined ? defaultModalIntro : trip.modalIntro.trim();
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-end justify-center sm:items-center"
@@ -40,7 +75,7 @@ export function TravelGalleryModal({ trip, onClose }: Props) {
       <div className="relative z-10 flex max-h-[90vh] w-full max-w-lg flex-col rounded-t-2xl border border-white/10 bg-slate-900 shadow-[0_24px_80px_rgba(0,0,0,0.55)] sm:rounded-2xl">
         <div className="flex items-start justify-between gap-3 border-b border-white/10 px-5 py-4 sm:px-6">
           <div>
-            <p className="text-xs font-medium uppercase tracking-wide text-sky-300/90">{trip.region}</p>
+            <p className="text-xs font-medium tracking-wide text-sky-300/90">{trip.region}</p>
             <h3 id="travel-modal-title" className="text-xl font-bold text-slate-50">
               {trip.name}
             </h3>
@@ -55,18 +90,12 @@ export function TravelGalleryModal({ trip, onClose }: Props) {
           </button>
         </div>
         <div className="overflow-y-auto px-5 py-4 sm:px-6 sm:py-5">
-          <p className="mb-4 text-sm text-slate-400">点击下方卡片查看每一段旅程的“快照”（示意渐变占位，可替换为真实照片）。</p>
+          {modalIntroResolved ? (
+            <p className="mb-4 text-sm text-slate-400">{modalIntroResolved}</p>
+          ) : null}
           <div className="grid gap-3 sm:grid-cols-2">
             {trip.photos.map((ph) => (
-              <figure
-                key={ph.id}
-                className={`overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br ${ph.gradient}`}
-              >
-                <div className="aspect-[4/3] w-full" />
-                <figcaption className="border-t border-white/10 bg-slate-950/80 px-3 py-2 text-xs font-medium text-slate-300">
-                  {ph.label}
-                </figcaption>
-              </figure>
+              <GalleryFigure key={ph.id} ph={ph} />
             ))}
           </div>
         </div>
