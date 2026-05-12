@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { X } from 'lucide-react';
 import type { TravelTrip, TripPhoto } from '../data/content';
 
-function GalleryFigure({ ph }: { ph: TripPhoto }) {
+export function GalleryFigure({ ph }: { ph: TripPhoto }) {
   const hasVideo = Boolean(ph.videoSrc?.trim());
 
   return (
@@ -91,13 +91,15 @@ export function TravelGalleryModal({ trip, onClose }: Props) {
         </div>
         <div className="overflow-y-auto px-5 py-4 sm:px-6 sm:py-5">
           {modalIntroResolved ? (
-            <p className="mb-4 text-sm text-slate-400">{modalIntroResolved}</p>
+            <p className={`text-sm text-slate-400 ${trip.photos.length > 0 ? 'mb-4' : ''}`}>{modalIntroResolved}</p>
           ) : null}
-          <div className="grid gap-3 sm:grid-cols-2">
-            {trip.photos.map((ph) => (
-              <GalleryFigure key={ph.id} ph={ph} />
-            ))}
-          </div>
+          {trip.photos.length > 0 ? (
+            <div className="grid gap-3 sm:grid-cols-2">
+              {trip.photos.map((ph) => (
+                <GalleryFigure key={ph.id} ph={ph} />
+              ))}
+            </div>
+          ) : null}
         </div>
       </div>
     </div>
