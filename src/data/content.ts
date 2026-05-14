@@ -19,7 +19,11 @@ export type TripPhoto = {
   id: string;
   label: string;
   gradient: string;
+  /** 站点根路径图片，如 /media/margin/margin-1.png */
+  imageSrc?: string;
   videoSrc?: string;
+  /** 无图、无视频时：在主区域以标签形式展示（如 BUPT 本科卡） */
+  bodyTags?: string[];
 };
 
 export type TravelTrip = {
@@ -93,7 +97,17 @@ export const portfolioModules: PortfolioModule[] = [
       bachelorHeadingLine1: '本科 · 北京邮电大学  2021.09-2025.07',
       bachelorHeadingLine2: '国际学院 E-commerce Engineering with Law 一等荣誉学位',
       bachelorCards: [
-        { id: 'b1', label: '本科片段一', gradient: 'from-[#1c1917] to-[#44403c]' },
+        {
+          id: 'b1',
+          label: '来时路',
+          gradient: 'from-[#1c1917] to-[#44403c]',
+          bodyTags: [
+            'GPA: 3.7/4',
+            '均分: 89/100',
+            'Ranking（智育）: 6/180',
+            '菁英领袖学生代表（单人面试轮第一名1/680）-赴伦敦玛丽女王大学奖优交流',
+          ],
+        },
         { id: 'b2', label: '本科片段二', gradient: 'from-[#4c0519] to-[#831843]' },
         { id: 'b3', label: '本科片段三', gradient: 'from-[#0c4a6e] to-[#155e75]' },
         { id: 'b4', label: '本科片段四', gradient: 'from-[#14532d] to-[#166534]' },
@@ -117,13 +131,34 @@ export const portfolioModules: PortfolioModule[] = [
   {
     id: 'margin',
     title: 'Beyond the Margin',
-    description:
-      '在公关与外联方向负责传播叙事与活动落地：把复杂信息讲清楚，把现场办成可记忆的体验。（可按你的学生工作改写）',
+    description: '鸿雁青年志愿者协会 外联部部长 2021.10-2023.6',
     tags: ['Public Relations Department'],
     icon: Megaphone,
     photos: [
-      { id: '1', label: '传播叙事', gradient: 'from-[#4c0519] to-[#831843]' },
-      { id: '2', label: '活动现场', gradient: 'from-[#0c4a6e] to-[#155e75]' },
+      {
+        id: 'pr1',
+        label: 'ArchSummit 全球架构师峰会北京站',
+        gradient: 'from-[#164e63] to-[#0f766e]',
+        imageSrc: '/media/margin/margin-3.png',
+      },
+      {
+        id: 'pr2',
+        label: '五棵松凯迪拉克中心老狼演唱会',
+        gradient: 'from-[#1c1917] to-[#292524]',
+        imageSrc: '/media/margin/margin-4.png',
+      },
+      {
+        id: 'pr3',
+        label: '国际学院招新宣讲',
+        gradient: 'from-[#1e3a5f] to-[#0f172a]',
+        imageSrc: '/media/margin/margin-1.png',
+      },
+      {
+        id: 'pr4',
+        label: '外联部活动合影',
+        gradient: 'from-[#312e81] to-[#1e1b4b]',
+        imageSrc: '/media/margin/margin-2.png',
+      },
     ],
   },
 ];

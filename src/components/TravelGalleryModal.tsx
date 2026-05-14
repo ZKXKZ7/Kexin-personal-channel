@@ -3,16 +3,27 @@ import { X } from 'lucide-react';
 import type { TravelTrip, TripPhoto } from '../data/content';
 
 export function GalleryFigure({ ph }: { ph: TripPhoto }) {
+  const hasImage = Boolean(ph.imageSrc?.trim());
   const hasVideo = Boolean(ph.videoSrc?.trim());
+  const bodyTags = ph.bodyTags?.filter((t) => t.trim()) ?? [];
+  const showTags = !hasImage && !hasVideo && bodyTags.length > 0;
 
   return (
     <figure
       className={`overflow-hidden rounded-xl border border-white/10 ${
-        hasVideo ? 'bg-slate-950' : `bg-gradient-to-br ${ph.gradient}`
+        hasImage || hasVideo ? 'bg-slate-950' : `bg-gradient-to-br ${ph.gradient}`
       }`}
     >
-      <div className="aspect-[4/3] w-full">
-        {hasVideo ? (
+      <div className={showTags ? 'w-full' : 'aspect-[4/3] w-full'}>
+        {hasImage ? (
+          <img
+            className="h-full w-full object-cover"
+            src={ph.imageSrc}
+            alt={ph.label}
+            loading="lazy"
+            decoding="async"
+          />
+        ) : hasVideo ? (
           <video
             className="h-full w-full object-cover"
             src={ph.videoSrc}
@@ -21,6 +32,32 @@ export function GalleryFigure({ ph }: { ph: TripPhoto }) {
             preload="metadata"
             aria-label={ph.label}
           />
+        ) : showTags ? (
+          <div className={`w-full bg-gradient-to-br ${ph.gradient}`}>
+            <ul
+              className="box-border flex list-none flex-col gap-1 p-2 sm:gap-1.5 sm:p-2.5"
+              aria-label={ph.label}
+            >
+              {bodyTags.length >= 2 ? (
+                <li className="flex w-full min-w-0 flex-row flex-wrap gap-1">
+                  <span className="inline-flex w-fit shrink-0 whitespace-nowrap rounded-md border border-white/20 bg-black/35 px-2 py-1.5 text-left text-[10px] font-medium leading-snug text-slate-100 shadow-sm backdrop-blur-[2px] sm:rounded-lg sm:px-2.5 sm:text-[11px] sm:leading-snug">
+                    {bodyTags[0]}
+                  </span>
+                  <span className="inline-flex w-fit shrink-0 whitespace-nowrap rounded-md border border-white/20 bg-black/35 px-2 py-1.5 text-left text-[10px] font-medium leading-snug text-slate-100 shadow-sm backdrop-blur-[2px] sm:rounded-lg sm:px-2.5 sm:text-[11px] sm:leading-snug">
+                    {bodyTags[1]}
+                  </span>
+                </li>
+              ) : null}
+              {(bodyTags.length >= 2 ? bodyTags.slice(2) : bodyTags).map((text, i) => (
+                <li
+                  key={bodyTags.length >= 2 ? i + 2 : i}
+                  className="min-w-0 w-full rounded-md border border-white/20 bg-black/35 px-2 py-1.5 text-left text-[10px] font-medium leading-snug text-slate-100 shadow-sm backdrop-blur-[2px] sm:rounded-lg sm:px-2.5 sm:text-[11px] sm:leading-snug"
+                >
+                  <span className="block min-w-0 break-words [overflow-wrap:anywhere]">{text}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         ) : (
           <div className={`h-full w-full bg-gradient-to-br ${ph.gradient}`} />
         )}
