@@ -108,7 +108,17 @@ export const portfolioModules: PortfolioModule[] = [
             '菁英领袖学生代表（单人面试轮第一名1/680）-赴伦敦玛丽女王大学奖优交流',
           ],
         },
-        { id: 'b2', label: '本科片段二', gradient: 'from-[#4c0519] to-[#831843]' },
+        {
+          id: 'b2',
+          label: '本科片段二',
+          gradient: 'from-[#4c0519] to-[#831843]',
+          bodyTags: [
+            '国家奖学金（1/180）',
+            '校一等奖学金',
+            '三好学生（连续两年）',
+            '优秀团员',
+          ],
+        },
         { id: 'b3', label: '本科片段三', gradient: 'from-[#0c4a6e] to-[#155e75]' },
         { id: 'b4', label: '本科片段四', gradient: 'from-[#14532d] to-[#166534]' },
         { id: 'b5', label: '本科片段五', gradient: 'from-[#78350f] to-[#92400e]' },
