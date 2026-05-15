@@ -35,15 +35,15 @@ export function GalleryFigure({ ph }: { ph: TripPhoto }) {
         ) : showTags ? (
           <div className={`w-full bg-gradient-to-br ${ph.gradient}`}>
             <ul
-              className="box-border flex list-none flex-col gap-1 p-2 sm:gap-1.5 sm:p-2.5"
+              className="box-border flex list-none flex-col gap-1.5 p-1.5 sm:gap-2 sm:p-2"
               aria-label={ph.label}
             >
               {bodyTags.length >= 2 ? (
-                <li className="flex w-full min-w-0 flex-row flex-wrap gap-1">
-                  <span className="inline-flex w-fit shrink-0 whitespace-nowrap rounded-md border border-white/20 bg-black/35 px-2 py-1.5 text-left text-[10px] font-medium leading-snug text-slate-100 shadow-sm backdrop-blur-[2px] sm:rounded-lg sm:px-2.5 sm:text-[11px] sm:leading-snug">
+                <li className="flex w-full min-w-0 flex-row flex-wrap gap-1.5 sm:gap-2">
+                  <span className="inline-flex w-fit shrink-0 whitespace-nowrap rounded-md border border-white/20 bg-black/35 px-2.5 py-2 text-left text-xs font-medium leading-none text-slate-100 shadow-sm backdrop-blur-[2px] sm:rounded-lg sm:px-3 sm:py-2 sm:text-sm sm:leading-tight">
                     {bodyTags[0]}
                   </span>
-                  <span className="inline-flex w-fit shrink-0 whitespace-nowrap rounded-md border border-white/20 bg-black/35 px-2 py-1.5 text-left text-[10px] font-medium leading-snug text-slate-100 shadow-sm backdrop-blur-[2px] sm:rounded-lg sm:px-2.5 sm:text-[11px] sm:leading-snug">
+                  <span className="inline-flex w-fit shrink-0 whitespace-nowrap rounded-md border border-white/20 bg-black/35 px-2.5 py-2 text-left text-xs font-medium leading-none text-slate-100 shadow-sm backdrop-blur-[2px] sm:rounded-lg sm:px-3 sm:py-2 sm:text-sm sm:leading-tight">
                     {bodyTags[1]}
                   </span>
                 </li>
@@ -51,9 +51,9 @@ export function GalleryFigure({ ph }: { ph: TripPhoto }) {
               {(bodyTags.length >= 2 ? bodyTags.slice(2) : bodyTags).map((text, i) => (
                 <li
                   key={bodyTags.length >= 2 ? i + 2 : i}
-                  className="min-w-0 w-full rounded-md border border-white/20 bg-black/35 px-2 py-1.5 text-left text-[10px] font-medium leading-snug text-slate-100 shadow-sm backdrop-blur-[2px] sm:rounded-lg sm:px-2.5 sm:text-[11px] sm:leading-snug"
+                  className="min-w-0 w-full overflow-x-auto rounded-md border border-white/20 bg-black/35 px-2.5 py-2 text-left text-xs font-medium leading-none text-slate-100 shadow-sm backdrop-blur-[2px] [scrollbar-width:thin] sm:rounded-lg sm:px-3 sm:py-2 sm:text-sm sm:leading-tight"
                 >
-                  <span className="block min-w-0 break-words [overflow-wrap:anywhere]">{text}</span>
+                  <span className="inline-block whitespace-nowrap">{text}</span>
                 </li>
               ))}
             </ul>
