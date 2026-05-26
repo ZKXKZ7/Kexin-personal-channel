@@ -24,6 +24,16 @@ export type TripPhoto = {
   videoSrc?: string;
   /** 无图、无视频时：在主区域以标签形式展示（如 BUPT 本科卡） */
   bodyTags?: string[];
+  /**
+   * 标签条在渐变上的底色与边框（Tailwind 片段），与同卡片 `gradient` 同色系时更协调。
+   * 省略则使用中性半透明样式。
+   */
+  bodyTagSurfaceClass?: string;
+  /**
+   * 从数组开头起若干条各占一行（整宽），其余再按「前两枚并排、后续整宽」展示。
+   * 默认 0（即整卡沿用前两枚并排规则）。
+   */
+  bodyTagsLeadFullWidthCount?: number;
 };
 
 export type TravelTrip = {
@@ -101,22 +111,27 @@ export const portfolioModules: PortfolioModule[] = [
           id: 'b1',
           label: '来时路',
           gradient: 'from-[#1c1917] to-[#44403c]',
+          bodyTagSurfaceClass:
+            'border border-stone-200/20 bg-stone-950/50 shadow-sm backdrop-blur-[2px]',
           bodyTags: [
             'GPA: 3.7/4',
             '均分: 89/100',
             'Ranking（智育）: 6/180',
-            '菁英领袖学生代表（单人面试轮第一名1/680）-赴伦敦玛丽女王大学奖优交流',
+            'CET-4: 649    CET-6: 611\nIELTS: 7.5（Reading 9）',
           ],
         },
         {
           id: 'b2',
           label: '本科片段二',
           gradient: 'from-[#4c0519] to-[#831843]',
+          bodyTagSurfaceClass:
+            'border border-rose-200/15 bg-rose-950/45 shadow-sm backdrop-blur-[2px]',
+          bodyTagsLeadFullWidthCount: 2,
           bodyTags: [
             '国家奖学金（1/180）',
+            '菁英领袖学生代表（单人面试轮第一名1/680）-赴伦敦玛丽女王大学奖优交流',
             '校一等奖学金',
-            '三好学生（连续两年）',
-            '优秀团员',
+            '三好学生',
           ],
         },
         { id: 'b3', label: '本科片段三', gradient: 'from-[#0c4a6e] to-[#155e75]' },
@@ -262,7 +277,7 @@ export const lifeInterestTrips: TravelTrip[] = [
         id: '1',
         label: '攀岩',
         gradient: 'from-[#134e4a] to-[#115e59]',
-        videoSrc: '/media/WeChat_20260511231321.mp4',
+        videoSrc: '/media/panyan.mp4',
       },
       {
         id: '2',

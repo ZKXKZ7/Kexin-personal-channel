@@ -5,3 +5,4 @@ dist
 
 # 原始街舞素材常 >100MB；仓库只跟踪 public/media 里压缩版。重新压缩：node scripts/compress-dance-video.mjs
 pictures/WeChat_20260511234357.mp4
+pictures/panyan.mp4
