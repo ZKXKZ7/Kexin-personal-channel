@@ -149,8 +149,10 @@ export const portfolioModules: PortfolioModule[] = [
     tags: ['Baidu', 'Bytedance', 'Porsche Digital', 'Product'],
     icon: Layers,
     photos: [
-      { id: '1', label: '产品迭代', gradient: 'from-[#134e4a] to-[#0f766e]' },
-      { id: '2', label: '跨团队协作', gradient: 'from-[#1c1917] to-[#44403c]' },
+      { id: '1', label: 'Baidu', gradient: 'from-[#1e3a5f] to-[#0f172a]' },
+      { id: '2', label: 'Bytedance', gradient: 'from-[#134e4a] to-[#0f766e]' },
+      { id: '3', label: 'Porsche Digital', gradient: 'from-[#78350f] to-[#92400e]' },
+      { id: '4', label: 'Product', gradient: 'from-[#312e81] to-[#4c1d95]' },
     ],
   },
   {
