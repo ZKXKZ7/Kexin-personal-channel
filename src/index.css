@@ -108,3 +108,23 @@
   animation: sf-drift-5 var(--sf-dur, 40s) linear infinite;
   animation-delay: var(--sf-delay, 0s);
 }
+
+.atlas-dot { display:block; width:14px; height:14px; border:2px solid #64748b; background:#172532; border-radius:50%; }
+.atlas-dot-lit { border-color:#b9ffe6; background:#6ee7b7; box-shadow:0 0 0 7px #6ee7b71a,0 0 24px #6ee7b799; }
+.atlas-input { display:block; width:100%; margin-top:.5rem; border:1px solid #ffffff20; border-radius:.75rem; background:#ffffff05; padding:.75rem; color:#e2e8f0; font-size:.875rem; }
+.atlas-input:focus { outline:1px solid #6ee7b7; }
+.leaflet-container { background:#10171e; font-family:inherit; }
+.atlas-base { filter: invert(1) hue-rotate(180deg) brightness(.72) saturate(.55); }
+
+/* Fine, ice-blue pointer wake; never intercepts links or text selection. */
+.snow-cursor {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 60;
+}
+@media (prefers-reduced-motion: reduce), (hover: none) {
+  .snow-cursor { display: none; }
+}
