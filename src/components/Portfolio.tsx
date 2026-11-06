@@ -1,8 +1,4 @@
-import { useState } from 'react';
-import { portfolioModules, portfolioModuleToTrip } from '../data/content';
-import { TravelGalleryModal } from './TravelGalleryModal';
-import { BuptChapterModal } from './BuptChapterModal';
-import type { PortfolioModule, TravelTrip } from '../data/content';
+import { portfolioModules } from '../data/content';
 
 const cardStarfield =
   'pointer-events-none absolute inset-0 rounded-xl opacity-[0.5] bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.13)_0.75px,transparent_1.1px)] bg-[length:28px_32px] [mask-image:linear-gradient(to_bottom,black_45%,transparent)]';
@@ -11,8 +7,6 @@ const cardClass =
   'group relative flex h-full min-h-[11rem] w-full cursor-pointer flex-col overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] p-5 text-left shadow-[0_0_0_1px_rgba(255,255,255,0.02)_inset] transition duration-300 will-change-transform hover:-translate-y-0.5 hover:border-sky-400/25 hover:shadow-[0_12px_40px_rgba(56,189,248,0.1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/40 sm:p-6';
 
 export function Portfolio() {
-  const [galleryTrip, setGalleryTrip] = useState<TravelTrip | null>(null);
-  const [buptModule, setBuptModule] = useState<PortfolioModule | null>(null);
 
   return (
     <section id="portfolio" className="border-b border-white/10 bg-transparent">
@@ -29,15 +23,10 @@ export function Portfolio() {
           {portfolioModules.map((mod) => {
             const Icon = mod.icon;
             return (
-              <button
+              <a
                 key={mod.id}
-                type="button"
                 className={cardClass}
-                onClick={() => {
-                  if (mod.buptChapterModal) setBuptModule(mod);
-                  else setGalleryTrip(portfolioModuleToTrip(mod));
-                }}
-                aria-haspopup="dialog"
+                href={`#/portfolio/${mod.id}`}
               >
                 <div className={cardStarfield} aria-hidden />
                 <div className="relative z-[1] flex min-h-[9rem] flex-1 flex-col justify-between gap-4">
@@ -61,14 +50,12 @@ export function Portfolio() {
                     ))}
                   </ul>
                 </div>
-              </button>
+              </a>
             );
           })}
         </div>
       </div>
 
-      <TravelGalleryModal trip={galleryTrip} onClose={() => setGalleryTrip(null)} />
-      <BuptChapterModal module={buptModule} onClose={() => setBuptModule(null)} />
     </section>
   );
 }

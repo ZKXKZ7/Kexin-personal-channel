@@ -45,7 +45,7 @@ export function Hero() {
             </div>
             <div className="animate-drift aspect-[3/2] overflow-hidden rounded-3xl border border-white/10 bg-slate-900/40 shadow-[0_0_40px_rgba(56,189,248,0.06)] will-change-transform">
               <img
-                src="/hero-portrait.png"
+                src={`${import.meta.env.BASE_URL}hero-portrait.png`}
                 alt="在伦敦玛丽女王大学 Graduate Centre 前的留影"
                 className="h-full w-full object-cover object-center"
                 width={1024}
