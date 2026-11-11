@@ -32,7 +32,6 @@ export function Hero() {
               具备产品洞察、国际化视野和技术实践力的复合能力者
             </div>
             <div className="flex flex-row flex-wrap gap-3 sm:gap-3.5">
-              <div className={stickyFitOneLineClass}>ESTJ-A</div>
               <div className={stickyFitOneLineClass}>LION🦁</div>
             </div>
           </div>
