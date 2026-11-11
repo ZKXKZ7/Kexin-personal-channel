@@ -128,3 +128,33 @@
 @media (prefers-reduced-motion: reduce), (hover: none) {
   .snow-cursor { display: none; }
 }
+
+.chapter-cover {
+  box-shadow: 0 8px 0 -1px #111d30, 0 10px 0 -1px #29364a,
+    0 22px 30px -12px #000b, inset 0 1px 0 #ffffff30;
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+@media (hover: hover) {
+  .chapter-cover:hover {
+    z-index: 1;
+    transform: perspective(1000px) translateY(-10px) rotateX(5deg);
+    border-color: #ffffff65;
+    box-shadow: 0 14px 0 -1px #111d30, 0 16px 0 -1px #354761,
+      0 32px 42px -14px #000d, inset 0 1px 0 #ffffff55;
+  }
+}
+
+.chapter-cover:active {
+  transform: perspective(1000px) translateY(6px) scale(.98);
+  border-color: #ffffff80;
+  box-shadow: 0 2px 0 #29364a, 0 7px 12px #0009, inset 0 1px 0 #ffffff55;
+  transition-duration: 75ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chapter-cover, .chapter-cover:hover, .chapter-cover:active {
+    transform: none;
+    transition: none;
+  }
+}
