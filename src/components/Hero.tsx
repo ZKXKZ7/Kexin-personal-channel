@@ -1,10 +1,10 @@
 import { WavyArrow } from './Decorations';
 
 const journalTags = [
-  { text: 'AI赋能，以人为本', delay: '-1s' },
-  { text: '大模型、海内外社交产品深度使用者', delay: '-4s' },
-  { text: '具备产品洞察、国际化视野和技术实践力的复合能力者', delay: '-7s', wide: true },
-  { text: 'LION🦁', delay: '-10s' },
+  { text: 'AI赋能，以人为本' },
+  { text: '大模型、海内外社交产品深度使用者' },
+  { text: '具备产品洞察、国际化视野和技术实践力的复合能力者', wide: true },
+  { text: 'LION🦁' },
 ];
 
 export function Hero() {
@@ -12,19 +12,19 @@ export function Hero() {
     <section className="relative overflow-hidden border-b border-white/10">
       <div className="relative mx-auto grid max-w-5xl gap-12 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16 lg:px-8 lg:py-28">
         <div className="space-y-8">
-          <h1 className="text-balance text-[clamp(2.75rem,6vw,4.25rem)] font-bold leading-[1.06] tracking-[-0.065em] text-slate-50">
-            Xyn&apos;s Journal
+          <h1 className="text-balance text-[clamp(2.75rem,6vw,4.25rem)] font-bold leading-[1.1] tracking-[-0.065em] text-slate-50 [filter:drop-shadow(0_1px_0_#91aec8)_drop-shadow(0_2px_0_#577995)_drop-shadow(0_3px_0_#263f59)_drop-shadow(0_7px_12px_#020617)]">
+            <span className="bg-[linear-gradient(180deg,#ffffff_15%,#eaf5ff_46%,#a9c5dc_76%,#d8edff_96%)] bg-clip-text text-transparent [-webkit-text-stroke:0.45px_#c4dcee]">
+              Xyn&apos;s Journal
+            </span>
           </h1>
           <ul aria-label="个人介绍" className="flex max-w-xl flex-wrap gap-x-4 gap-y-5">
-            {journalTags.map(({ text, delay, wide }) => (
+            {journalTags.map(({ text, wide }) => (
               <li
                 key={text}
-                className={`min-w-0 max-w-full [perspective:650px] ${wide ? 'basis-full' : ''}`}
+                className={`min-w-0 max-w-full ${wide ? 'basis-full' : ''}`}
               >
-                <div className="motion-safe:animate-drift" style={{ animationDelay: delay }}>
-                  <div className="relative isolate overflow-hidden rounded-xl border border-sky-200/30 bg-gradient-to-br from-[#284562] via-[#16283e] to-[#0c172a] px-4 py-3 text-sm font-medium leading-snug text-sky-50 shadow-[0_4px_0_#080f20,0_5px_0_#2b455e,0_14px_28px_-10px_#020617,inset_0_1px_0_#bae6fd66] [transform:rotateX(8deg)] before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:bg-[linear-gradient(118deg,#bae6fd2b,transparent_43%,transparent_65%,#7dd3fc17)] motion-safe:transition-transform motion-safe:duration-500 motion-safe:hover:[transform:translateZ(24px)_rotateX(-11deg)_rotateY(-7deg)] sm:py-3.5 sm:text-[0.9375rem]">
-                    {text}
-                  </div>
+                <div className="relative isolate overflow-hidden rounded-xl border border-sky-200/30 bg-gradient-to-br from-[#284562] via-[#16283e] to-[#0c172a] px-4 py-3 text-sm font-medium leading-snug text-sky-50 shadow-[0_4px_0_#080f20,0_5px_0_#2b455e,0_14px_28px_-10px_#020617,inset_0_1px_0_#bae6fd66] before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:bg-[linear-gradient(118deg,#bae6fd2b,transparent_43%,transparent_65%,#7dd3fc17)] hover:border-sky-200/60 motion-safe:transition-all motion-safe:duration-300 motion-safe:hover:-translate-y-1 sm:py-3.5 sm:text-[0.9375rem]">
+                  {text}
                 </div>
               </li>
             ))}
