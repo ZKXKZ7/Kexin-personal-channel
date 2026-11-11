@@ -1,40 +1,34 @@
 import { WavyArrow } from './Decorations';
 
-const stickyNoteClass =
-  'rounded-xl border border-white/[0.14] bg-white/[0.07] px-4 py-3 text-sm font-medium leading-snug text-slate-100 shadow-[0_12px_40px_-8px_rgba(0,0,0,0.55),0_4px_16px_-4px_rgba(0,0,0,0.35),inset_0_1px_0_0_rgba(255,255,255,0.14)] backdrop-blur-xl sm:px-4 sm:py-3.5 sm:text-[0.9375rem]';
-
-/** 宽度随文案，强制单行（不用等分栅格） */
-const stickyFitOneLineClass = `${stickyNoteClass} w-max max-w-none shrink-0 whitespace-nowrap`;
-
-const stickyFullRowClass = `${stickyNoteClass} w-full min-w-0`;
+const journalTags = [
+  { text: 'AI赋能，以人为本', delay: '-1s' },
+  { text: '大模型、海内外社交产品深度使用者', delay: '-4s' },
+  { text: '具备产品洞察、国际化视野和技术实践力的复合能力者', delay: '-7s', wide: true },
+  { text: 'LION🦁', delay: '-10s' },
+];
 
 export function Hero() {
   return (
     <section className="relative overflow-hidden border-b border-white/10">
       <div className="relative mx-auto grid max-w-5xl gap-12 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16 lg:px-8 lg:py-28">
         <div className="space-y-8">
-          <h1 className="text-balance text-4xl font-bold leading-[1.12] tracking-tight text-slate-50 sm:text-5xl lg:text-[3.25rem]">
-            <span className="block">Welcome to</span>
-            <span className="block">Kexin&apos;s channel! 👋</span>
+          <h1 className="text-balance text-[clamp(2.75rem,6vw,4.25rem)] font-bold leading-[1.06] tracking-[-0.065em] text-slate-50">
+            Xyn&apos;s Journal
           </h1>
-          <div
-            role="region"
-            aria-label="个人介绍便签"
-            className="flex max-w-xl flex-col gap-3 sm:gap-3.5"
-          >
-            <div className="flex flex-row flex-wrap gap-3 sm:gap-3.5">
-              <div className={stickyFitOneLineClass}>AI赋能，以人为本</div>
-              <div className={stickyFitOneLineClass}>
-                大模型、海内外社交产品深度使用者
-              </div>
-            </div>
-            <div className={stickyFullRowClass}>
-              具备产品洞察、国际化视野和技术实践力的复合能力者
-            </div>
-            <div className="flex flex-row flex-wrap gap-3 sm:gap-3.5">
-              <div className={stickyFitOneLineClass}>LION🦁</div>
-            </div>
-          </div>
+          <ul aria-label="个人介绍" className="flex max-w-xl flex-wrap gap-x-4 gap-y-5">
+            {journalTags.map(({ text, delay, wide }) => (
+              <li
+                key={text}
+                className={`min-w-0 max-w-full [perspective:650px] ${wide ? 'basis-full' : ''}`}
+              >
+                <div className="motion-safe:animate-drift" style={{ animationDelay: delay }}>
+                  <div className="relative isolate overflow-hidden rounded-xl border border-sky-200/30 bg-gradient-to-br from-[#284562] via-[#16283e] to-[#0c172a] px-4 py-3 text-sm font-medium leading-snug text-sky-50 shadow-[0_4px_0_#080f20,0_5px_0_#2b455e,0_14px_28px_-10px_#020617,inset_0_1px_0_#bae6fd66] [transform:rotateX(8deg)] before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:bg-[linear-gradient(118deg,#bae6fd2b,transparent_43%,transparent_65%,#7dd3fc17)] motion-safe:transition-transform motion-safe:duration-500 motion-safe:hover:[transform:translateZ(24px)_rotateX(-11deg)_rotateY(-7deg)] sm:py-3.5 sm:text-[0.9375rem]">
+                    {text}
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
 
         <div className="relative flex justify-center lg:justify-end">
