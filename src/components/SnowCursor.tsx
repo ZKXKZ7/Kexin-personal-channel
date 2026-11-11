@@ -10,7 +10,7 @@ type Wisp = {
   age: number; life: number; radius: number; phase: number;
 };
 
-/** A movement-only frost wake; no React renders in the animation loop. */
+/** A pointer and wheel-driven frost wake; no React renders in the animation loop. */
 export function SnowCursor() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -28,12 +28,19 @@ export function SnowCursor() {
     let frame = 0;
     let lastTime = 0;
     let distanceCarry = 0;
+    let cursor: { x: number; y: number } | null = null;
+    let scrollY = window.scrollY;
+    let scrollTime = performance.now();
+    let scrollVelocity = 0;
     const enabled = () => !motion.matches && pointer.matches && !document.hidden;
 
     const clear = () => {
       cancelAnimationFrame(frame);
       frame = 0;
       previous = null;
+      cursor = null;
+      scrollVelocity = 0;
+      scrollY = window.scrollY;
       distanceCarry = 0;
       crystals = [];
       wisps = [];
@@ -52,6 +59,8 @@ export function SnowCursor() {
     const draw = (time: number) => {
       const dt = Math.min((time - lastTime) / 1000, 0.04);
       lastTime = time;
+      const inertia = scrollVelocity * dt;
+      scrollVelocity *= Math.exp(-7 * dt);
       ctx.clearRect(0, 0, width, height);
       ctx.globalCompositeOperation = 'source-over';
       wisps = wisps.filter(w => w.age < w.life);
@@ -61,9 +70,9 @@ export function SnowCursor() {
         w.vx *= Math.exp(-2.2 * dt);
         w.vy *= Math.exp(-2.2 * dt);
         w.x += (w.vx + Math.sin(w.phase + w.age * 2.8) * 9) * dt;
-        w.y += (w.vy - 7) * dt;
+        w.y += (w.vy - 7) * dt + inertia;
         const radius = w.radius * (0.7 + progress * 1.5);
-        const alpha = Math.sin(Math.PI * progress) * 0.038;
+        const alpha = Math.min(w.age / 0.12, 1) * Math.pow(1 - progress, 1.3) * 0.085;
         const haze = ctx.createRadialGradient(w.x, w.y, 0, w.x, w.y, radius);
         haze.addColorStop(0, `rgba(186,230,253,${alpha})`);
         haze.addColorStop(0.35, `rgba(125,211,252,${alpha * 0.65})`);
@@ -78,13 +87,13 @@ export function SnowCursor() {
         p.vx *= Math.exp(-2.8 * dt);
         p.vy *= Math.exp(-1.8 * dt);
         p.x += (p.vx + Math.sin(p.angle + p.age * 2) * 5) * dt;
-        p.y += (p.vy + 12 * progress) * dt;
+        p.y += (p.vy + 12 * progress) * dt + inertia;
         p.angle += p.spin * dt;
-        const fade = Math.min(p.age / 0.08, 1) * Math.pow(1 - progress, 1.6);
+        const fade = Math.min(p.age / 0.08, 1) * Math.pow(1 - progress, 1.1);
         ctx.save();
         ctx.translate(p.x, p.y);
         ctx.rotate(p.angle);
-        ctx.globalAlpha = fade * (p.crystal ? 0.65 : 0.5);
+        ctx.globalAlpha = fade * (p.crystal ? 0.9 : 0.7);
         ctx.strokeStyle = '#e0f2fe';
         ctx.fillStyle = '#bae6fd';
         if (p.crystal) {
@@ -113,8 +122,9 @@ export function SnowCursor() {
       else frame = 0;
     };
 
-    const move = (event: PointerEvent) => {
+    const move = (event: Pick<PointerEvent, 'clientX' | 'clientY' | 'pointerType'>) => {
       if (!enabled() || event.pointerType !== 'mouse') return;
+      cursor = { x: event.clientX, y: event.clientY };
       const now = performance.now();
       const next = { x: event.clientX, y: event.clientY, time: now };
       if (!previous || now - previous.time > 150) {
@@ -137,12 +147,12 @@ export function SnowCursor() {
         const side = (Math.random() - 0.5) * (14 + speed * 10);
         wisps.push({ x: x - ny * side, y: y + nx * side,
           vx: nx * speed * 16 - ny * side, vy: ny * speed * 16 + nx * side,
-          age: 0, life: 0.8 + Math.random() * 0.55,
-          radius: 18 + speed * 8 + Math.random() * 10, phase: Math.random() * Math.PI * 2 });
+          age: 0, life: 2.6 + Math.random() * 1.2,
+          radius: 28 + speed * 12 + Math.random() * 14, phase: Math.random() * Math.PI * 2 });
         crystals.push({ x, y, vx: nx * speed * 18 - ny * side * 2,
           vy: ny * speed * 18 + nx * side * 2, age: 0,
-          life: 0.65 + Math.random() * 0.8,
-          size: Math.random() < 0.18 ? 2.8 + Math.random() * 1.6 : 0.6 + Math.random(),
+          life: 2 + Math.random() * 1.4,
+          size: Math.random() < 0.28 ? 3.2 + Math.random() * 2.2 : 0.6 + Math.random(),
           angle: Math.random() * Math.PI, spin: (Math.random() - 0.5) * 1.4,
           crystal: false });
         const p = crystals[crystals.length - 1];
@@ -150,21 +160,48 @@ export function SnowCursor() {
       }
       distanceCarry = total % spacing;
       previous = next;
-      crystals = crystals.slice(-120);
-      wisps = wisps.slice(-100);
+      crystals = crystals.slice(-240);
+      wisps = wisps.slice(-180);
       if (!frame && (crystals.length || wisps.length)) {
         lastTime = now;
         frame = requestAnimationFrame(draw);
       }
     };
-    const leave = () => { previous = null; distanceCarry = 0; };
+    // Wheel input only remembers the pointer. Actual page displacement drives the wake,
+    // including smooth scrolling and trackpad momentum; blocked scrolling emits nothing.
+    const wheel = (event: WheelEvent) => {
+      if (enabled() && !event.ctrlKey) cursor = { x: event.clientX, y: event.clientY };
+    };
+    const scroll = () => {
+      const now = performance.now();
+      const delta = window.scrollY - scrollY;
+      const elapsed = Math.max(16, now - scrollTime);
+      scrollY = window.scrollY;
+      scrollTime = now;
+      if (!enabled() || !delta) return;
+      if (Math.abs(delta) > height * 0.75) { clear(); return; }
+      // Existing snow stays attached to the content, with a small decaying overshoot.
+      for (const p of crystals) p.y -= delta;
+      for (const w of wisps) w.y -= delta;
+      scrollVelocity = Math.max(-160, Math.min(160, -delta / elapsed * 1000 * 0.12));
+      if (cursor) {
+        const point = { ...cursor };
+        previous = { x: point.x, y: point.y - delta, time: now - elapsed };
+        // Emit along the content that just passed the pointer, not a fixed wheel jet.
+        previous.time = now - Math.min(elapsed, 100);
+        move({ clientX: point.x, clientY: point.y, pointerType: 'mouse' });
+        previous = null;
+      }
+    };
+    const leave = () => { cursor = null; previous = null; distanceCarry = 0; };
     const out = (event: PointerEvent) => { if (!event.relatedTarget) leave(); };
     resize();
     window.addEventListener('pointermove', move, { passive: true });
     window.addEventListener('pointerout', out);
     window.addEventListener('blur', clear);
     window.addEventListener('resize', resize);
-    window.addEventListener('scroll', leave, { passive: true });
+    window.addEventListener('wheel', wheel, { passive: true });
+    window.addEventListener('scroll', scroll, { passive: true });
     document.addEventListener('visibilitychange', clear);
     motion.addEventListener('change', clear);
     pointer.addEventListener('change', clear);
@@ -174,7 +211,8 @@ export function SnowCursor() {
       window.removeEventListener('pointerout', out);
       window.removeEventListener('blur', clear);
       window.removeEventListener('resize', resize);
-      window.removeEventListener('scroll', leave);
+      window.removeEventListener('wheel', wheel);
+      window.removeEventListener('scroll', scroll);
       document.removeEventListener('visibilitychange', clear);
       motion.removeEventListener('change', clear);
       pointer.removeEventListener('change', clear);

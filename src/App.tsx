@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
+import { HomeSections } from './components/HomeSections';
 import { Portfolio } from './components/Portfolio';
 import { Thoughts } from './components/Thoughts';
 import { LifeLog } from './components/LifeLog';
@@ -70,10 +71,11 @@ export default function App() {
               <a className="text-sky-300" href="#/">返回首页</a>
             </div>
           ) : <>
-            {!route && <Hero />}
-            {(!route || section === 'portfolio') && <Portfolio />}
-            {(!route || section === 'life-log') && <LifeLog />}
-            {(!route || section === 'thoughts') && <Thoughts />}
+            {!route && <><Hero /><HomeSections /></>}
+            {route && section !== 'contact' && <div className="mx-auto max-w-5xl px-4 pt-8 sm:px-6 lg:px-8"><a href="#/" className="inline-flex items-center gap-2 text-sm text-sky-300 hover:text-white"><ArrowLeft className="h-4 w-4" aria-hidden />返回首页</a></div>}
+            {(section === 'portfolio') && <Portfolio />}
+            {(section === 'life-log') && <LifeLog />}
+            {(section === 'thoughts') && <Thoughts />}
             {section === 'contact' && <Footer />}
           </>}
         </main>
