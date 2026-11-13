@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS members (
+  id TEXT PRIMARY KEY,
+  credential TEXT NOT NULL UNIQUE,
+  name TEXT NOT NULL,
+  avatar TEXT NOT NULL,
+  gyms TEXT NOT NULL
+);
