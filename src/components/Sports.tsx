@@ -1,3 +1,4 @@
+import OverseasGymSearch from './OverseasGymSearch';
 import { PlaceSearch } from './PlaceSearch';
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { loadAMap, searchCity, convertLegacyPositions } from '../lib/amap';
@@ -186,7 +187,13 @@ function Climbing() {
       } else {
         setGlobalEntry(true);
         setCoordinates(`${position.lat.toFixed(5)}, ${position.lng.toFixed(5)}`);
-      } }} /></Suspense>{!city && <p className="pointer-events-none absolute left-4 top-4 rounded-lg bg-slate-950/80 px-3 py-2 text-xs text-emerald-100">拖动旋转 · 点击亮点查看岩馆 · 点地球选城市位置</p>}</>}</div><aside className="p-6 lg:max-h-[70svh] lg:overflow-y-auto"><p className="text-xs tracking-[.2em] text-emerald-300">{city ? 'CITY EXPLORER' : 'YOUR FOOTPRINTS'}</p><h2 className="mt-3 text-xl font-semibold">{city ? '收藏一家岩馆' : '选择一座城市'}</h2><p className="mb-6 mt-3 text-sm leading-6 text-slate-400">{city ? (city.global ? '点击地图或输入坐标，记录你去过的岩馆。' : '搜索岩馆或在地图上选点。') : '添加第一家去过的岩馆，就能点亮这座城市。'}</p>{city ? <><button onClick={() => setCity(null)} className="mb-5 text-sm text-emerald-300">← 返回地球</button>{city.global ? <div className="mb-4 space-y-2">
+      } }} /></Suspense>{!city && <p className="pointer-events-none absolute left-4 top-4 rounded-lg bg-slate-950/80 px-3 py-2 text-xs text-emerald-100">拖动旋转 · 点击亮点查看岩馆 · 点地球选城市位置</p>}</>}</div><aside className="p-6 lg:max-h-[70svh] lg:overflow-y-auto"><p className="text-xs tracking-[.2em] text-emerald-300">{city ? 'CITY EXPLORER' : 'YOUR FOOTPRINTS'}</p><h2 className="mt-3 text-xl font-semibold">{city ? '收藏一家岩馆' : '选择一座城市'}</h2><p className="mb-6 mt-3 text-sm leading-6 text-slate-400">{city ? (city.global ? '搜索附近岩馆，或在地图上手动选点。' : '搜索岩馆或在地图上选点。') : '添加第一家去过的岩馆，就能点亮这座城市。'}</p>{city ? <><button onClick={() => setCity(null)} className="mb-5 text-sm text-emerald-300">← 返回地球</button>{city.global ? <div className="mb-4 space-y-2">
+      <OverseasGymSearch key={city.name} city={city} onSelect={gym => {
+        setPoint(gym);
+        setName(gym.name);
+        setFocus(gym);
+        setError('');
+      }} />
       <label className="block text-xs text-slate-400">海外岩馆名称
         <input className="atlas-input" value={overseasQuery} onChange={e => setOverseasQuery(e.target.value)} maxLength={100} placeholder="例如：B-PUMP" />
       </label>
