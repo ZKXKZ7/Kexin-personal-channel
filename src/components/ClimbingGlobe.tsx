@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Map, Marker, NavigationControl } from 'maplibre-gl';
-import type { StyleSpecification } from 'maplibre-gl';
+import { nightHemisphere } from '../lib/daylight';
+import type { GeoJSONSource, StyleSpecification } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
 export type GlobePoint = { name: string; lng: number; lat: number };
@@ -16,14 +17,16 @@ type Props = {
 const globeStyle: StyleSpecification = {
   version: 8,
   projection: { type: 'globe' },
-  sky: { 'atmosphere-blend': 0.8, 'sky-color': '#101e3a', 'horizon-color': '#406b96' },
+  sky: { 'atmosphere-blend': 0.32, 'sky-color': '#101e3a', 'horizon-color': '#406b96' },
   sources: {
+    night: { type: 'geojson', data: { type: 'FeatureCollection', features: [] }, tolerance: 0 },
     land: { type: 'geojson', data: import.meta.env.BASE_URL + 'maps/land.geojson', attribution: 'Natural Earth' },
   },
   layers: [
-    { id: 'ocean', type: 'background', paint: { 'background-color': '#102745' } },
-    { id: 'land', type: 'fill', source: 'land', paint: { 'fill-color': '#294857' } },
-    { id: 'coast', type: 'line', source: 'land', paint: { 'line-color': '#507582', 'line-width': 0.65 } },
+    { id: 'ocean', type: 'background', paint: { 'background-color': '#195080' } },
+    { id: 'land', type: 'fill', source: 'land', paint: { 'fill-color': '#527970' } },
+    { id: 'coast', type: 'line', source: 'land', paint: { 'line-color': '#86aaa0', 'line-width': 0.65 } },
+    { id: 'night', type: 'fill', source: 'night', paint: { 'fill-color': '#040d22', 'fill-opacity': 0.56, 'fill-antialias': false } },
   ],
 };
 
@@ -43,7 +46,7 @@ export default function ClimbingGlobe({ city, point, pins, onPick, focus }: Prop
         container: container.current,
         style: lng === undefined ? globeStyle : 'https://tiles.openfreemap.org/styles/liberty',
         center: lng !== undefined && lat !== undefined ? [lng, lat] : [105, 25],
-        zoom: lng === undefined ? 0.5 : 11,
+        zoom: lng === undefined ? Math.log2(Math.min(container.current.clientWidth, container.current.clientHeight) / 235) + 0.7 : 11,
         cooperativeGestures: true,
         renderWorldCopies: false,
       });
@@ -52,12 +55,18 @@ export default function ClimbingGlobe({ city, point, pins, onPick, focus }: Prop
       return;
     }
     map.current = instance;
+    const updateDaylight = () => {
+      instance.getSource<GeoJSONSource>('night')?.setData(nightHemisphere(new Date()));
+    };
+    const daylightTimer = lng === undefined ? window.setInterval(updateDaylight, 30_000) : undefined;
+    if (lng === undefined) instance.once('load', updateDaylight);
     instance.addControl(new NavigationControl({ showCompass: false }), 'bottom-right');
     instance.on('click', ({ lngLat }) => {
       const position = lngLat.wrap();
       pick.current({ name: '', lat: position.lat, lng: position.lng });
     });
     return () => {
+      window.clearInterval(daylightTimer);
       instance.remove();
       map.current = null;
     };
