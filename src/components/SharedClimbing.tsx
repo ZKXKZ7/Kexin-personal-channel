@@ -13,6 +13,7 @@ export function SharedClimbing() {
   const [avatar, setAvatar] = useState(() => localStorage.getItem(nameKey + '-avatar') || '🧗');
   const [ownId, setOwnId] = useState(() => localStorage.getItem(identityKey + '-id'));
   const [status, setStatus] = useState('');
+  const [draftVersion, setDraftVersion] = useState(0);
   const [busy, setBusy] = useState(false);
 
   async function refresh(signal?: AbortSignal) {
@@ -58,9 +59,33 @@ export function SharedClimbing() {
   }
 
   return <>
-    <Climbing standalone communityGyms={members.filter(member => member.id !== ownId).flatMap(member => member.gyms)} />
+    <Climbing key={draftVersion} standalone communityGyms={members.filter(member => member.id !== ownId).flatMap(member => member.gyms)} />
     <section className="mx-auto max-w-5xl space-y-5 px-5 pb-12">
       <h2 className="text-2xl font-semibold">同行岩友</h2>
+      <label className="block text-sm text-emerald-200">导入足迹文件
+        <input type="file" accept=".json,application/json" className="atlas-input" onChange={async event => {
+          const file = event.currentTarget.files?.[0];
+          event.currentTarget.value = '';
+          if (!file) return;
+          try {
+            if (file.size > 100_000) throw new Error();
+            const data: unknown = JSON.parse(await file.text());
+            if (!Array.isArray(data) || !data.length || data.length > 200 || !data.every(gym =>
+              gym && ['id', 'city', 'name'].every(field => typeof gym[field] === 'string' &&
+                gym[field].trim() && gym[field].length <= 100) &&
+              Number.isFinite(gym.lat) && Math.abs(gym.lat) <= 90 &&
+              Number.isFinite(gym.lng) && Math.abs(gym.lng) <= 180)) throw new Error();
+            const merged = new Map(readGyms(sharedDraftKey).map(gym => [gym.id, gym]));
+            for (const gym of data) merged.set(gym.id, { ...gym, note: '' });
+            if (merged.size > 200) throw new Error();
+            localStorage.setItem(sharedDraftKey, JSON.stringify([...merged.values()]));
+            setDraftVersion(version => version + 1);
+            setStatus('已导入到草稿。点击「发布我的足迹」后，岩友才能看到。');
+          } catch {
+            setStatus('导入失败，请选择攀岩地图导出的有效 JSON 文件（最多 200 条）。');
+          }
+        }} />
+      </label>
       {endpoint ? <form className="flex flex-wrap items-end gap-3" onSubmit={event => {
         event.preventDefault();
         void publish();

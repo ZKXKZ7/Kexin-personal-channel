@@ -38,6 +38,16 @@ export function readGyms(storageKey = key): Gym[] {
     return Array.isArray(data) ? data.filter((g): g is Gym => g && typeof g.id === 'string' && typeof g.city === 'string' && typeof g.name === 'string' && typeof g.note === 'string' && Number.isFinite(g.lat) && Number.isFinite(g.lng)) : [];
   } catch { return []; }
 }
+function exportFootprints(gyms: Gym[]) {
+  const publicGyms = gyms.map(({ note: _note, ...gym }) => ({ ...gym, note: '' }));
+  const url = URL.createObjectURL(new Blob([JSON.stringify(publicGyms)], { type: 'application/json' }));
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'climbing-footprints.json';
+  link.click();
+  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
 export function Climbing({ standalone = false, communityGyms = emptyGyms }: { standalone?: boolean; communityGyms?: Gym[] }) {
   const storageKey = standalone ? sharedDraftKey : key;
   const [copied, setCopied] = useState(false);
@@ -190,7 +200,7 @@ export function Climbing({ standalone = false, communityGyms = emptyGyms }: { st
           window.prompt('复制攀岩地图链接', url.href);
         }
       }}>{copied ? '链接已复制' : '复制分享链接'}</button>
-  </div> : <div className="flex justify-between gap-3"><a href="#/life-log/sports" className="text-sm text-sky-300">← Sports</a></div>}<div className="mb-8 mt-8 flex flex-wrap items-end justify-between gap-5"><div><p className="text-xs tracking-[.35em] text-emerald-300">THE CLIMBING ATLAS</p><h1 className="mt-3 text-4xl font-semibold sm:text-5xl">{city ? city.name : standalone ? '共享攀岩地图' : '全球攀岩足迹'}</h1></div><p className="text-sm text-slate-400"><b className="text-2xl text-emerald-200">{new Set(mappedGyms.map(g => g.city)).size}</b> 点亮城市 <span className="mx-4">/</span><b className="text-2xl text-emerald-200">{mappedGyms.length}</b> 岩馆足迹 <span className="mx-4">/</span><b className="text-2xl text-emerald-200">{mappedGyms.reduce((total, gym) => total + visitCount(gym), 0)}</b> 次到访</p></div><div className="grid overflow-hidden rounded-3xl border border-white/10 bg-[#0b141b] lg:grid-cols-[1fr_320px]"><div className="relative min-w-0">{useAMap ? <><p className="pointer-events-none absolute left-14 top-3 z-10 rounded-lg bg-slate-950/85 px-3 py-2 text-xs text-emerald-100">亮点为已到访 · 点越大，到访越多</p><div ref={container} className="z-0 h-[55svh] min-h-96 lg:h-[70svh]" />{!mapReady && <div role="status" className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-slate-950/90 p-8 text-center text-sm text-slate-300">{mapError || '正在加载高德地图…'}{mapError && <button className="rounded-lg border border-emerald-300/40 px-4 py-2 text-emerald-200" onClick={() => setMapAttempt(value => value + 1)}>重新加载</button>}</div>}</> : <><Suspense fallback={<div className="grid h-[58svh] place-items-center">正在加载地图…</div>}><ClimbingGlobe city={city || undefined} pins={pins} point={point} focus={focus} onPick={position => { if (city) {
+  </div> : <div className="flex justify-between gap-3"><a href="#/life-log/sports" className="text-sm text-sky-300">← Sports</a><button type="button" disabled={!gyms.length} className="text-sm text-emerald-300 disabled:opacity-50" onClick={() => exportFootprints(gyms)}>导出我的足迹</button></div>}<div className="mb-8 mt-8 flex flex-wrap items-end justify-between gap-5"><div><p className="text-xs tracking-[.35em] text-emerald-300">THE CLIMBING ATLAS</p><h1 className="mt-3 text-4xl font-semibold sm:text-5xl">{city ? city.name : standalone ? '共享攀岩地图' : '全球攀岩足迹'}</h1></div><p className="text-sm text-slate-400"><b className="text-2xl text-emerald-200">{new Set(mappedGyms.map(g => g.city)).size}</b> 点亮城市 <span className="mx-4">/</span><b className="text-2xl text-emerald-200">{mappedGyms.length}</b> 岩馆足迹 <span className="mx-4">/</span><b className="text-2xl text-emerald-200">{mappedGyms.reduce((total, gym) => total + visitCount(gym), 0)}</b> 次到访</p></div><div className="grid overflow-hidden rounded-3xl border border-white/10 bg-[#0b141b] lg:grid-cols-[1fr_320px]"><div className="relative min-w-0">{useAMap ? <><p className="pointer-events-none absolute left-14 top-3 z-10 rounded-lg bg-slate-950/85 px-3 py-2 text-xs text-emerald-100">亮点为已到访 · 点越大，到访越多</p><div ref={container} className="z-0 h-[55svh] min-h-96 lg:h-[70svh]" />{!mapReady && <div role="status" className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-slate-950/90 p-8 text-center text-sm text-slate-300">{mapError || '正在加载高德地图…'}{mapError && <button className="rounded-lg border border-emerald-300/40 px-4 py-2 text-emerald-200" onClick={() => setMapAttempt(value => value + 1)}>重新加载</button>}</div>}</> : <><Suspense fallback={<div className="grid h-[58svh] place-items-center">正在加载地图…</div>}><ClimbingGlobe city={city || undefined} pins={pins} point={point} focus={focus} onPick={position => { if (city) {
         setPoint(position);
       } else {
         setGlobalEntry(true);
