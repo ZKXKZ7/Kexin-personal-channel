@@ -1,9 +1,14 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
+const standalone = process.env.CLIMBING_STANDALONE === '1';
+
 export default defineConfig({
   plugins: [react()],
-  build: { rollupOptions: { input: ['index.html', 'climbing/index.html'] } },
+  publicDir: standalone ? false : 'public',
+  build: standalone
+    ? { outDir: 'dist-shared', rollupOptions: { input: 'climbing/index.html' } }
+    : { rollupOptions: { input: 'index.html' } },
   /**
    * GitHub Pages serves under /<repo>/, so we make base configurable.
    * - local dev: '/'
