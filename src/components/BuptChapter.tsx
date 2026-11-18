@@ -29,8 +29,8 @@ function ChapterCard({ icon: Icon, title, children, heading: Heading = 'h3' }: {
   heading?: 'h3' | 'h4';
 }) {
   return (
-    <section className="depth-panel bupt-card">
-      <Icon aria-hidden="true" />
+    <section className="depth-panel relief-card bupt-card">
+      <span className="relief-emblem grid h-10 w-10 place-items-center"><Icon aria-hidden="true" /></span>
       <Heading>{title}</Heading>
       {children}
     </section>
@@ -48,7 +48,7 @@ export function BuptChapterDetails() {
         <p className="bupt-degree-summary">北京邮电大学国际学院 · 工学与管理学 · 一等荣誉学位</p>
         <dl className="depth-panel bupt-metrics">
           {metrics.map(({ label, value, detail }) => (
-            <div key={label}>
+            <div key={label} className="relief-inset">
               <dt>{label}</dt>
               <dd>{value} <small>{detail}</small></dd>
             </div>
@@ -80,8 +80,8 @@ export function BuptChapterDetails() {
             </ChapterCard>
           </div>
         </div>
-        <section id="bupt-volunteering" className="depth-panel bupt-card bupt-volunteering">
-          <Users aria-hidden="true" />
+        <section id="bupt-volunteering" className="depth-panel relief-card bupt-card bupt-volunteering">
+          <span className="relief-emblem grid h-10 w-10 place-items-center"><Users aria-hidden="true" /></span>
           <h3>Beyond the Margin · 校园实践</h3>
           <p><strong>鸿雁青年志愿者协会 · 外联部部长</strong></p>
           <p>2021.10 — 2023.07</p>

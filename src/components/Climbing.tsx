@@ -236,7 +236,7 @@ export function Climbing({ standalone = false, communityGyms = emptyGyms }: { st
       } else {
         setGlobalEntry(true);
         setCoordinates(`${position.lat.toFixed(5)}, ${position.lng.toFixed(5)}`);
-      } }} /></Suspense>{!city && <p className="pointer-events-none absolute left-4 top-4 rounded-lg bg-slate-950/80 px-3 py-2 text-xs text-emerald-100">拖动旋转 · 点击亮点查看岩馆 · 点地球选城市位置</p>}</>}</div><aside className="p-6 lg:max-h-[70svh] lg:overflow-y-auto"><p className="text-xs tracking-[.2em] text-emerald-300">{city ? 'CITY EXPLORER' : 'YOUR FOOTPRINTS'}</p><h2 className="mt-3 text-xl font-semibold">{city ? '收藏一家岩馆' : '选择一座城市'}</h2><p className="mb-6 mt-3 text-sm leading-6 text-slate-400">{city ? (city.global ? '搜索附近岩馆，或在地图上手动选点。' : '搜索岩馆或在地图上选点。') : '添加第一家去过的岩馆，就能点亮这座城市。'}</p>{city ? <><button onClick={() => setCity(null)} className="mb-5 text-sm text-emerald-300">← 返回地球</button>{city.global ? <div className="mb-4 space-y-2">
+      } }} /></Suspense>{!city && <p className="pointer-events-none absolute left-4 top-4 rounded-lg bg-slate-950/80 px-3 py-2 text-xs text-emerald-100">拖动旋转 · 点击亮点查看岩馆 · 点地球选城市位置</p>}</>}</div><aside className="relief-sidebar p-6 lg:max-h-[70svh] lg:overflow-y-auto"><p className="text-xs tracking-[.2em] text-emerald-300">{city ? 'CITY EXPLORER' : 'YOUR FOOTPRINTS'}</p><h2 className="mt-3 text-xl font-semibold">{city ? '收藏一家岩馆' : '选择一座城市'}</h2><p className="mb-6 mt-3 text-sm leading-6 text-slate-400">{city ? (city.global ? '搜索附近岩馆，或在地图上手动选点。' : '搜索岩馆或在地图上选点。') : '添加第一家去过的岩馆，就能点亮这座城市。'}</p>{city ? <><button onClick={() => setCity(null)} className="mb-5 text-sm text-emerald-300">← 返回地球</button>{city.global ? <div className="mb-4 space-y-2">
       <OverseasGymSearch key={city.name} city={city} onSelect={gym => {
         setPoint(gym);
         setName(gym.name);
@@ -262,7 +262,7 @@ export function Climbing({ standalone = false, communityGyms = emptyGyms }: { st
       {communityGyms.filter(g => g.city === city.name).map((gym, index) => <li key={gym.id + ':' + index}>
         <button type="button" className="text-left text-sm text-emerald-200" onClick={() => void focusGym(gym)}>{gym.name} ↗</button>
       </li>)}
-    </ul>}<ul className="mt-6 space-y-3">{gyms.filter(g => g.city === city.name).map(g => <li key={g.id} className="rounded-xl border border-white/10 p-3"><button className="text-left text-emerald-200" onClick={() => void focusGym(g)}>{g.name} ↗</button>
+    </ul>}<ul className="mt-6 space-y-3">{gyms.filter(g => g.city === city.name).map(g => <li key={g.id} className="depth-panel relief-card rounded-xl border border-white/10 p-3"><button className="text-left text-emerald-200" onClick={() => void focusGym(g)}>{g.name} ↗</button>
                   <p className="mt-2 text-xs text-emerald-200">{visitCount(g)} 次到访</p>
                   {Array.isArray(g.visits) && g.visits.length > 0 && (
                     <details className="mt-2 text-xs text-slate-400">

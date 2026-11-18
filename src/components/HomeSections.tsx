@@ -18,17 +18,17 @@ export function HomeSections() {
       </div>
       <div className="grid gap-7 md:grid-cols-3 lg:gap-9">
         {sections.map(({ href, number, title, subtitle, description, detail, icon: Icon, color, background }) => (
-          <a key={href} href={href} className={`chapter-cover group relative flex min-h-[320px] flex-col rounded-3xl border border-white/20 bg-gradient-to-br ${background} to-slate-950 p-7 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky-300 lg:min-h-[420px] lg:p-10`}>
+          <a key={href} href={href} className={`chapter-cover relief-card group relative flex min-h-[320px] flex-col rounded-3xl border border-white/20 bg-gradient-to-br ${background} to-slate-950 p-7 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky-300 lg:min-h-[420px] lg:p-10`}>
             <div className="mb-12 flex items-center justify-between">
-              <Icon className={`h-10 w-10 drop-shadow-lg ${color}`} strokeWidth={1.4} aria-hidden />
-              <span className="font-mono text-xs tracking-widest text-slate-500">/{number}</span>
+              <span className={`relief-emblem grid h-14 w-14 place-items-center ${color}`}><Icon className="h-8 w-8" strokeWidth={1.4} aria-hidden /></span>
+              <span className="relief-inset px-3 py-1 font-mono text-xs tracking-widest text-slate-300">/{number}</span>
             </div>
             <p className={`mb-2 text-xs tracking-widest ${color}`}>{subtitle}</p>
             <h3 className="text-3xl font-semibold tracking-tight lg:text-5xl text-slate-50">{title}</h3>
-            <p className="mb-8 mt-4 text-sm leading-7 text-slate-300 lg:text-base">{description}</p>
+            <p className="relief-inset mb-6 mt-4 p-3 text-sm leading-7 text-slate-300 lg:text-base">{description}</p>
             <div className="mt-auto flex items-center justify-between gap-3 border-t border-white/10 pt-5">
               <span className="text-xs leading-5 text-slate-400">{detail}</span>
-              <span className={`flex shrink-0 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-2 text-xs font-semibold transition group-hover:bg-white/20 group-active:bg-white/30 ${color}`}>
+              <span className={`relief-emblem flex shrink-0 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-2 text-xs font-semibold transition group-hover:bg-white/20 group-active:bg-white/30 ${color}`}>
                 进入 <ArrowRight className="h-4 w-4 transition motion-safe:group-hover:translate-x-1" aria-hidden />
               </span>
             </div>

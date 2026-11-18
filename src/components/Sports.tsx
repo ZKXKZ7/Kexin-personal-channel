@@ -34,10 +34,10 @@ export function Sports({ route }: { route: string }) {
             <a
               key={activity.slug}
               href={`#/life-log/sports/${activity.slug}`}
-              className={`depth-panel depth-link flex min-h-60 flex-col justify-between gap-7 rounded-3xl border border-white/15 bg-gradient-to-br ${activity.color} to-slate-950 p-7 sm:p-9`}
+              className={`depth-panel depth-link relief-card flex min-h-60 flex-col justify-between gap-7 rounded-3xl border border-white/15 bg-gradient-to-br ${activity.color} to-slate-950 p-7 sm:p-9`}
             >
-              <span className="depth-kicker text-5xl" aria-hidden="true">{activity.glyph}</span>
-              <div>
+              <span className="relief-emblem depth-kicker grid h-16 w-16 place-items-center text-4xl" aria-hidden="true">{activity.glyph}</span>
+              <div className="relief-inset p-4">
                 <p className="text-xs uppercase tracking-[.2em] text-slate-400">{activity.label}</p>
                 <h2 className="mt-2 text-3xl font-semibold">{activity.title}</h2>
                 <p className="mt-3 text-sm text-slate-300">{activity.description}</p>

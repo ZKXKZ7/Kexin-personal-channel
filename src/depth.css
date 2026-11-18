@@ -173,3 +173,55 @@
   .depth-site .depth-link { transition: none; }
   .depth-site .sf-layer, .depth-site .snow-cursor { display: none; }
 }
+
+/* Raised faces and recessed content use the current page's light color. */
+.depth-site .relief-card {
+  isolation: isolate;
+  background-image:
+    radial-gradient(ellipse at 8% 0%, color-mix(in srgb, var(--glow) 36%, transparent), transparent 70%),
+    linear-gradient(145deg, #253448, #101b2d 55%, #090f1d);
+  border-color: var(--stage-border);
+}
+
+.depth-site .relief-card.bupt-card {
+  background-image: radial-gradient(ellipse at 6% 0%, #3b523b, transparent 70%),
+    linear-gradient(145deg, #233027, #111b17 75%);
+}
+
+.relief-emblem {
+  border: 1px solid var(--stage-border);
+  border-radius: .8rem;
+  background: linear-gradient(145deg, color-mix(in srgb, var(--glow) 46%, #23384b), #101a2a 75%);
+  box-shadow: inset 0 1px 1px #fff6, 0 4px 0 -1px #070e18, 0 5px 0 -1px var(--stage-border), 0 10px 16px #0007;
+}
+
+.relief-inset {
+  border: 1px solid var(--stage-border);
+  border-radius: .65rem;
+  background: linear-gradient(155deg, #040b15a6, #15243377);
+  box-shadow: inset 0 2px 7px #0007, 0 1px #d5edff19;
+}
+
+.relief-card :is(h3, h4) { text-shadow: 0 2px #080e18, 0 4px 9px #0008; }
+.relief-frame { padding: .55rem; }
+.relief-media {
+  position: relative;
+  overflow: hidden;
+  border-radius: .62rem;
+  border: 1px solid var(--stage-border);
+  box-shadow: 0 1px #e6f1ff36;
+}
+
+.relief-media > div:not(:has(*)) {
+  box-shadow: inset 0 1px 2px #fff5, inset 0 -18px 45px #0005;
+}
+
+.depth-site .bupt-metrics { padding: .55rem; gap: .45rem; }
+.depth-site .bupt-metrics > div { border: 1px solid var(--line); }
+.depth-site .bupt-metrics dd { text-shadow: 0 2px #15201a, 0 4px 9px #0007; }
+.depth-site .bupt-gallery figcaption { background-color: #101714; }
+.depth-site .bupt-courses > div { padding-inline: .5rem; border-radius: .35rem; background: #070e1780; }
+.relief-sidebar {
+  background: linear-gradient(145deg, #1a2c33, #0c1620 60%);
+  box-shadow: inset 1px 1px #baf7e01a, inset 4px 0 16px #02061755;
+}

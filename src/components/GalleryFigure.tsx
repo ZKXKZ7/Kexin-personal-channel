@@ -23,11 +23,11 @@ export function GalleryFigure({ ph }: { ph: TripPhoto }) {
 
   return (
     <figure
-      className={`depth-panel overflow-hidden rounded-xl border border-white/10 ${
+      className={`depth-panel relief-card relief-frame overflow-hidden rounded-xl border border-white/10 ${
         hasImage || hasVideo ? 'bg-slate-950' : `bg-gradient-to-br ${ph.gradient}`
       }`}
     >
-      <div className={showTags ? 'w-full' : 'aspect-[4/3] w-full'}>
+      <div className={showTags ? 'w-full' : 'relief-media aspect-[4/3] w-full'}>
         {hasImage ? (
           <img
             className="h-full w-full object-cover"
@@ -79,7 +79,7 @@ export function GalleryFigure({ ph }: { ph: TripPhoto }) {
           <div className={`h-full w-full bg-gradient-to-br ${ph.gradient}`} />
         )}
       </div>
-      <figcaption className="border-t border-white/10 bg-slate-950/80 px-3 py-2 text-xs font-medium text-slate-300">
+      <figcaption className="relief-inset mt-2 px-3 py-2 text-xs font-medium text-slate-200">
         {ph.label}
       </figcaption>
     </figure>

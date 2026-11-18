@@ -13,7 +13,7 @@ export function Footer({ standalone = false }: { standalone?: boolean }) {
       <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6 lg:px-8">
         <div className={standalone
           ? "depth-stage depth-contact"
-          : "depth-panel depth-glass flex flex-col items-start justify-between gap-8 rounded-2xl border p-6 sm:flex-row sm:items-center"
+          : "depth-panel depth-glass relief-card flex flex-col items-start justify-between gap-8 rounded-2xl border p-6 sm:flex-row sm:items-center"
         }>
           {standalone && <DepthScene />}
           <div className="space-y-1">
@@ -29,9 +29,9 @@ export function Footer({ standalone = false }: { standalone?: boolean }) {
                 href={href}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="depth-panel depth-link inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm font-medium text-slate-300 transition hover:border-sky-400/35 hover:text-sky-300"
+                className="depth-panel depth-link relief-card inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm font-medium text-slate-300 transition hover:border-sky-400/35 hover:text-sky-300"
               >
-                <Icon className="h-4 w-4 text-sky-400" strokeWidth={1.75} aria-hidden />
+                <span className="relief-emblem grid h-7 w-7 place-items-center"><Icon className="h-4 w-4 text-sky-300" strokeWidth={1.75} aria-hidden /></span>
                 {label}
               </a>
             ))}
