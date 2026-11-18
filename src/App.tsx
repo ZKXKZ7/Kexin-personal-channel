@@ -48,7 +48,7 @@ export default function App() {
       <div className="relative z-10 min-h-screen overflow-x-hidden">
         <Header />
         <main ref={mainRef} tabIndex={-1} className="min-h-[calc(100svh-5rem)] outline-none">
-          {section === 'life-log' && id === 'sports' ? <Sports route={route} /> : isDetail && trip ? (
+          {section === 'life-log' && id === 'sports' ? <Sports route={route} /> : module?.id === 'bupt' ? <BuptChapter /> : isDetail && trip ? (
             <article className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-8 sm:py-12 lg:px-12">
               <a href={`#/${section}`} className="inline-flex items-center gap-2 rounded-lg py-2 text-sm text-sky-300 transition hover:text-white focus-visible:outline focus-visible:outline-sky-300">
                 <ArrowLeft className="h-4 w-4" />
@@ -59,11 +59,9 @@ export default function App() {
                 <h1 className="text-4xl font-bold tracking-tight text-slate-50 sm:text-6xl">{trip.name}</h1>
                 {trip.modalIntro && <p className="mt-6 max-w-3xl text-base leading-relaxed text-slate-400">{trip.modalIntro}</p>}
               </header>
-              {module?.buptChapterModal ? <BuptChapter module={module} /> : (
-                <div className="grid items-start gap-6 md:grid-cols-2">
-                  {trip.photos.map(photo => <GalleryFigure key={photo.id} ph={photo} />)}
-                </div>
-              )}
+              <div className="grid items-start gap-6 md:grid-cols-2">
+                {trip.photos.map(photo => <GalleryFigure key={photo.id} ph={photo} />)}
+              </div>
             </article>
           ) : !knownRoute ? (
             <div className="mx-auto max-w-5xl px-6 py-24">

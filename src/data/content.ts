@@ -46,20 +46,6 @@ export type TravelTrip = {
   modalIntro?: string;
 };
 
-/** BUPT 弹窗：硕士段 + 本科段分块（仅 Chapters of BUPT 使用） */
-export type BuptChapterModalData = {
-  /** 硕士段标题第一行 */
-  masterHeadingLine1: string;
-  /** 硕士段标题第二行 */
-  masterHeadingLine2: string;
-  masterCards: TripPhoto[];
-  /** 本科段标题第一行 */
-  bachelorHeadingLine1: string;
-  /** 本科段标题第二行 */
-  bachelorHeadingLine2: string;
-  bachelorCards: TripPhoto[];
-};
-
 /** Portfolio 模块卡 + 弹窗相册（与 Travel 共用 TravelGalleryModal） */
 export type PortfolioModule = {
   id: string;
@@ -72,8 +58,6 @@ export type PortfolioModule = {
   /** 弹窗正文；省略则用 description */
   modalDetail?: string;
   photos: TripPhoto[];
-  /** 若存在，打开 BUPT 分章弹窗，不再使用扁平 photos 弹窗 */
-  buptChapterModal?: BuptChapterModalData;
 };
 
 export function portfolioModuleToTrip(m: PortfolioModule): TravelTrip {
@@ -82,8 +66,8 @@ export function portfolioModuleToTrip(m: PortfolioModule): TravelTrip {
     name: m.title,
     region: m.modalSubtitle ?? m.tags.join(' · '),
     icon: m.icon,
-    photos: m.buptChapterModal ? [] : m.photos,
-    modalIntro: m.buptChapterModal ? '' : (m.modalDetail ?? m.description).trim(),
+    photos: m.photos,
+    modalIntro: (m.modalDetail ?? m.description).trim(),
   };
 }
 
@@ -92,54 +76,10 @@ export const portfolioModules: PortfolioModule[] = [
     id: 'bupt',
     title: 'Chapters of BUPT',
     description:
-      '在北邮的学科训练与学术轨道：从校园与课程到竞赛、课题与论文导向的探索，把问题定义清楚再动手实现。（可按你的经历改写）',
+      '从电子商务及法律到计算机科学与技术，记录我在北邮的学业、国际交流、科研与校园实践。',
     tags: ['University', 'Academic Orbit'],
     icon: GraduationCap,
     photos: [],
-    buptChapterModal: {
-      masterHeadingLine1: '硕士 · 北京邮电大学  2025.09-2028.07',
-      masterHeadingLine2: '计算机学院 （国家示范性软件学院）计算机科学与技术',
-      masterCards: [
-        { id: 'm1', label: '网络与交换技术国家重点实验室', gradient: 'from-[#1e3a5f] to-[#0f172a]' },
-        { id: 'm2', label: '硕士片段二', gradient: 'from-[#312e81] to-[#1e1b4b]' },
-        { id: 'm3', label: '硕士片段三', gradient: 'from-[#164e63] to-[#0f766e]' },
-      ],
-      bachelorHeadingLine1: '本科 · 北京邮电大学  2021.09-2025.07',
-      bachelorHeadingLine2: '国际学院 E-commerce Engineering with Law 一等荣誉学位',
-      bachelorCards: [
-        {
-          id: 'b1',
-          label: '来时路',
-          gradient: 'from-[#1c1917] to-[#44403c]',
-          bodyTagSurfaceClass:
-            'border border-stone-200/20 bg-stone-950/50 shadow-sm backdrop-blur-[2px]',
-          bodyTags: [
-            'GPA: 3.7/4',
-            '均分: 89/100',
-            'Ranking（智育）: 6/180',
-            'CET-4: 649    CET-6: 611\nIELTS: 7.5（Reading 9）',
-          ],
-        },
-        {
-          id: 'b2',
-          label: '本科片段二',
-          gradient: 'from-[#4c0519] to-[#831843]',
-          bodyTagSurfaceClass:
-            'border border-rose-200/15 bg-rose-950/45 shadow-sm backdrop-blur-[2px]',
-          bodyTagsLeadFullWidthCount: 2,
-          bodyTags: [
-            '国家奖学金（1/180）',
-            '菁英领袖学生代表（单人面试轮第一名1/680）-赴伦敦玛丽女王大学奖优交流',
-            '校一等奖学金',
-            '三好学生',
-          ],
-        },
-        { id: 'b3', label: '本科片段三', gradient: 'from-[#0c4a6e] to-[#155e75]' },
-        { id: 'b4', label: '本科片段四', gradient: 'from-[#14532d] to-[#166534]' },
-        { id: 'b5', label: '本科片段五', gradient: 'from-[#78350f] to-[#92400e]' },
-        { id: 'b6', label: '本科片段六', gradient: 'from-[#312e81] to-[#4c1d95]' },
-      ],
-    },
   },
   {
     id: 'career',

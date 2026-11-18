@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { X } from 'lucide-react';
 import type { PortfolioModule } from '../data/content';
-import { GalleryFigure } from './TravelGalleryModal';
+import { BuptChapterDetails } from './BuptChapter';
 
 type Props = {
   module: PortfolioModule | null;
@@ -9,10 +9,10 @@ type Props = {
 };
 
 export function BuptChapterModal({ module, onClose }: Props) {
-  const data = module?.buptChapterModal;
+  const isBupt = module?.id === 'bupt';
 
   useEffect(() => {
-    if (!data) return;
+    if (!isBupt) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };
@@ -23,9 +23,9 @@ export function BuptChapterModal({ module, onClose }: Props) {
       document.removeEventListener('keydown', onKey);
       document.body.style.overflow = prev;
     };
-  }, [data, onClose]);
+  }, [isBupt, onClose]);
 
-  if (!module || !data) return null;
+  if (!module || !isBupt) return null;
 
   const region = module.modalSubtitle ?? module.tags.join(' · ');
 
@@ -59,30 +59,8 @@ export function BuptChapterModal({ module, onClose }: Props) {
             <span className="sr-only">关闭</span>
           </button>
         </div>
-        <div className="overflow-y-auto px-5 py-4 sm:px-6 sm:py-5">
-          <div className="space-y-1">
-            <p className="text-sm font-medium leading-relaxed text-slate-50">{data.bachelorHeadingLine1}</p>
-            <p className="text-sm leading-relaxed text-slate-400">{data.bachelorHeadingLine2}</p>
-          </div>
-          <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {data.bachelorCards.map((ph) => (
-              <div key={ph.id} className="min-w-0">
-                <GalleryFigure ph={ph} />
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-8 space-y-1">
-            <p className="text-sm font-medium leading-relaxed text-slate-50">{data.masterHeadingLine1}</p>
-            <p className="text-sm leading-relaxed text-slate-400">{data.masterHeadingLine2}</p>
-          </div>
-          <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
-            {data.masterCards.map((ph) => (
-              <div key={ph.id} className="min-w-0">
-                <GalleryFigure ph={ph} />
-              </div>
-            ))}
-          </div>
+        <div className="bupt-page bupt-details overflow-y-auto">
+          <BuptChapterDetails />
         </div>
       </div>
     </div>

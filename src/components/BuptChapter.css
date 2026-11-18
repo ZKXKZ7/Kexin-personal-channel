@@ -1,0 +1,93 @@
+.bupt-page {
+  --ink: #edf1e8;
+  --muted: #a6b0ab;
+  --lime: #e0fb91;
+  --line: #303b37;
+  color: var(--ink);
+  background: #101714;
+  padding: clamp(1.25rem, 5vw, 5rem);
+  overflow: hidden;
+}
+.bupt-content { max-width: 76rem; margin-inline: auto; }
+.bupt-back { display: inline-flex; align-items: center; gap: .55rem; color: var(--muted); font-size: .875rem; }
+.bupt-back:hover { color: var(--lime); }
+.bupt-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  align-items: center;
+  min-height: clamp(24rem, 45vw, 37rem);
+  margin-top: 1.5rem;
+  padding: clamp(1.5rem, 5vw, 4.5rem);
+  border: 1px solid #445346;
+  border-radius: 1.2rem;
+  background: radial-gradient(ellipse at 85% 61%, #465a34, transparent 60%), #171f1b;
+}
+.bupt-kicker, .bupt-date {
+  color: var(--lime);
+  font: 500 .75rem/1.5 ui-monospace, monospace;
+  letter-spacing: .12em;
+}
+.bupt-hero h1 {
+  font: 400 clamp(3rem, 8.5vw, 8rem)/.87 Georgia, serif;
+  letter-spacing: -.07em;
+  margin-block: 1.35rem 1.65rem;
+}
+.bupt-hero h1 span { display: block; color: var(--lime); font-style: italic; }
+.bupt-hero-caption { color: #c7d0c4; font-size: clamp(.85rem, 1.6vw, 1.1rem); letter-spacing: .15em; }
+.bupt-orbit {
+  position: absolute;
+  z-index: -1;
+  width: min(55vw, 43rem);
+  aspect-ratio: 1;
+  right: -4%;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: repeating-radial-gradient(circle, transparent 0 29px, #dcf9a427 30px 31px);
+  mask-image: radial-gradient(circle, #000 44%, transparent 74%);
+}
+.bupt-orbit::after {
+  content: '';
+  position: absolute;
+  inset: 27%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #edffba, #9eb963 27%, #3a4c30 62%, #15201b 78%);
+  box-shadow: 0 0 60px #b1da6140;
+}
+.bupt-degree { margin-top: clamp(2.75rem, 7vw, 6rem); }
+.bupt-degree-header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .5rem 2rem; }
+.bupt-degree h2 { font-size: clamp(1.75rem, 4vw, 3rem); font-weight: 650; letter-spacing: -.04em; }
+.bupt-degree-summary { color: var(--muted); line-height: 1.7; margin: .65rem 0 1.5rem; }
+.bupt-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--line); border-radius: .9rem; background: #1a241e; }
+.bupt-metrics div { padding: clamp(.9rem, 2.5vw, 1.7rem); }
+.bupt-metrics div + div { border-left: 1px solid var(--line); }
+.bupt-metrics dt { color: var(--muted); font-size: .8rem; }
+.bupt-metrics dd { color: var(--lime); font: 400 clamp(1.75rem, 4vw, 3.1rem)/1.2 Georgia, serif; }
+.bupt-metrics small { color: var(--muted); font-size: .72rem; }
+.bupt-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1rem; }
+.bupt-card { padding: clamp(1.2rem, 3vw, 2rem); background: #171f1b; border: 1px solid var(--line); border-radius: .9rem; }
+.bupt-card svg { color: var(--lime); width: 1.3rem; height: 1.3rem; }
+.bupt-card h3 { margin-block: .85rem .75rem; font-size: 1.25rem; font-weight: 650; }
+.bupt-card li { padding-block: .66rem; line-height: 1.65; }
+.bupt-card li + li { border-top: 1px solid var(--line); }
+.bupt-card strong { display: block; font-weight: 600; }
+.bupt-card p { color: var(--muted); font-size: .875rem; line-height: 1.7; }
+@media (max-width: 640px) {
+  .bupt-hero { align-items: end; }
+  .bupt-orbit { width: 22rem; right: -7rem; top: 35%; opacity: .64; }
+  .bupt-grid { grid-template-columns: 1fr; }
+  .bupt-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bupt-metrics div:nth-child(3) { border-left: 0; }
+  .bupt-metrics div:nth-child(n+3) { border-top: 1px solid var(--line); }
+}
+.bupt-courses { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 1rem; }
+.bupt-courses div { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; padding-block: .65rem; border-bottom: 1px solid var(--line); }
+.bupt-courses dt { color: var(--muted); font-size: .85rem; }
+.bupt-courses dd { color: var(--lime); font-variant-numeric: tabular-nums; }
+.bupt-details { padding: 1.25rem; }
+.bupt-details .bupt-degree:first-child { margin-top: 0; }
+@media (max-width: 380px) {
+  .bupt-courses { grid-template-columns: 1fr; }
+}
