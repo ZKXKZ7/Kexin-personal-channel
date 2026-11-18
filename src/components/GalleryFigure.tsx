@@ -23,7 +23,7 @@ export function GalleryFigure({ ph }: { ph: TripPhoto }) {
 
   return (
     <figure
-      className={`overflow-hidden rounded-xl border border-white/10 ${
+      className={`depth-panel overflow-hidden rounded-xl border border-white/10 ${
         hasImage || hasVideo ? 'bg-slate-950' : `bg-gradient-to-br ${ph.gradient}`
       }`}
     >

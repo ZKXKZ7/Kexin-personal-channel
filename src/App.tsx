@@ -1,6 +1,7 @@
 import { Sports } from './components/Sports';
 import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
+import { DepthScene } from './components/DepthScene';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { HomeSections } from './components/HomeSections';
@@ -34,6 +35,10 @@ export default function App() {
   const trip = module ? portfolioModuleToTrip(module) : section === 'life-log' && id
     ? [...lifeInterestTrips, ...travelTrips].find(item => item.id === id) : undefined;
   const isDetail = Boolean(trip);
+  const tone = moduleId === 'bupt' ? 'lime'
+    : section === 'thoughts' || route === 'life-log/sports/dance' ? 'violet'
+    : section === 'contact' ? 'amber'
+    : section === 'life-log' ? 'mint' : 'blue';
   const knownRoute = !route || (!id && ['portfolio', 'life-log', 'thoughts', 'contact'].includes(section)) || isDetail;
   const title = trip?.name ?? sectionTitles[section] ?? (knownRoute ? 'Home' : 'Page not found');
 
@@ -45,7 +50,7 @@ export default function App() {
   }, [route, title, isLegacyMargin]);
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-b from-slate-950 via-[#070b14] to-slate-950 text-slate-200">
+    <div className="depth-site relative" data-tone={tone}>
       <Snowfall />
       <SnowCursor />
       <div className="relative z-10 min-h-screen overflow-x-hidden">
@@ -57,9 +62,10 @@ export default function App() {
                 <ArrowLeft className="h-4 w-4" />
                 返回 {section === 'portfolio' ? 'Portfolio' : 'Life Log'}
               </a>
-              <header className="mb-10 mt-8 border-b border-white/10 pb-8 sm:mt-12">
-                <p className="mb-4 text-sm tracking-wide text-sky-300">{trip.region}</p>
-                <h1 className="text-4xl font-bold tracking-tight text-slate-50 sm:text-6xl">{trip.name}</h1>
+              <header className="depth-stage mb-10 mt-5">
+                <DepthScene />
+                <p className="mb-4 text-sm tracking-wide depth-kicker">{trip.region}</p>
+                <h1 className="depth-title font-bold">{trip.name}</h1>
                 {trip.modalIntro && <p className="mt-6 max-w-3xl text-base leading-relaxed text-slate-400">{trip.modalIntro}</p>}
               </header>
               <div className="grid items-start gap-6 md:grid-cols-2">
@@ -68,8 +74,11 @@ export default function App() {
             </article>
           ) : !knownRoute ? (
             <div className="mx-auto max-w-5xl px-6 py-24">
-              <h1 className="mb-6 text-4xl font-bold">页面未找到</h1>
-              <a className="text-sky-300" href="#/">返回首页</a>
+              <section className="depth-stage">
+                <DepthScene />
+                <h1 className="depth-title mb-5 font-bold">页面未找到</h1>
+                <a className="depth-kicker w-fit" href="#/">返回首页</a>
+              </section>
             </div>
           ) : <>
             {!route && <><Hero /><HomeSections /></>}
@@ -77,7 +86,7 @@ export default function App() {
             {(section === 'portfolio') && <Portfolio />}
             {(section === 'life-log') && <LifeLog />}
             {(section === 'thoughts') && <Thoughts />}
-            {section === 'contact' && <Footer />}
+            {section === 'contact' && <Footer standalone />}
           </>}
         </main>
         {section !== 'contact' && <Footer />}

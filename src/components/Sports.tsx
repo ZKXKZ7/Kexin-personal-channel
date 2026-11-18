@@ -1,11 +1,51 @@
+import { DepthScene } from './DepthScene';
 import { Climbing } from './Climbing';
 import { GalleryFigure } from './GalleryFigure';
 import { lifeInterestTrips } from '../data/content';
 
+const activities = [
+  { slug: 'climbing', title: '攀岩', label: 'The climbing atlas', description: '在地图上，收藏每一次向上的旅程。', glyph: '↗', color: 'from-teal-950' },
+  { slug: 'dance', title: '街舞', label: 'Find your rhythm', description: '用身体表达，记录每一个节拍。', glyph: '〰', color: 'from-indigo-950' },
+];
+
 export function Sports({ route }: { route: string }) {
   const part = route.split('/')[2];
-  const photos = lifeInterestTrips.find(t => t.id === 'sports')!.photos;
+  const dance = part === 'dance';
+  const photos = lifeInterestTrips.find(trip => trip.id === 'sports')!.photos;
+
   if (part === 'climbing') return <Climbing />;
-  if (part === 'dance') return <div className="mx-auto max-w-5xl px-6 py-12"><a href="#/life-log/sports" className="text-sky-300">← Sports</a><p className="mt-12 text-sm tracking-[.3em] text-sky-300">MOVE TO YOUR OWN RHYTHM</p><h1 className="mb-10 mt-4 text-5xl font-bold">街舞 / Dance</h1><GalleryFigure ph={photos[1]} /></div>;
-  return <div className="mx-auto max-w-7xl px-6 py-12"><a href="#/life-log" className="text-sky-300">← Life Log</a><p className="mt-12 text-sm tracking-[.3em] text-sky-300">MOVEMENT & EXPLORATION</p><h1 className="mt-4 text-6xl font-bold">Sports</h1><p className="mt-5 text-slate-400">向上探索，自由律动。</p><div className="mt-12 grid gap-6 md:grid-cols-2">{[{ slug: 'climbing', title: '攀岩', en: 'The climbing atlas', text: '在地图上，收藏每一次向上的旅程。', glyph: '↗' }, { slug: 'dance', title: '街舞', en: 'Find your rhythm', text: '用身体表达，记录每一个节拍。', glyph: '〰' }].map((item, i) => <a key={item.slug} href={`#/life-log/sports/${item.slug}`} className={`group flex min-h-80 flex-col justify-between rounded-3xl border border-white/10 p-9 transition hover:-translate-y-1 hover:border-sky-300/50 ${i ? 'bg-gradient-to-br from-indigo-950 to-slate-950' : 'bg-gradient-to-br from-teal-950 to-slate-950'}`}><span className="text-6xl text-emerald-200">{item.glyph}</span><div><p className="text-xs uppercase tracking-[.25em] text-slate-400">{item.en}</p><h2 className="mt-3 text-3xl font-semibold">{item.title} <span className="float-right text-sky-300">↗</span></h2><p className="mt-4 text-sm text-slate-400">{item.text}</p></div></a>)}</div></div>;
+
+  return (
+    <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8 sm:py-12">
+      <a href={dance ? '#/life-log/sports' : '#/life-log'} className="depth-kicker">
+        ← {dance ? 'Sports' : 'Life Log'}
+      </a>
+      <header className="depth-stage mb-8 mt-5 space-y-3">
+        <DepthScene />
+        <p className="depth-kicker text-xs tracking-[.2em]">{dance ? 'MOVE TO YOUR OWN RHYTHM' : 'MOVEMENT & EXPLORATION'}</p>
+        <h1 className="depth-title font-bold">{dance ? '街舞 / Dance' : 'Sports'}</h1>
+        {!dance && <p className="text-slate-300">向上探索，自由律动。</p>}
+      </header>
+      {dance ? (
+        <div className="mx-auto max-w-5xl"><GalleryFigure ph={photos[1]} /></div>
+      ) : (
+        <div className="grid gap-6 md:grid-cols-2">
+          {activities.map(activity => (
+            <a
+              key={activity.slug}
+              href={`#/life-log/sports/${activity.slug}`}
+              className={`depth-panel depth-link flex min-h-60 flex-col justify-between gap-7 rounded-3xl border border-white/15 bg-gradient-to-br ${activity.color} to-slate-950 p-7 sm:p-9`}
+            >
+              <span className="depth-kicker text-5xl" aria-hidden="true">{activity.glyph}</span>
+              <div>
+                <p className="text-xs uppercase tracking-[.2em] text-slate-400">{activity.label}</p>
+                <h2 className="mt-2 text-3xl font-semibold">{activity.title}</h2>
+                <p className="mt-3 text-sm text-slate-300">{activity.description}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }

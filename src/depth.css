@@ -1,0 +1,175 @@
+.depth-site {
+  --light: #9ddfff;
+  --glow: #328dca;
+  --angle: -24deg;
+  --stage-border: color-mix(in srgb, var(--light) 29%, #0b1422);
+  background:
+    radial-gradient(ellipse at 50% -14rem, color-mix(in srgb, var(--glow) 24%, #080d19), transparent 55rem),
+    linear-gradient(155deg, #0b1320, #080d19 48%, #0c1524);
+  color: #e2e8f0;
+  min-height: 100vh;
+}
+
+.depth-site[data-tone="violet"] { --light: #e5c8ff; --glow: #9865df; --angle: 27deg; }
+.depth-site[data-tone="mint"] { --light: #a9f8de; --glow: #339b84; --angle: -37deg; }
+.depth-site[data-tone="amber"] { --light: #ffe0a8; --glow: #cd793e; --angle: 18deg; }
+.depth-site[data-tone="lime"] { --light: #e0fb91; --glow: #668942; --angle: -29deg; }
+
+.depth-site .depth-nav {
+  background: linear-gradient(180deg, #1a2734ee, #0b1321ee);
+  box-shadow: 0 3px 0 #0008, 0 12px 25px #02061770, inset 0 1px #d7ebff20;
+}
+
+.depth-stage {
+  --object-size: clamp(9.5rem, 29vw, 20rem);
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-content: center;
+  min-height: clamp(11rem, 22vw, 17rem);
+  padding: clamp(1.3rem, 4vw, 3.25rem);
+  padding-inline-end: clamp(6.25rem, 31%, 25rem);
+  border: 1px solid var(--stage-border);
+  border-radius: 1.25rem;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 79% 58%, color-mix(in srgb, var(--glow) 40%, transparent), transparent 56%),
+    linear-gradient(140deg, #1a2736, #0b1320 63%, #101825);
+  box-shadow: inset 0 1px #d9f1ff31, inset 0 -2px 4px #0008,
+    0 5px 0 -1px #080d17, 0 7px 0 -1px var(--stage-border), 0 20px 32px -15px #000d;
+}
+
+.depth-title {
+  font-size: clamp(2.35rem, 5.6vw, 4.8rem);
+  line-height: 1.02;
+  letter-spacing: -.055em;
+  color: #f4f8ff;
+  text-wrap: balance;
+  text-shadow: 0 1px 0 #92aec5, 0 3px 0 #3a526c, 0 10px 25px #000a;
+}
+
+.depth-kicker { color: var(--light); }
+
+.depth-scene {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.depth-floor {
+  position: absolute;
+  inset: 46% -25% -85%;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 39px, color-mix(in srgb, var(--light) 23%, transparent) 40px 41px),
+    repeating-linear-gradient(0deg, transparent 0 39px, color-mix(in srgb, var(--light) 23%, transparent) 40px 41px);
+  mask-image: radial-gradient(ellipse at 68% 27%, #0008, transparent 54%);
+  transform: perspective(315px) rotateX(49deg);
+  transform-origin: center top;
+}
+
+.depth-object {
+  position: absolute;
+  top: 50%;
+  right: 7%;
+  width: var(--object-size);
+  aspect-ratio: 1;
+  transform: translateY(-50%) rotate(var(--angle));
+}
+
+.depth-sphere {
+  position: absolute;
+  inset: 21%;
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse at 32% 23%, #fff 0%, #fff8 5%, transparent 31%),
+    radial-gradient(circle at 32% 25%, var(--light) 5%, var(--glow) 41%, #0f1928 76%, var(--glow) 100%);
+  box-shadow: inset -6px -9px 19px #070d20bb, inset 1px 2px 3px #fff9,
+    0 16px 31px #0009, 0 0 35px color-mix(in srgb, var(--glow) 50%, transparent);
+}
+
+.depth-orbit {
+  position: absolute;
+  inset: 34% 0;
+  border-radius: 50%;
+  border: clamp(4px, .7vw, 8px) solid transparent;
+  background: linear-gradient(115deg, #294059, var(--light) 22%, #e5f6ff 37%, var(--glow) 63%, #45607a 85%, var(--light)) border-box;
+  mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  box-shadow: inset 0 3px 2px #0008, 0 5px 0 #091220;
+}
+
+.depth-orbit--front { clip-path: inset(50% -8px -8px); }
+
+.depth-satellite {
+  position: absolute;
+  top: 43%;
+  right: 1%;
+  width: 15%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 22%, #fff 3%, var(--light) 26%, var(--glow) 45%, #12192b 80%);
+  box-shadow: 0 5px 12px #000b, 0 0 14px color-mix(in srgb, var(--light) 55%, transparent);
+}
+
+.depth-site .depth-panel, .depth-site .chapter-cover {
+  box-shadow: inset 0 1px #d7ebff27, inset 0 -2px 4px #0005, 0 5px 0 -1px #080d17,
+    0 7px 0 -1px var(--stage-border), 0 16px 26px -10px #000b;
+}
+
+.depth-site .depth-glass {
+  background: linear-gradient(147deg, #b3dbff19, #577f9f0d 40%, #080e1b76);
+  border-color: var(--stage-border);
+}
+
+.depth-site .depth-link {
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease, color 200ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .depth-site .depth-link:hover, .depth-site .chapter-cover:hover {
+    transform: perspective(1100px) translateY(-5px) rotateX(3deg);
+    border-color: var(--light);
+    box-shadow: inset 0 1px #ffffff60, 0 9px 0 -1px #080d17,
+      0 11px 0 -1px var(--stage-border), 0 22px 28px -8px #000d;
+  }
+}
+
+.depth-site :is(.depth-link, .chapter-cover):focus-visible {
+  outline: 2px solid var(--light);
+  outline-offset: 4px;
+}
+
+.depth-portrait { background: #101a2a; }
+@media (min-width: 1024px) {
+  .depth-portrait { transform: perspective(1200px) rotateY(-8deg) rotateX(4deg); }
+}
+
+.depth-home {
+  --object-size: clamp(19rem, 45vw, 42rem);
+  isolation: isolate;
+  background:
+    radial-gradient(ellipse at 75% 57%, #24577c7d, transparent 57%),
+    linear-gradient(137deg, #142637, #0a1221 66%);
+}
+
+.depth-home .depth-object { right: 4%; opacity: .55; }
+
+.depth-contact { width: 100%; }
+.depth-contact .depth-title { font-size: clamp(2.1rem, 5vw, 4.15rem); }
+.depth-contact nav { margin-top: 1.25rem; }
+
+@media (max-width: 640px) {
+  .depth-stage { --object-size: 10.5rem; }
+  .depth-object { right: -3.5rem; opacity: .64; }
+  .depth-home .depth-object { right: -7rem; }
+  .depth-stage p, .depth-title { overflow-wrap: anywhere; }
+  .depth-contact { padding-inline-end: 1.3rem; }
+  .depth-contact > div:not(.depth-scene) { max-width: 78%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .depth-site .depth-link { transition: none; }
+  .depth-site .sf-layer, .depth-site .snow-cursor { display: none; }
+}

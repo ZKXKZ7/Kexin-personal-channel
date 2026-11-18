@@ -1,3 +1,4 @@
+import { DepthScene } from './DepthScene';
 import type { ReactNode } from 'react';
 import { ArrowLeft, Award, BookOpen, FlaskConical, Globe2, Users } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
@@ -28,7 +29,7 @@ function ChapterCard({ icon: Icon, title, children, heading: Heading = 'h3' }: {
   heading?: 'h3' | 'h4';
 }) {
   return (
-    <section className="bupt-card">
+    <section className="depth-panel bupt-card">
       <Icon aria-hidden="true" />
       <Heading>{title}</Heading>
       {children}
@@ -45,7 +46,7 @@ export function BuptChapterDetails() {
           <p className="bupt-date">2021.09 — 2025.07</p>
         </header>
         <p className="bupt-degree-summary">北京邮电大学国际学院 · 工学与管理学 · 一等荣誉学位</p>
-        <dl className="bupt-metrics">
+        <dl className="depth-panel bupt-metrics">
           {metrics.map(({ label, value, detail }) => (
             <div key={label}>
               <dt>{label}</dt>
@@ -79,7 +80,7 @@ export function BuptChapterDetails() {
             </ChapterCard>
           </div>
         </div>
-        <section id="bupt-volunteering" className="bupt-card bupt-volunteering">
+        <section id="bupt-volunteering" className="depth-panel bupt-card bupt-volunteering">
           <Users aria-hidden="true" />
           <h3>Beyond the Margin · 校园实践</h3>
           <p><strong>鸿雁青年志愿者协会 · 外联部部长</strong></p>
@@ -128,8 +129,8 @@ export function BuptChapter() {
     <article className="bupt-page">
       <div className="bupt-content">
         <a className="bupt-back" href="#/portfolio"><ArrowLeft size={16} aria-hidden="true" />返回 Portfolio</a>
-        <header className="bupt-hero">
-          <div className="bupt-orbit" aria-hidden="true" />
+        <header className="depth-stage bupt-hero">
+          <DepthScene />
           <div>
             <p className="bupt-kicker">ACADEMIC ORBIT / 2021 — 2028</p>
             <h1>Chapters of <span>BUPT</span></h1>

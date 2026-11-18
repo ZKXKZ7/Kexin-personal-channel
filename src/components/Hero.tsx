@@ -1,3 +1,4 @@
+import { DepthScene } from './DepthScene';
 import { WavyArrow } from './Decorations';
 
 const journalTags = [
@@ -9,7 +10,8 @@ const journalTags = [
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden border-b border-white/10">
+    <section className="depth-home relative overflow-hidden border-b border-white/10">
+      <DepthScene />
       <div className="relative mx-auto grid max-w-5xl gap-12 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16 lg:px-8 lg:py-28">
         <div className="space-y-8">
           <h1 className="text-balance text-[clamp(2.75rem,6vw,4.25rem)] font-bold leading-[1.1] tracking-[-0.065em] text-slate-50 [filter:drop-shadow(0_1px_0_#91aec8)_drop-shadow(0_2px_0_#577995)_drop-shadow(0_3px_0_#263f59)_drop-shadow(0_7px_12px_#020617)]">
@@ -36,7 +38,7 @@ export function Hero() {
             <div className="absolute -right-4 top-6 hidden text-sky-300/90 sm:block lg:-right-2">
               <WavyArrow className="w-28" />
             </div>
-            <div className="animate-drift aspect-[3/2] overflow-hidden rounded-3xl border border-white/10 bg-slate-900/40 shadow-[0_0_40px_rgba(56,189,248,0.06)] will-change-transform">
+            <div className="depth-portrait depth-panel aspect-[3/2] overflow-hidden rounded-3xl border border-sky-100/30">
               <img
                 src={`${import.meta.env.BASE_URL}hero-portrait.png`}
                 alt="在伦敦玛丽女王大学 Graduate Centre 前的留影"

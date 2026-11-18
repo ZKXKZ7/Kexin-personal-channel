@@ -4,26 +4,14 @@
   --lime: #e0fb91;
   --line: #303b37;
   color: var(--ink);
-  background: #101714;
+  background: radial-gradient(ellipse at 85% 0%, #233425 0%, #101714 43rem);
   padding: clamp(1.25rem, 3vw, 2.5rem) clamp(1.25rem, 5vw, 5rem) clamp(2.5rem, 6vw, 5rem);
   overflow: hidden;
 }
 .bupt-content { max-width: 76rem; margin-inline: auto; }
 .bupt-back { display: inline-flex; align-items: center; gap: .55rem; color: var(--muted); font-size: .875rem; }
 .bupt-back:hover { color: var(--lime); }
-.bupt-hero {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  display: grid;
-  align-items: center;
-  min-height: clamp(11.5rem, 21vw, 17rem);
-  margin-top: 1rem;
-  padding: clamp(1.15rem, 3.5vw, 3rem);
-  border: 1px solid #445346;
-  border-radius: 1.2rem;
-  background: radial-gradient(ellipse at 85% 61%, #465a34, transparent 60%), #171f1b;
-}
+.bupt-hero { margin-top: 1rem; }
 .bupt-kicker, .bupt-date {
   color: var(--lime);
   font: 500 .75rem/1.5 ui-monospace, monospace;
@@ -36,26 +24,6 @@
 }
 .bupt-hero h1 span { color: var(--lime); font-style: italic; }
 .bupt-hero-caption { color: #c7d0c4; font-size: clamp(.85rem, 1.6vw, 1.1rem); letter-spacing: .15em; }
-.bupt-orbit {
-  position: absolute;
-  z-index: -1;
-  width: clamp(18rem, 42vw, 34rem);
-  aspect-ratio: 1;
-  right: -1%;
-  top: 50%;
-  transform: translateY(-50%);
-  border-radius: 50%;
-  background: repeating-radial-gradient(circle, transparent 0 29px, #dcf9a427 30px 31px);
-  mask-image: radial-gradient(circle, #000 44%, transparent 74%);
-}
-.bupt-orbit::after {
-  content: '';
-  position: absolute;
-  inset: 27%;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #edffba, #9eb963 27%, #3a4c30 62%, #15201b 78%);
-  box-shadow: 0 0 60px #b1da6140;
-}
 .bupt-degree { margin-top: clamp(2.75rem, 7vw, 6rem); }
 .bupt-degree-header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .5rem 2rem; }
 .bupt-hero + .bupt-degree { margin-top: clamp(1.75rem, 4vw, 3.5rem); }
@@ -77,7 +45,6 @@
 .bupt-card p { color: var(--muted); font-size: .875rem; line-height: 1.7; }
 @media (max-width: 640px) {
   .bupt-hero h1 span { display: block; }
-  .bupt-orbit { width: 16rem; right: -6rem; opacity: .5; }
   .bupt-grid { grid-template-columns: 1fr; }
   .bupt-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .bupt-metrics div:nth-child(3) { border-left: 0; }

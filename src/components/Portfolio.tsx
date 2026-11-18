@@ -1,3 +1,4 @@
+import { DepthScene } from './DepthScene';
 import { ArrowUpRight } from 'lucide-react';
 import { portfolioModules } from '../data/content';
 
@@ -18,10 +19,11 @@ export function Portfolio() {
   return (
     <section id="portfolio" className="border-b border-white/10 bg-transparent">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
-        <header className="mb-12 max-w-2xl space-y-3">
-          <p className="text-sm font-semibold text-sky-300">工作学习</p>
-          <h2 className="text-3xl font-bold tracking-tight text-slate-50 sm:text-4xl">Portfolio</h2>
-          <p className="text-base leading-relaxed text-slate-400">
+        <header className="depth-stage mb-12 space-y-3">
+          <DepthScene />
+          <p className="depth-kicker text-sm font-semibold">工作学习</p>
+          <h1 className="depth-title font-bold">Portfolio</h1>
+          <p className="max-w-prose text-base leading-relaxed text-slate-300">
             从北邮的学业、科研与校园实践，到实习中的职业探索。
           </p>
         </header>
