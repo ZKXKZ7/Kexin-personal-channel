@@ -1,6 +1,11 @@
+import { AudioLines, Layers3, ScanLine } from 'lucide-react';
+import './CareerExperience.css';
+
 const internships = [
   {
     company: '快手',
+    tone: 'amber',
+    icon: AudioLines,
     team: '生活服务商业化产品部',
     role: '智能互动 AI 策略产品经理',
     period: '2026.06 — 2026.10',
@@ -16,6 +21,8 @@ const internships = [
   },
   {
     company: '百度',
+    tone: 'blue',
+    icon: ScanLine,
     team: 'MEG 事业群 · AI 搜索组',
     role: '多模态 AI 产品经理',
     period: '2025.08 — 2025.10',
@@ -26,6 +33,8 @@ const internships = [
   },
   {
     company: '字节跳动',
+    tone: 'mint',
+    icon: Layers3,
     team: '产品研发与工程架构',
     role: '直播 Tech PMO',
     period: '2025.03 — 2025.06',
@@ -40,36 +49,42 @@ export function CareerExperience() {
   return (
     <section aria-labelledby="internships-title">
       <h2 id="internships-title" className="mb-5 text-2xl font-semibold tracking-tight text-slate-50">实习经历</h2>
-      <div className="grid gap-5">
-        {internships.map(({ company, team, role, period, highlights, results }) => (
-          <article key={company} className="depth-panel depth-glass rounded-2xl border p-5 sm:p-7">
-            <header className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-              <h3 className="text-2xl font-semibold tracking-tight text-slate-50">{company}</h3>
-              <p className="depth-kicker font-mono text-xs">{period}</p>
-            </header>
-            <p className="mt-2 font-medium text-slate-200">{role}</p>
-            <p className="mt-1 text-sm text-slate-400">{team}</p>
-            {results && (
-              <div className="mt-5 rounded-xl border border-sky-200/20 bg-sky-300/5 p-4">
-                <p className="text-sm text-slate-300">法律行业最优策略实验 · 三项提升均达显著</p>
-                <dl className="mt-3 grid grid-cols-[repeat(auto-fit,minmax(6rem,1fr))] gap-3">
-                  {results.map(({ label, value }) => (
-                    <div key={label}>
-                      <dt className="text-xs text-slate-400">{label}</dt>
-                      <dd className="depth-kicker text-xl font-semibold tabular-nums">{value}</dd>
-                    </div>
-                  ))}
-                </dl>
+      <div className="grid gap-8">
+        {internships.map(({ company, tone, icon: Icon, team, role, period, highlights, results }) => (
+          <article key={company} className="career-card" data-tone={tone}>
+            <header className="career-identity">
+              <div className="career-emblem" aria-hidden="true"><Icon size={32} strokeWidth={1.5} /></div>
+              <div>
+                <h3 className="career-company">{company}</h3>
+                <p className="mt-2 font-medium text-slate-100">{role}</p>
+                <p className="mt-1 text-sm text-slate-300">{team}</p>
               </div>
-            )}
-            <ul className="mt-5 grid gap-4 border-t border-white/10 pt-5 sm:grid-cols-2 sm:gap-6">
-              {highlights.map(({ title, detail }) => (
-                <li key={title}>
-                  <h4 className="font-medium text-slate-100">{title}</h4>
-                  <p className="mt-1 text-sm leading-relaxed text-slate-300">{detail}</p>
-                </li>
-              ))}
-            </ul>
+              <p className="career-period">{period}</p>
+            </header>
+
+            <div className="career-body">
+              {results && (
+                <div className="career-results">
+                  <p className="text-sm text-slate-300">法律行业最优策略实验 · 三项提升均达显著</p>
+                  <dl className="career-metrics">
+                    {results.map(({ label, value }) => (
+                      <div key={label} className="career-tile">
+                        <dt className="text-xs text-slate-300">{label}</dt>
+                        <dd className="career-number">{value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+              )}
+              <ul className="career-highlights">
+                {highlights.map(({ title, detail }) => (
+                  <li key={title} className="career-tile">
+                    <h4 className="career-highlight-title">{title}</h4>
+                    <p className="mt-2 text-sm leading-relaxed text-slate-300">{detail}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </article>
         ))}
       </div>
