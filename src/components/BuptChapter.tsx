@@ -21,11 +21,16 @@ const courses = [
   ['产品开发与营销', 'A'],
 ];
 
-function ChapterCard({ icon: Icon, title, children }: { icon: LucideIcon; title: string; children: ReactNode }) {
+function ChapterCard({ icon: Icon, title, children, heading: Heading = 'h3' }: {
+  icon: LucideIcon;
+  title: string;
+  children: ReactNode;
+  heading?: 'h3' | 'h4';
+}) {
   return (
     <section className="bupt-card">
       <Icon aria-hidden="true" />
-      <h3>{title}</h3>
+      <Heading>{title}</Heading>
       {children}
     </section>
   );
@@ -96,24 +101,23 @@ export function BuptChapterDetails() {
           <p>2025.09 — 2026.07</p>
           <p>统筹举办北京邮电大学校园歌手大赛、2026 届毕业歌会和研究生篮球赛等校级文体活动。</p>
         </ChapterCard>
-      </section>
-
-      <section className="bupt-degree">
-        <h2>科研项目</h2>
-        <div className="bupt-grid">
-          <ChapterCard icon={FlaskConical} title="跨域双活 P2P 模型协作训练与故障经验保持">
-            <ul>
-              <li><p>设计双数据中心协同训练系统，在跨域数据分布异构、广域网带宽受限时支持正常协同训练和单端故障续训。</p></li>
-              <li><strong>通信量节省约 94%</strong><p>在强异构实验中使用 6% 的稀疏通信量。故障续训中，对端知识遗忘度从 28.4% 降至 2.2%。</p></li>
-            </ul>
-          </ChapterCard>
-          <ChapterCard icon={FlaskConical} title="边缘 AIGC 网络中数据共享激励算法">
-            <ul>
-              <li><p>设计涵盖数据上链、服务请求、定价和交付的九步工作流，建立适用于定制化产品的服务质量评估体系。</p></li>
-              <li><strong>两阶段 Stackelberg 博弈</strong><p>用多智能体强化学习与 Actor-Critic 网络学习价格和购买量的动态决策策略。</p></li>
-            </ul>
-          </ChapterCard>
-        </div>
+        <section className="bupt-research">
+          <h3>科研项目</h3>
+          <div className="bupt-grid">
+            <ChapterCard icon={FlaskConical} heading="h4" title="跨域双活 P2P 模型协作训练与故障经验保持">
+              <ul>
+                <li><p>设计双数据中心协同训练系统，在跨域数据分布异构、广域网带宽受限时支持正常协同训练和单端故障续训。</p></li>
+                <li><strong>通信量节省约 94%</strong><p>在强异构实验中使用 6% 的稀疏通信量。故障续训中，对端知识遗忘度从 28.4% 降至 2.2%。</p></li>
+              </ul>
+            </ChapterCard>
+            <ChapterCard icon={FlaskConical} heading="h4" title="边缘 AIGC 网络中数据共享激励算法">
+              <ul>
+                <li><p>设计涵盖数据上链、服务请求、定价和交付的九步工作流，建立适用于定制化产品的服务质量评估体系。</p></li>
+                <li><strong>两阶段 Stackelberg 博弈</strong><p>用多智能体强化学习与 Actor-Critic 网络学习价格和购买量的动态决策策略。</p></li>
+              </ul>
+            </ChapterCard>
+          </div>
+        </section>
       </section>
     </>
   );

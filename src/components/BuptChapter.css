@@ -70,7 +70,7 @@
 .bupt-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1rem; }
 .bupt-card { padding: clamp(1.2rem, 3vw, 2rem); background: #171f1b; border: 1px solid var(--line); border-radius: .9rem; }
 .bupt-card svg { color: var(--lime); width: 1.3rem; height: 1.3rem; }
-.bupt-card h3 { margin-block: .85rem .75rem; font-size: 1.25rem; font-weight: 650; }
+.bupt-card :is(h3, h4) { margin-block: .85rem .75rem; font-size: 1.25rem; font-weight: 650; }
 .bupt-card li { padding-block: .66rem; line-height: 1.65; }
 .bupt-card li + li { border-top: 1px solid var(--line); }
 .bupt-card strong { display: block; font-weight: 600; }
@@ -102,3 +102,6 @@
 @media (max-width: 800px) {
   .bupt-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+.bupt-research { margin-top: 1.75rem; }
+.bupt-research > h3 { font-size: 1.25rem; font-weight: 650; }
