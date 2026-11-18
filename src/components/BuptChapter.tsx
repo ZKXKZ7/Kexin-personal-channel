@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react';
 import { ArrowLeft, Award, BookOpen, FlaskConical, Globe2, Users } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import { volunteerPhotos } from '../data/content';
+import { GalleryFigure } from './GalleryFigure';
 import './BuptChapter.css';
 
 const metrics = [
@@ -52,6 +54,7 @@ export function BuptChapterDetails() {
               <li><strong>国家奖学金</strong><p>1 / 180</p></li>
               <li><strong>校一等奖学金</strong></li>
               <li><strong>三好学生</strong><p>连续两年</p></li>
+              <li><strong>2021 博弈杯辩论赛</strong><p>最佳辩手</p></li>
             </ul>
           </ChapterCard>
           <ChapterCard icon={Globe2} title="国际交流">
@@ -61,20 +64,26 @@ export function BuptChapterDetails() {
               <li><p>CET-4 649 · CET-6 611</p></li>
             </ul>
           </ChapterCard>
-          <ChapterCard icon={BookOpen} title="专业课成绩">
-            <dl className="bupt-courses">
-              {courses.map(([name, grade]) => (
-                <div key={name}><dt>{name}</dt><dd>{grade}</dd></div>
-              ))}
-            </dl>
-          </ChapterCard>
-          <ChapterCard icon={Users} title="学生工作与校园活动">
-            <ul>
-              <li><strong>鸿雁青年志愿者协会 · 外联部部长</strong><p>2021.10 — 2023.07</p><p>统筹 ArchSummit 全球架构师峰会、老狼北京演唱会等 14 场校外志愿活动，覆盖超 1,000 名志愿者。</p></li>
-              <li><strong>2021 博弈杯辩论赛</strong><p>最佳辩手</p></li>
-            </ul>
-          </ChapterCard>
+          <div className="bupt-courses-card">
+            <ChapterCard icon={BookOpen} title="专业课成绩">
+              <dl className="bupt-courses">
+                {courses.map(([name, grade]) => (
+                  <div key={name}><dt>{name}</dt><dd>{grade}</dd></div>
+                ))}
+              </dl>
+            </ChapterCard>
+          </div>
         </div>
+        <section id="bupt-volunteering" className="bupt-card bupt-volunteering">
+          <Users aria-hidden="true" />
+          <h3>Beyond the Margin · 校园实践</h3>
+          <p><strong>鸿雁青年志愿者协会 · 外联部部长</strong></p>
+          <p>2021.10 — 2023.07</p>
+          <p>统筹 ArchSummit 全球架构师峰会、老狼北京演唱会等 14 场校外志愿活动，覆盖超 1,000 名志愿者。</p>
+          <div className="bupt-gallery">
+            {volunteerPhotos.map(photo => <GalleryFigure key={photo.id} ph={photo} />)}
+          </div>
+        </section>
       </section>
 
       <section className="bupt-degree">

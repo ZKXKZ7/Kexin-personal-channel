@@ -28,7 +28,9 @@ export default function App() {
   }, []);
 
   const [section, id] = route.split('/');
-  const module = section === 'portfolio' && id ? portfolioModules.find(item => item.id === id) : undefined;
+  const isLegacyMargin = section === 'portfolio' && id === 'margin';
+  const moduleId = isLegacyMargin ? 'bupt' : id;
+  const module = section === 'portfolio' && moduleId ? portfolioModules.find(item => item.id === moduleId) : undefined;
   const trip = module ? portfolioModuleToTrip(module) : section === 'life-log' && id
     ? [...lifeInterestTrips, ...travelTrips].find(item => item.id === id) : undefined;
   const isDetail = Boolean(trip);
@@ -39,7 +41,8 @@ export default function App() {
     document.title = `${title} | Kexin`;
     window.scrollTo({ top: 0, behavior: 'instant' });
     mainRef.current?.focus({ preventScroll: true });
-  }, [route, title]);
+    if (isLegacyMargin) document.getElementById('bupt-volunteering')?.scrollIntoView({ behavior: 'instant' });
+  }, [route, title, isLegacyMargin]);
 
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-slate-950 via-[#070b14] to-slate-950 text-slate-200">

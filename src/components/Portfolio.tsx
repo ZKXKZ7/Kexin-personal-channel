@@ -10,9 +10,8 @@ const cardClass =
 const cardColors = [
   'from-sky-400/25 via-sky-950/30 to-slate-950',
   'from-emerald-400/25 via-emerald-950/30 to-slate-950',
-  'from-violet-400/25 via-violet-950/30 to-slate-950',
 ];
-const iconColors = ['text-sky-300', 'text-emerald-300', 'text-violet-300'];
+const iconColors = ['text-sky-300', 'text-emerald-300'];
 
 export function Portfolio() {
 
@@ -23,11 +22,11 @@ export function Portfolio() {
           <p className="text-sm font-semibold text-sky-300">工作学习</p>
           <h2 className="text-3xl font-bold tracking-tight text-slate-50 sm:text-4xl">Portfolio</h2>
           <p className="text-base leading-relaxed text-slate-400">
-            北邮篇章、职业探索与边界之外：三张星空卡片对应不同阶段，点按卡片查看详情。
+            从北邮的学业、科研与校园实践，到实习中的职业探索。
           </p>
         </header>
 
-        <div className="grid items-stretch gap-8 md:grid-cols-3 lg:gap-9">
+        <div className="grid items-stretch gap-8 md:grid-cols-2 lg:gap-9">
           {portfolioModules.map((mod, index) => {
             const Icon = mod.icon;
             return (

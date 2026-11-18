@@ -2,7 +2,6 @@ import type { LucideIcon } from 'lucide-react';
 import {
   Layers,
   GraduationCap,
-  Megaphone,
   Music,
   Activity,
   Languages,
@@ -95,38 +94,32 @@ export const portfolioModules: PortfolioModule[] = [
       { id: '4', label: 'Product', gradient: 'from-[#312e81] to-[#4c1d95]' },
     ],
   },
+];
+
+export const volunteerPhotos: TripPhoto[] = [
   {
-    id: 'margin',
-    title: 'Beyond the Margin',
-    description: '鸿雁青年志愿者协会 外联部部长 2021.10-2023.6',
-    tags: ['Public Relations Department'],
-    icon: Megaphone,
-    photos: [
-      {
-        id: 'pr1',
-        label: 'ArchSummit 全球架构师峰会北京站',
-        gradient: 'from-[#164e63] to-[#0f766e]',
-        imageSrc: '/media/margin/margin-3.png',
-      },
-      {
-        id: 'pr2',
-        label: '五棵松凯迪拉克中心老狼演唱会',
-        gradient: 'from-[#1c1917] to-[#292524]',
-        imageSrc: '/media/margin/margin-4.png',
-      },
-      {
-        id: 'pr3',
-        label: '国际学院招新宣讲',
-        gradient: 'from-[#1e3a5f] to-[#0f172a]',
-        imageSrc: '/media/margin/margin-1.png',
-      },
-      {
-        id: 'pr4',
-        label: '外联部活动合影',
-        gradient: 'from-[#312e81] to-[#1e1b4b]',
-        imageSrc: '/media/margin/margin-2.png',
-      },
-    ],
+    id: 'pr1',
+    label: 'ArchSummit 全球架构师峰会北京站',
+    gradient: 'from-[#164e63] to-[#0f766e]',
+    imageSrc: '/media/margin/margin-3.png',
+  },
+  {
+    id: 'pr2',
+    label: '五棵松凯迪拉克中心老狼演唱会',
+    gradient: 'from-[#1c1917] to-[#292524]',
+    imageSrc: '/media/margin/margin-4.png',
+  },
+  {
+    id: 'pr3',
+    label: '国际学院招新宣讲',
+    gradient: 'from-[#1e3a5f] to-[#0f172a]',
+    imageSrc: '/media/margin/margin-1.png',
+  },
+  {
+    id: 'pr4',
+    label: '外联部活动合影',
+    gradient: 'from-[#312e81] to-[#1e1b4b]',
+    imageSrc: '/media/margin/margin-2.png',
   },
 ];
 
