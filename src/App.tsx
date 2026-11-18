@@ -12,6 +12,7 @@ import { Footer } from './components/Footer';
 import { Snowfall } from './components/Snowfall';
 import { SnowCursor } from './components/SnowCursor';
 import { GalleryFigure } from './components/GalleryFigure';
+import { CareerExperience } from './components/CareerExperience';
 import { BuptChapter } from './components/BuptChapter';
 import { lifeInterestTrips, travelTrips, portfolioModules, portfolioModuleToTrip } from './data/content';
 
@@ -68,9 +69,11 @@ export default function App() {
                 <h1 className="depth-title font-bold">{trip.name}</h1>
                 {trip.modalIntro && <p className="mt-6 max-w-3xl text-base leading-relaxed text-slate-400">{trip.modalIntro}</p>}
               </header>
-              <div className="grid items-start gap-6 md:grid-cols-2">
-                {trip.photos.map(photo => <GalleryFigure key={photo.id} ph={photo} />)}
-              </div>
+              {module?.id === 'career' ? <CareerExperience /> : (
+                <div className="grid items-start gap-6 md:grid-cols-2">
+                  {trip.photos.map(photo => <GalleryFigure key={photo.id} ph={photo} />)}
+                </div>
+              )}
             </article>
           ) : !knownRoute ? (
             <div className="mx-auto max-w-5xl px-6 py-24">

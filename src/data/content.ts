@@ -83,16 +83,10 @@ export const portfolioModules: PortfolioModule[] = [
   {
     id: 'career',
     title: 'Career Exploration',
-    description:
-      '在百度、字节、保时捷数字产品与产品视角下的迭代与沉淀：需求拆解、实验验证与跨团队推进。（替换为你的岗位与成果描述。）',
-    tags: ['Baidu', 'Bytedance', 'Porsche Digital', 'Product'],
+    description: '从直播研发的需求管理，到多模态搜索和智能客服，记录我在产品体验、策略设计与转化实验中的实践。',
+    tags: ['快手', '百度', '字节跳动'],
     icon: Layers,
-    photos: [
-      { id: '1', label: 'Baidu', gradient: 'from-[#1e3a5f] to-[#0f172a]' },
-      { id: '2', label: 'Bytedance', gradient: 'from-[#134e4a] to-[#0f766e]' },
-      { id: '3', label: 'Porsche Digital', gradient: 'from-[#78350f] to-[#92400e]' },
-      { id: '4', label: 'Product', gradient: 'from-[#312e81] to-[#4c1d95]' },
-    ],
+    photos: [],
   },
 ];
 
