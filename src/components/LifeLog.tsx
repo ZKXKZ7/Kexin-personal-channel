@@ -1,5 +1,14 @@
+import { ArrowUpRight } from 'lucide-react';
 import { DepthScene } from './DepthScene';
 import { lifeInterestTrips, travelTrips } from '../data/content';
+
+const coverColors = [
+  'from-sky-400/25 via-sky-950/30 to-slate-950',
+  'from-emerald-400/25 via-emerald-950/30 to-slate-950',
+  'from-violet-400/25 via-violet-950/30 to-slate-950',
+];
+const coverClass = 'chapter-cover group relative flex h-full w-full flex-col items-start overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br p-7 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky-300 lg:p-9';
+const emblemClass = 'relative z-[1] mb-10 inline-flex h-16 w-16 items-center justify-center rounded-2xl border border-white/20 bg-white/5 text-sky-200 shadow-[inset_0_1px_0_#ffffff30,0_10px_24px_#02061740]';
 
 function interestCardStarfield() {
   return (
@@ -14,7 +23,7 @@ export function LifeLog() {
 
   return (
     <section id="life-log" className="border-b border-white/10 bg-white/[0.02]">
-      <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
         <header className="depth-stage mb-12 space-y-3">
           <DepthScene />
           <p className="depth-kicker text-sm font-semibold">生活日志</p>
@@ -24,33 +33,38 @@ export function LifeLog() {
           </p>
         </header>
 
-        <div className="grid gap-10 lg:gap-12">
+        <div className="grid gap-16 lg:gap-20">
           {/* Music · Sports · French */}
-          <div className="depth-panel depth-glass relief-card rounded-2xl border p-6 sm:p-8">
+          <div className="min-w-0">
             <div className="mb-6 flex flex-wrap items-center gap-3">
               <span className="text-2xl" aria-hidden>
                 🎧
               </span>
               <div>
-                <h3 className="text-lg font-semibold text-slate-100">Music · Sports · French</h3>
+                <h3 className="text-2xl font-semibold text-slate-100">Music · Sports · French</h3>
                 <p className="text-sm text-slate-400">走进音乐、运动与语言的日常</p>
               </div>
             </div>
-            <ul className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
-              {lifeInterestTrips.map((item) => {
+            <ul className="grid grid-cols-1 gap-7 md:grid-cols-3 lg:gap-9">
+              {lifeInterestTrips.map((item, index) => {
                 const Icon = item.icon;
                 return (
                   <li key={item.id}>
                     <a
                       href={`#/life-log/${item.id}`}
-                      className="depth-link depth-panel relief-card group relative flex w-full flex-col items-center gap-3 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-5 text-center transition hover:-translate-y-0.5 hover:border-sky-400/30 hover:bg-white/[0.07] hover:shadow-[0_8px_28px_rgba(56,189,248,0.1)]"
+                      className={`${coverClass} ${coverColors[index % coverColors.length]} min-h-[320px] lg:min-h-[380px]`}
                     >
                       {interestCardStarfield()}
-                      <span className="relative z-[1] relief-emblem inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-sky-400/25 bg-white/5 text-sky-300 transition group-hover:scale-105">
-                        <Icon className="h-6 w-6" strokeWidth={1.65} aria-hidden />
+                      <span aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                      <span className={emblemClass}>
+                        <Icon className="h-9 w-9" strokeWidth={1.65} aria-hidden />
                       </span>
-                      <span className="relative z-[1] text-sm font-semibold text-slate-100">{item.name}</span>
-                      <span className="relative z-[1] relief-inset px-2.5 py-1 text-xs text-slate-300">{item.region}</span>
+                      <span className="relative z-[1] mb-4 text-3xl font-semibold tracking-tight text-slate-50 lg:text-4xl">{item.name}</span>
+                      <span className="relative z-[1] mb-8 text-base leading-7 text-slate-300">{item.region}</span>
+                      <span className="relative z-[1] mt-auto flex w-full items-center justify-between border-t border-white/15 pt-5 text-sm text-slate-200">
+                        进入篇章
+                        <ArrowUpRight className="h-5 w-5 transition-transform motion-safe:group-hover:-translate-y-1 motion-safe:group-hover:translate-x-1" aria-hidden />
+                      </span>
                     </a>
                   </li>
                 );
@@ -59,30 +73,34 @@ export function LifeLog() {
           </div>
 
           {/* Travel */}
-          <div className="depth-panel depth-glass relief-card rounded-2xl border p-6 sm:p-8">
+          <div className="min-w-0">
             <div className="mb-6 flex flex-wrap items-center gap-3">
               <span className="text-2xl" aria-hidden>
                 ✈️
               </span>
               <div>
-                <h3 className="text-lg font-semibold text-slate-100">Travel</h3>
+                <h3 className="text-2xl font-semibold text-slate-100">Travel</h3>
                 <p className="text-sm text-slate-400">点按每一段旅程，进入旅行相册</p>
               </div>
             </div>
-            <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
-              {travelTrips.map((trip) => {
+            <ul className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3 lg:gap-9">
+              {travelTrips.map((trip, index) => {
                 const Icon = trip.icon;
                 return (
                   <li key={trip.id}>
                     <a
                       href={`#/life-log/${trip.id}`}
-                      className="depth-link depth-panel relief-card group flex w-full flex-col items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-5 text-center transition hover:-translate-y-0.5 hover:border-sky-400/30 hover:bg-white/[0.07] hover:shadow-[0_8px_28px_rgba(56,189,248,0.1)]"
+                      className={`${coverClass} ${coverColors[index % coverColors.length]} min-h-[320px] lg:min-h-[380px]`}
                     >
-                      <span className="relief-emblem inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-sky-400/25 bg-white/5 text-sky-300 transition group-hover:scale-105">
-                        <Icon className="h-6 w-6" strokeWidth={1.65} aria-hidden />
+                      <span className={emblemClass}>
+                        <Icon className="h-9 w-9" strokeWidth={1.65} aria-hidden />
                       </span>
-                      <span className="text-sm font-semibold text-slate-100">{trip.name}</span>
-                      <span className="relief-inset px-2.5 py-1 text-xs text-slate-300">{trip.region}</span>
+                      <span className="relative z-[1] mb-4 text-3xl font-semibold tracking-tight text-slate-50 lg:text-4xl">{trip.name}</span>
+                      <span className="relative z-[1] mb-8 text-base leading-7 text-slate-300">{trip.region}</span>
+                      <span className="relative z-[1] mt-auto flex w-full items-center justify-between border-t border-white/15 pt-5 text-sm text-slate-200">
+                        进入篇章
+                        <ArrowUpRight className="h-5 w-5 transition-transform motion-safe:group-hover:-translate-y-1 motion-safe:group-hover:translate-x-1" aria-hidden />
+                      </span>
                     </a>
                   </li>
                 );
