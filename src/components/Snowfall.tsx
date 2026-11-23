@@ -30,7 +30,7 @@ function makeFlakes(count: number): Flake[] {
     out.push({
       id: i,
       left: `${(r(1) * 100).toFixed(2)}%`,
-      size: 2.5 + r(2) * 4,
+      size: 3 + r(2) * 5,
       opacity: 0.42 + r(3) * 0.48,
       blur: r(4) < 0.28 ? 0.4 + r(5) * 1.2 : 0,
       durationSec: 18 + r(6) * 32,
@@ -42,7 +42,7 @@ function makeFlakes(count: number): Flake[] {
 }
 
 export function Snowfall() {
-  const flakes = useMemo(() => makeFlakes(64), []);
+  const flakes = useMemo(() => makeFlakes(84), []);
 
   return (
     <div className="sf-layer" aria-hidden>
