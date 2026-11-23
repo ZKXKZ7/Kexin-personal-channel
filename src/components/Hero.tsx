@@ -1,4 +1,3 @@
-import { DepthScene } from './DepthScene';
 import { WavyArrow } from './Decorations';
 
 const journalTags = [
@@ -10,8 +9,7 @@ const journalTags = [
 
 export function Hero() {
   return (
-    <section className="depth-home relative overflow-hidden border-b border-white/10">
-      <DepthScene />
+    <section className="relative overflow-hidden border-b border-white/10">
       <div className="relative mx-auto grid max-w-5xl gap-12 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16 lg:px-8 lg:py-28">
         <div className="space-y-8">
           <h1 className="text-balance text-[clamp(2.75rem,6vw,4.25rem)] font-bold leading-[1.1] tracking-[-0.065em] text-slate-50 [filter:drop-shadow(0_1px_0_#91aec8)_drop-shadow(0_2px_0_#577995)_drop-shadow(0_3px_0_#263f59)_drop-shadow(0_7px_12px_#020617)]">
