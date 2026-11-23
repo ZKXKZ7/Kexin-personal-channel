@@ -6,8 +6,8 @@ import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { HomeSections } from './components/HomeSections';
 import { Portfolio } from './components/Portfolio';
-import { ThoughtDetail, Thoughts, thoughtTopics } from './components/Thoughts';
-import { LifeLog } from './components/LifeLog';
+import { Thoughts } from './components/Thoughts';
+import { LifeLog, TravelLog } from './components/LifeLog';
 import { Footer } from './components/Footer';
 import { Snowfall } from './components/Snowfall';
 import { SnowCursor } from './components/SnowCursor';
@@ -35,15 +35,15 @@ export default function App() {
   const module = section === 'portfolio' && moduleId ? portfolioModules.find(item => item.id === moduleId) : undefined;
   const trip = module ? portfolioModuleToTrip(module) : section === 'life-log' && id
     ? [...lifeInterestTrips, ...travelTrips].find(item => item.id === id) : undefined;
-  const thought = section === 'thoughts' && route === `thoughts/${id}`
-    ? thoughtTopics.find(topic => topic.id === id) : undefined;
+  const isTravelLog = route === 'life-log/travel';
+  const isDestination = section === 'life-log' && travelTrips.some(item => item.id === id);
   const isDetail = Boolean(trip);
   const tone = moduleId === 'bupt' ? 'lime'
     : section === 'thoughts' || route === 'life-log/sports/dance' ? 'violet'
     : section === 'contact' ? 'amber'
     : section === 'life-log' ? 'mint' : 'blue';
-  const knownRoute = !route || (!id && ['portfolio', 'life-log', 'thoughts', 'contact'].includes(section)) || isDetail || Boolean(thought);
-  const title = thought?.title ?? trip?.name ?? sectionTitles[section] ?? (knownRoute ? 'Home' : 'Page not found');
+  const knownRoute = !route || (!id && ['portfolio', 'life-log', 'thoughts', 'contact'].includes(section)) || isDetail || isTravelLog;
+  const title = (isTravelLog ? 'Travel' : undefined) ?? trip?.name ?? sectionTitles[section] ?? (knownRoute ? 'Home' : 'Page not found');
 
   useEffect(() => {
     document.title = `${title} | Kexin`;
@@ -59,11 +59,11 @@ export default function App() {
       <div className="relative z-10 min-h-screen overflow-x-hidden">
         <Header />
         <main ref={mainRef} tabIndex={-1} className="min-h-[calc(100svh-5rem)] outline-none">
-          {thought ? <ThoughtDetail topic={thought} /> : section === 'life-log' && id === 'sports' ? <Sports route={route} /> : module?.id === 'bupt' ? <BuptChapter /> : isDetail && trip ? (
+          {isTravelLog ? <TravelLog /> : section === 'life-log' && id === 'sports' ? <Sports route={route} /> : module?.id === 'bupt' ? <BuptChapter /> : isDetail && trip ? (
             <article className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-8 sm:py-12 lg:px-12">
-              <a href={`#/${section}`} className="inline-flex items-center gap-2 rounded-lg py-2 text-sm text-sky-300 transition hover:text-white focus-visible:outline focus-visible:outline-sky-300">
+              <a href={isDestination ? '#/life-log/travel' : `#/${section}`} className="inline-flex items-center gap-2 rounded-lg py-2 text-sm text-sky-300 transition hover:text-white focus-visible:outline focus-visible:outline-sky-300">
                 <ArrowLeft className="h-4 w-4" />
-                返回 {section === 'portfolio' ? 'Portfolio' : 'Life Log'}
+                返回 {section === 'portfolio' ? 'Portfolio' : isDestination ? 'Travel' : 'Life Log'}
               </a>
               <header className="depth-stage mb-10 mt-5">
                 <DepthScene />
