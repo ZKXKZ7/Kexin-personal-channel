@@ -1,10 +1,10 @@
 import { WavyArrow } from './Decorations';
 
 const journalTags = [
-  { text: 'AI赋能，以人为本' },
-  { text: '大模型、海内外社交产品深度使用者' },
-  { text: '具备产品洞察、国际化视野和技术实践力的复合能力者', wide: true },
   { text: 'LION🦁' },
+  { text: 'AI赋能，以人为本' },
+  { text: '海内外大模型产品深度使用者' },
+  { text: '具备产品洞察、国际化视野和技术实践力的复合能力者', wide: true },
 ];
 
 export function Hero() {
