@@ -22,6 +22,8 @@ export function SnowCursor() {
     const pointer = window.matchMedia('(any-hover: hover) and (any-pointer: fine)');
     let crystals: Crystal[] = [];
     let wisps: Wisp[] = [];
+    let ripples: { x: number; y: number; age: number }[] = [];
+    let lastRippleTime = -Infinity;
     let previous: { x: number; y: number; time: number } | null = null;
     let width = 0;
     let height = 0;
@@ -44,6 +46,8 @@ export function SnowCursor() {
       distanceCarry = 0;
       crystals = [];
       wisps = [];
+      ripples = [];
+      lastRippleTime = -Infinity;
       ctx.clearRect(0, 0, width, height);
     };
     const resize = () => {
@@ -63,6 +67,21 @@ export function SnowCursor() {
       scrollVelocity *= Math.exp(-7 * dt);
       ctx.clearRect(0, 0, width, height);
       ctx.globalCompositeOperation = 'source-over';
+      ripples = ripples.filter(ripple => ripple.age < 0.72);
+      for (const ripple of ripples) {
+        ripple.age += dt;
+        const progress = Math.min(ripple.age / 0.72, 1);
+        const radius = 12 + 92 * (1 - (1 - progress) ** 1.6);
+        const alpha = Math.min(progress * 10, 1) * (1 - progress) ** 1.5;
+        const wave = ctx.createRadialGradient(ripple.x, ripple.y, 0, ripple.x, ripple.y, radius);
+        wave.addColorStop(0, 'transparent');
+        wave.addColorStop(0.60, 'transparent');
+        wave.addColorStop(0.72, `rgba(6,18,36,${alpha * 0.13})`);
+        wave.addColorStop(0.86, `rgba(150,214,244,${alpha * 0.16})`);
+        wave.addColorStop(1, 'transparent');
+        ctx.fillStyle = wave;
+        ctx.fillRect(ripple.x - radius, ripple.y - radius, radius * 2, radius * 2);
+      }
       wisps = wisps.filter(w => w.age < w.life);
       for (const w of wisps) {
         w.age += dt;
@@ -118,11 +137,14 @@ export function SnowCursor() {
         }
         ctx.restore();
       }
-      if (crystals.length || wisps.length) frame = requestAnimationFrame(draw);
+      if (crystals.length || wisps.length || ripples.length) frame = requestAnimationFrame(draw);
       else frame = 0;
     };
 
     const move = (event: Pick<PointerEvent, 'clientX' | 'clientY' | 'pointerType'>) => {
+      emit(event, true);
+    };
+    const emit = (event: Pick<PointerEvent, 'clientX' | 'clientY' | 'pointerType'>, pointerMoved: boolean) => {
       if (!enabled() || event.pointerType !== 'mouse') return;
       cursor = { x: event.clientX, y: event.clientY };
       const now = performance.now();
@@ -135,6 +157,10 @@ export function SnowCursor() {
       const dx = next.x - previous.x, dy = next.y - previous.y;
       const distance = Math.hypot(dx, dy);
       if (distance < 0.5) return;
+      if (pointerMoved && now - lastRippleTime >= 72) {
+        ripples.push({ x: next.x, y: next.y, age: 0 });
+        lastRippleTime = now;
+      }
       const speed = Math.min(distance / Math.max(now - previous.time, 8), 2.5);
       const nx = dx / distance, ny = dy / distance;
       // Distance-based emission keeps density consistent across input refresh rates.
@@ -147,11 +173,11 @@ export function SnowCursor() {
         const side = (Math.random() - 0.5) * (14 + speed * 10);
         wisps.push({ x: x - ny * side, y: y + nx * side,
           vx: nx * speed * 16 - ny * side, vy: ny * speed * 16 + nx * side,
-          age: 0, life: 2.6 + Math.random() * 1.2,
+          age: 0, life: 2.0 + Math.random() * 0.9,
           radius: 28 + speed * 12 + Math.random() * 14, phase: Math.random() * Math.PI * 2 });
         crystals.push({ x, y, vx: nx * speed * 18 - ny * side * 2,
           vy: ny * speed * 18 + nx * side * 2, age: 0,
-          life: 2 + Math.random() * 1.4,
+          life: 1.6 + Math.random() * 1.1,
           size: Math.random() < 0.28 ? 3.2 + Math.random() * 2.2 : 0.6 + Math.random(),
           angle: Math.random() * Math.PI, spin: (Math.random() - 0.5) * 1.4,
           crystal: false });
@@ -162,7 +188,7 @@ export function SnowCursor() {
       previous = next;
       crystals = crystals.slice(-240);
       wisps = wisps.slice(-180);
-      if (!frame && (crystals.length || wisps.length)) {
+      if (!frame && (crystals.length || wisps.length || ripples.length)) {
         lastTime = now;
         frame = requestAnimationFrame(draw);
       }
@@ -183,13 +209,14 @@ export function SnowCursor() {
       // Existing snow stays attached to the content, with a small decaying overshoot.
       for (const p of crystals) p.y -= delta;
       for (const w of wisps) w.y -= delta;
+      for (const ripple of ripples) ripple.y -= delta;
       scrollVelocity = Math.max(-160, Math.min(160, -delta / elapsed * 1000 * 0.12));
       if (cursor) {
         const point = { ...cursor };
         previous = { x: point.x, y: point.y - delta, time: now - elapsed };
         // Emit along the content that just passed the pointer, not a fixed wheel jet.
         previous.time = now - Math.min(elapsed, 100);
-        move({ clientX: point.x, clientY: point.y, pointerType: 'mouse' });
+        emit({ clientX: point.x, clientY: point.y, pointerType: 'mouse' }, false);
         previous = null;
       }
     };
