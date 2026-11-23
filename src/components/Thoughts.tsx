@@ -1,43 +1,58 @@
+import { ArrowLeft, ArrowUpRight, Compass, Globe2, Workflow } from 'lucide-react';
 import { DepthScene } from './DepthScene';
+
+export const thoughtTopics = [
+  { id: 'product', title: '产品', label: 'Product', icon: Compass, color: 'text-sky-300', summary: '把“用户能完成什么任务”放在指标之前；增长是结果，不是起点。' },
+  { id: 'ai', title: 'AI', label: '人机协作', icon: Workflow, color: 'text-violet-300', summary: '更关注人机协作界面与失败兜底；模型会升级，但责任边界要写得清楚。' },
+  { id: 'internationalization', title: '国际化', label: 'Internationalization', icon: Globe2, color: 'text-emerald-300', summary: '文化差异藏在默认值里；用本地用户的“理所当然”反推你的产品假设。' },
+];
+
 export function Thoughts() {
   return (
-    <section id="thoughts" className="border-b border-white/10 bg-transparent">
-      <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
-        <header className="depth-stage mb-10 space-y-3">
-          <DepthScene />
-          <p className="depth-kicker text-sm font-semibold">思考洞察</p>
-          <h1 className="depth-title font-bold">Thoughts</h1>
-          <p className="max-w-prose text-base leading-relaxed text-slate-300">
-            像 Notion 页面一样轻：记录问题、假设与下一步实验，而不是“结论包装成真理”。
-          </p>
-        </header>
-        <ul className="space-y-4 text-base leading-relaxed text-slate-300">
-          <li className="depth-panel depth-glass relief-card flex items-start gap-4 rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 sm:px-5 sm:py-4">
-            <span className="relief-emblem grid h-10 w-10 shrink-0 place-items-center text-lg" aria-hidden>
-              🧭
-            </span>
-            <span className="relief-inset min-w-0 flex-1 px-3 py-2">
-              <span className="font-semibold text-slate-100">产品</span>：把“用户能完成什么任务”放在指标之前；增长是结果，不是起点。
-            </span>
+    <section className="mx-auto max-w-7xl px-4 py-10 sm:px-8 sm:py-14">
+      <header className="depth-stage mb-10 space-y-3">
+        <DepthScene />
+        <p className="depth-kicker text-sm font-semibold">思考洞察</p>
+        <h1 className="depth-title font-bold">Thoughts</h1>
+      </header>
+      <ul className="grid gap-6 md:grid-cols-3">
+        {thoughtTopics.map(({ id, title, label, icon: Icon, color, summary }) => (
+          <li key={id}>
+            <a href={`#/thoughts/${id}`} className="chapter-cover relief-card flex h-full min-h-72 flex-col gap-4 rounded-3xl border p-6">
+              <div className="flex items-center justify-between gap-3">
+                <span className={`relief-emblem grid h-14 w-14 place-items-center ${color}`}><Icon size={28} aria-hidden="true" /></span>
+                <ArrowUpRight size={20} className={color} aria-hidden="true" />
+              </div>
+              <div>
+                <p className={`text-xs ${color}`}>{label}</p>
+                <h2 className="mt-1 text-3xl font-semibold text-slate-50">{title}</h2>
+              </div>
+              <p className="relief-inset flex-1 p-3 text-sm leading-relaxed text-slate-300">{summary}</p>
+              <span className={`text-sm font-medium ${color}`}>进入{title}</span>
+            </a>
           </li>
-          <li className="depth-panel depth-glass relief-card flex items-start gap-4 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 sm:px-5 sm:py-4">
-            <span className="relief-emblem grid h-10 w-10 shrink-0 place-items-center text-lg" aria-hidden>
-              🤝
-            </span>
-            <span className="relief-inset min-w-0 flex-1 px-3 py-2">
-              <span className="font-semibold text-slate-100">AI</span>：更关注人机协作界面与失败兜底；模型会升级，但责任边界要写得清楚。
-            </span>
-          </li>
-          <li className="depth-panel depth-glass relief-card flex items-start gap-4 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 sm:px-5 sm:py-4">
-            <span className="relief-emblem grid h-10 w-10 shrink-0 place-items-center text-lg" aria-hidden>
-              🌍
-            </span>
-            <span className="relief-inset min-w-0 flex-1 px-3 py-2">
-              <span className="font-semibold text-slate-100">国际化</span>：文化差异藏在默认值里；用本地用户的“理所当然”反推你的产品假设。
-            </span>
-          </li>
-        </ul>
-      </div>
+        ))}
+      </ul>
     </section>
+  );
+}
+
+export function ThoughtDetail({ topic }: { topic: (typeof thoughtTopics)[number] }) {
+  const Icon = topic.icon;
+  return (
+    <article className="mx-auto max-w-5xl px-4 py-10 sm:px-8">
+      <a href="#/thoughts" className="depth-kicker inline-flex items-center gap-2 text-sm hover:underline">
+        <ArrowLeft size={16} aria-hidden="true" />返回 Thoughts
+      </a>
+      <header className="depth-stage mb-8 mt-5 space-y-3">
+        <DepthScene />
+        <p className={`text-sm ${topic.color}`}>{topic.label}</p>
+        <h1 className="depth-title font-bold">{topic.title}</h1>
+      </header>
+      <div className="depth-panel relief-card flex items-start gap-4 rounded-2xl border p-5 sm:p-7">
+        <span className={`relief-emblem grid h-12 w-12 shrink-0 place-items-center ${topic.color}`}><Icon size={24} aria-hidden="true" /></span>
+        <p className="relief-inset flex-1 p-4 leading-relaxed text-slate-200">{topic.summary}</p>
+      </div>
+    </article>
   );
 }
