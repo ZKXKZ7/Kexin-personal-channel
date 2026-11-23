@@ -23,6 +23,7 @@ export function SnowCursor() {
     let crystals: Crystal[] = [];
     let wisps: Wisp[] = [];
     let ripples: { x: number; y: number; age: number }[] = [];
+    const shiftedFlakes = new Map<HTMLElement, { x: number; y: number }>();
     let lastRippleTime = -Infinity;
     let previous: { x: number; y: number; time: number } | null = null;
     let width = 0;
@@ -36,6 +37,13 @@ export function SnowCursor() {
     let scrollVelocity = 0;
     const enabled = () => !motion.matches && pointer.matches && !document.hidden;
 
+    const resetFlakes = () => {
+      for (const flake of shiftedFlakes.keys()) {
+        flake.style.removeProperty('translate');
+        flake.style.removeProperty('scale');
+      }
+      shiftedFlakes.clear();
+    };
     const clear = () => {
       cancelAnimationFrame(frame);
       frame = 0;
@@ -47,6 +55,7 @@ export function SnowCursor() {
       crystals = [];
       wisps = [];
       ripples = [];
+      resetFlakes();
       lastRippleTime = -Infinity;
       ctx.clearRect(0, 0, width, height);
     };
@@ -68,19 +77,40 @@ export function SnowCursor() {
       ctx.clearRect(0, 0, width, height);
       ctx.globalCompositeOperation = 'source-over';
       ripples = ripples.filter(ripple => ripple.age < 0.72);
-      for (const ripple of ripples) {
-        ripple.age += dt;
-        const progress = Math.min(ripple.age / 0.72, 1);
-        const radius = 12 + 92 * (1 - (1 - progress) ** 1.6);
-        const alpha = Math.min(progress * 10, 1) * (1 - progress) ** 1.5;
-        const wave = ctx.createRadialGradient(ripple.x, ripple.y, 0, ripple.x, ripple.y, radius);
-        wave.addColorStop(0, 'transparent');
-        wave.addColorStop(0.60, 'transparent');
-        wave.addColorStop(0.72, `rgba(6,18,36,${alpha * 0.13})`);
-        wave.addColorStop(0.86, `rgba(150,214,244,${alpha * 0.16})`);
-        wave.addColorStop(1, 'transparent');
-        ctx.fillStyle = wave;
-        ctx.fillRect(ripple.x - radius, ripple.y - radius, radius * 2, radius * 2);
+      for (const ripple of ripples) ripple.age += dt;
+      if (ripples.length) {
+        // Measure first, then transform the real background flakes in one batch.
+        const flakes = Array.from(document.querySelectorAll<HTMLElement>('.sf-layer .sf-flake'));
+        const positions = flakes.map(flake => {
+          const rect = flake.getBoundingClientRect();
+          const offset = shiftedFlakes.get(flake);
+          return { x: rect.left + rect.width / 2 - (offset?.x ?? 0),
+            y: rect.top + rect.height / 2 - (offset?.y ?? 0) };
+        });
+        resetFlakes();
+        for (const [index, flake] of flakes.entries()) {
+          const position = positions[index];
+          let x = 0, y = 0, zoom = 0;
+          for (const ripple of ripples) {
+            const dx = position.x - ripple.x, dy = position.y - ripple.y;
+            const distance = Math.hypot(dx, dy);
+            const progress = Math.min(ripple.age / 0.72, 1);
+            const radius = 136 + progress * 40;
+            if (distance >= radius) continue;
+            const envelope = (1 - (distance / radius) ** 2) ** 2;
+            const strength = envelope * Math.min(progress * 16, 1) * (1 - progress) ** 2;
+            const wave = Math.cos((distance - progress * 150) / 32);
+            x += dx * strength * wave * 0.22;
+            y += dy * strength * wave * 0.22;
+            zoom += strength * 0.43;
+          }
+          if (zoom < 0.005) continue;
+          flake.style.translate = `${x}px ${y}px`;
+          flake.style.scale = String(1 + Math.min(0.48, zoom));
+          shiftedFlakes.set(flake, { x, y });
+        }
+      } else if (shiftedFlakes.size) {
+        resetFlakes();
       }
       wisps = wisps.filter(w => w.age < w.life);
       for (const w of wisps) {
