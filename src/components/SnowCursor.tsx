@@ -95,18 +95,18 @@ export function SnowCursor() {
             const dx = position.x - ripple.x, dy = position.y - ripple.y;
             const distance = Math.hypot(dx, dy);
             const progress = Math.min(ripple.age / 0.72, 1);
-            const radius = 136 + progress * 40;
+            const radius = 168 + progress * 48;
             if (distance >= radius) continue;
             const envelope = (1 - (distance / radius) ** 2) ** 2;
             const strength = envelope * Math.min(progress * 16, 1) * (1 - progress) ** 2;
             const wave = Math.cos((distance - progress * 150) / 32);
-            x += dx * strength * wave * 0.22;
-            y += dy * strength * wave * 0.22;
-            zoom += strength * 0.43;
+            x += dx * strength * wave * 0.34;
+            y += dy * strength * wave * 0.34;
+            zoom += strength * 0.64;
           }
           if (zoom < 0.005) continue;
           flake.style.translate = `${x}px ${y}px`;
-          flake.style.scale = String(1 + Math.min(0.48, zoom));
+          flake.style.scale = String(1 + Math.min(0.72, zoom));
           shiftedFlakes.set(flake, { x, y });
         }
       } else if (shiftedFlakes.size) {
@@ -121,7 +121,7 @@ export function SnowCursor() {
         w.x += (w.vx + Math.sin(w.phase + w.age * 2.8) * 9) * dt;
         w.y += (w.vy - 7) * dt + inertia;
         const radius = w.radius * (0.7 + progress * 1.5);
-        const alpha = Math.min(w.age / 0.12, 1) * Math.pow(1 - progress, 1.3) * 0.085;
+        const alpha = Math.min(w.age / 0.12, 1) * Math.pow(1 - progress, 1.3) * 0.045;
         const haze = ctx.createRadialGradient(w.x, w.y, 0, w.x, w.y, radius);
         haze.addColorStop(0, `rgba(186,230,253,${alpha})`);
         haze.addColorStop(0.35, `rgba(125,211,252,${alpha * 0.65})`);
@@ -142,7 +142,7 @@ export function SnowCursor() {
         ctx.save();
         ctx.translate(p.x, p.y);
         ctx.rotate(p.angle);
-        ctx.globalAlpha = fade * (p.crystal ? 0.9 : 0.7);
+        ctx.globalAlpha = fade * (p.crystal ? 0.68 : 0.45);
         ctx.strokeStyle = '#e0f2fe';
         ctx.fillStyle = '#bae6fd';
         if (p.crystal) {
@@ -203,11 +203,11 @@ export function SnowCursor() {
         const side = (Math.random() - 0.5) * (14 + speed * 10);
         wisps.push({ x: x - ny * side, y: y + nx * side,
           vx: nx * speed * 16 - ny * side, vy: ny * speed * 16 + nx * side,
-          age: 0, life: 2.0 + Math.random() * 0.9,
+          age: 0, life: 1.2 + Math.random() * 0.6,
           radius: 28 + speed * 12 + Math.random() * 14, phase: Math.random() * Math.PI * 2 });
         crystals.push({ x, y, vx: nx * speed * 18 - ny * side * 2,
           vy: ny * speed * 18 + nx * side * 2, age: 0,
-          life: 1.6 + Math.random() * 1.1,
+          life: 1.05 + Math.random() * 0.65,
           size: Math.random() < 0.28 ? 3.2 + Math.random() * 2.2 : 0.6 + Math.random(),
           angle: Math.random() * Math.PI, spin: (Math.random() - 0.5) * 1.4,
           crystal: false });
