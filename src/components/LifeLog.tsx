@@ -10,8 +10,16 @@ const coverColors = [
 const coverClass = 'chapter-cover group relative flex h-full w-full flex-col items-start overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br p-7 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky-300 lg:p-9';
 const emblemClass = 'relative z-[1] mb-10 inline-flex h-16 w-16 items-center justify-center rounded-2xl border border-white/20 bg-white/5 text-sky-200 shadow-[inset_0_1px_0_#ffffff30,0_10px_24px_#02061740]';
 
+const chapterColors: Record<string, string> = {
+  music: 'text-violet-300',
+  sports: 'text-sky-300',
+  french: 'text-amber-300',
+};
+
 const chapters = [
-  { id: 'music', title: 'Music', description: 'Hiphop · R&B', icon: Headphones, color: 'text-violet-300' },
+  ...lifeInterestTrips.map(({ id, name, region, icon }) => ({
+    id, title: name, description: region, icon: id === 'music' ? Headphones : icon, color: chapterColors[id],
+  })),
   { id: 'travel', title: 'Travel', description: '按目的地浏览旅行相册', icon: Plane, color: 'text-emerald-300' },
 ];
 
@@ -37,13 +45,6 @@ export function LifeLog() {
           </li>
         ))}
       </ul>
-      <nav aria-label="其他生活记录" className="mt-8 flex flex-wrap gap-3">
-        {lifeInterestTrips.filter(item => item.id !== 'music').map(({ id, name, icon: Icon }) => (
-          <a key={id} href={`#/life-log/${id}`} className="depth-link depth-panel relief-card inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-sm">
-            <Icon size={16} aria-hidden="true" />{name}
-          </a>
-        ))}
-      </nav>
     </section>
   );
 }
