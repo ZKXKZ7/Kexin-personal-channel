@@ -137,6 +137,22 @@ export function BuptChapter() {
             <p className="bupt-hero-caption">北京邮电大学 · 学业与科研</p>
           </div>
         </header>
+        <dl aria-label="代表性成果" className="depth-panel mt-7 grid gap-px overflow-hidden rounded-2xl border border-lime-200/20 bg-lime-200/15 sm:grid-cols-3">
+          {[
+            { label: '国家奖学金', value: '1', unit: '/ 180', context: '本科阶段' },
+            { label: '伦敦玛丽女王大学奖优交流', value: '1', unit: '/ 680', context: '单人面试轮排名' },
+            { label: '跨域协同训练', value: '≈94', unit: '%', context: '强异构实验中节省的通信量' },
+          ].map(({ label, value, unit, context }) => (
+            <div key={label} className="bg-gradient-to-br from-[#243528] to-[#101a17] px-6 py-5 lg:px-8">
+              <dt className="text-sm font-semibold text-lime-50">{label}</dt>
+              <dd className="mt-3">
+                <span className="font-serif text-5xl leading-none tracking-tight text-[#e0fb91] lg:text-6xl">{value}</span>
+                <span className="ml-2 font-serif text-xl text-lime-100/80">{unit}</span>
+                <span className="mt-2 block text-xs text-slate-300">{context}</span>
+              </dd>
+            </div>
+          ))}
+        </dl>
         <BuptChapterDetails />
       </div>
     </article>
