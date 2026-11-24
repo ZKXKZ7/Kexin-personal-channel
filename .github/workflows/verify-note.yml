@@ -19,13 +19,17 @@ jobs:
           assert endpoint in urlopen(urljoin(page, script), timeout=30).read().decode()
 
           def marks(token=None, start=0, end=0, erase=False):
-              headers = {'Origin': 'https://zkxkz7.github.io'}
+              headers = {'User-Agent': 'Mozilla/5.0 (compatible; KexinNoteCheck/1.0)', 'Origin': 'https://zkxkz7.github.io'}
               body = None
               if token:
                   headers.update({'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json'})
                   body = json.dumps(dict(start=start, end=end, erase=erase)).encode()
               request = Request(endpoint, data=body, method='PUT' if token else 'GET', headers=headers)
-              with urlopen(request, timeout=30) as result:
+              try:
+                  response = urlopen(request, timeout=30)
+              except __import__('urllib.error').error.HTTPError as error:
+                  raise RuntimeError(error.read().decode()[:1200]) from error
+              with response as result:
                   assert result.headers['Access-Control-Allow-Origin'] == headers['Origin']
                   return {layer['ink']: layer['bits'] for layer in json.load(result)}
 
