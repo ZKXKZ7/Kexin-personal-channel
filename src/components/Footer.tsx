@@ -37,7 +37,7 @@ export function Footer({ standalone = false }: { standalone?: boolean }) {
             ))}
           </nav>
         </div>
-        <p className="mt-10 text-center text-xs text-slate-500">Built with Cursor & Love</p>
+        <p className="mt-10 text-center text-base font-medium text-slate-300">Built with Curiosity &amp; Love</p>
       </div>
     </footer>
   );
