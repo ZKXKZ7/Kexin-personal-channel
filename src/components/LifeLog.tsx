@@ -70,6 +70,7 @@ export function TravelLog() {
                 className={`${coverClass} ${coverColors[index % coverColors.length]} min-h-[320px] lg:min-h-[380px]`}
               >
                 <span aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                <time dateTime={item.month} className="absolute right-7 top-8 border-t border-white/30 pt-2 font-mono text-sm tracking-widest text-slate-200">{item.month?.replace('-', ' / ')}</time>
                 <span className={emblemClass}>
                   <Icon className="h-9 w-9" strokeWidth={1.65} aria-hidden />
                 </span>

@@ -11,6 +11,7 @@ import { LifeLog, TravelLog } from './components/LifeLog';
 import { Footer } from './components/Footer';
 import { Snowfall } from './components/Snowfall';
 import { SnowCursor } from './components/SnowCursor';
+import { TravelAlbum } from './components/TravelAlbum';
 import { GalleryFigure } from './components/GalleryFigure';
 import { CareerExperience } from './components/CareerExperience';
 import { BuptChapter } from './components/BuptChapter';
@@ -73,7 +74,7 @@ export default function App() {
                 <h1 className="depth-title font-bold">{trip.name}</h1>
                 {trip.modalIntro && <p className="mt-6 max-w-3xl text-base leading-relaxed text-slate-400">{trip.modalIntro}</p>}
               </header>
-              {module?.id === 'career' ? <CareerExperience /> : (
+              {module?.id === 'career' ? <CareerExperience /> : isDestination ? <TravelAlbum trip={trip} /> : (
                 <div className="grid items-start gap-6 md:grid-cols-2">
                   {trip.photos.map(photo => <GalleryFigure key={photo.id} ph={photo} />)}
                 </div>

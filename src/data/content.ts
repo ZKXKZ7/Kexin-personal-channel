@@ -36,6 +36,7 @@ export type TripPhoto = {
 };
 
 export type TravelTrip = {
+  month?: string;
   id: string;
   name: string;
   region: string;
@@ -120,6 +121,7 @@ export const volunteerPhotos: TripPhoto[] = [
 export const travelTrips: TravelTrip[] = [
   {
     id: 'uk',
+    month: '2024-01',
     name: '英国',
     region: 'United Kingdom',
     icon: Landmark,
@@ -130,6 +132,7 @@ export const travelTrips: TravelTrip[] = [
   },
   {
     id: 'xinjiang',
+    month: '2025-01',
     name: '新疆',
     region: 'Xinjiang',
     icon: Mountain,
@@ -140,6 +143,7 @@ export const travelTrips: TravelTrip[] = [
   },
   {
     id: 'france',
+    month: '2025-06',
     name: '法国',
     region: 'France',
     icon: Wine,
@@ -150,6 +154,7 @@ export const travelTrips: TravelTrip[] = [
   },
   {
     id: 'switzerland',
+    month: '2025-06',
     name: '瑞士',
     region: 'Switzerland',
     icon: Snowflake,
@@ -160,6 +165,7 @@ export const travelTrips: TravelTrip[] = [
   },
   {
     id: 'italy',
+    month: '2025-06',
     name: '意大利',
     region: 'Italy',
     icon: Pizza,
@@ -170,6 +176,7 @@ export const travelTrips: TravelTrip[] = [
   },
   {
     id: 'indonesia',
+    month: '2026-08',
     name: '印尼',
     region: 'Indonesia',
     icon: TreePalm,
