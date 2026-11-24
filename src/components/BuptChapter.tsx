@@ -6,6 +6,8 @@ import { volunteerPhotos } from '../data/content';
 import { GalleryFigure } from './GalleryFigure';
 import './BuptChapter.css';
 
+const resultText = 'font-serif text-2xl font-semibold leading-none tabular-nums text-[#e0fb91] sm:text-3xl';
+
 const metrics = [
   { label: 'GPA', value: '3.7', detail: '/ 4' },
   { label: '均分', value: '89', detail: '/ 100' },
@@ -57,7 +59,7 @@ export function BuptChapterDetails() {
         <div className="bupt-grid">
           <ChapterCard icon={Award} title="奖学金与荣誉">
             <ul>
-              <li><strong>国家奖学金</strong><p>1 / 180</p></li>
+              <li><strong>国家奖学金</strong><p className="mt-2"><span className={resultText}>1</span> / 180</p></li>
               <li><strong>校一等奖学金</strong></li>
               <li><strong>三好学生</strong><p>连续两年</p></li>
               <li><strong>2021 博弈杯辩论赛</strong><p>最佳辩手</p></li>
@@ -65,7 +67,7 @@ export function BuptChapterDetails() {
           </ChapterCard>
           <ChapterCard icon={Globe2} title="国际交流">
             <ul>
-              <li><strong>伦敦玛丽女王大学奖优交流</strong><p>入选菁英领袖学生代表，单人面试轮排名 1 / 680。</p></li>
+              <li><strong>伦敦玛丽女王大学奖优交流</strong><p>入选菁英领袖学生代表。<span className="mt-2 block">单人面试轮排名 <span className={resultText}>1</span> / 680</span></p></li>
               <li><strong>MIC 2023 模拟国际会议</strong><p>主会场第一名</p></li>
               <li><p>CET-4 649 · CET-6 611</p></li>
             </ul>
@@ -85,7 +87,7 @@ export function BuptChapterDetails() {
           <h3>Beyond the Margin · 校园实践</h3>
           <p><strong>鸿雁青年志愿者协会 · 外联部部长</strong></p>
           <p>2021.10 — 2023.07</p>
-          <p>统筹 ArchSummit 全球架构师峰会、老狼北京演唱会等 14 场校外志愿活动，覆盖超 1,000 名志愿者。</p>
+          <p>统筹 ArchSummit 全球架构师峰会、老狼北京演唱会等 <span className={resultText}>14</span> 场校外志愿活动，覆盖超 <span className={resultText}>1,000</span> 名志愿者。</p>
           <div className="bupt-gallery">
             {volunteerPhotos.map(photo => <GalleryFigure key={photo.id} ph={photo} />)}
           </div>
@@ -108,7 +110,7 @@ export function BuptChapterDetails() {
             <ChapterCard icon={FlaskConical} heading="h4" title="跨域双活 P2P 模型协作训练与故障经验保持">
               <ul>
                 <li><p>设计双数据中心协同训练系统，在跨域数据分布异构、广域网带宽受限时支持正常协同训练和单端故障续训。</p></li>
-                <li><strong>通信量节省约 94%</strong><p>在强异构实验中使用 6% 的稀疏通信量。故障续训中，对端知识遗忘度从 28.4% 降至 2.2%。</p></li>
+                <li><strong>通信量节省约 <span className={resultText}>94%</span></strong><p>在强异构实验中使用 6% 的稀疏通信量。故障续训中，对端知识遗忘度从 28.4% 降至 2.2%。</p></li>
               </ul>
             </ChapterCard>
             <ChapterCard icon={FlaskConical} heading="h4" title="边缘 AIGC 网络中数据共享激励算法">
@@ -137,22 +139,6 @@ export function BuptChapter() {
             <p className="bupt-hero-caption">北京邮电大学 · 学业与科研</p>
           </div>
         </header>
-        <dl aria-label="代表性成果" className="depth-panel mt-7 grid gap-px overflow-hidden rounded-2xl border border-lime-200/20 bg-lime-200/15 sm:grid-cols-3">
-          {[
-            { label: '国家奖学金', value: '1', unit: '/ 180', context: '本科阶段' },
-            { label: '伦敦玛丽女王大学奖优交流', value: '1', unit: '/ 680', context: '单人面试轮排名' },
-            { label: '跨域协同训练', value: '≈94', unit: '%', context: '强异构实验中节省的通信量' },
-          ].map(({ label, value, unit, context }) => (
-            <div key={label} className="bg-gradient-to-br from-[#243528] to-[#101a17] px-6 py-5 lg:px-8">
-              <dt className="text-sm font-semibold text-lime-50">{label}</dt>
-              <dd className="mt-3">
-                <span className="font-serif text-5xl leading-none tracking-tight text-[#e0fb91] lg:text-6xl">{value}</span>
-                <span className="ml-2 font-serif text-xl text-lime-100/80">{unit}</span>
-                <span className="mt-2 block text-xs text-slate-300">{context}</span>
-              </dd>
-            </div>
-          ))}
-        </dl>
         <BuptChapterDetails />
       </div>
     </article>
