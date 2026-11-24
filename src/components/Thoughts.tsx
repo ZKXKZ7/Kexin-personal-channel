@@ -16,7 +16,7 @@ export function Thoughts() {
         <p className="depth-kicker text-sm font-semibold">思考洞察</p>
         <h1 className="depth-title font-bold">Thoughts</h1>
       </header>
-      <ul className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+      <ul className="grid gap-6 sm:grid-cols-2">
         {thoughtTopics.map(({ id, title, label, icon: Icon, color, summary }) => (
           <li key={id}>
             <a href={`#/thoughts/${id}`} className="chapter-cover relief-card flex h-full min-h-72 flex-col gap-4 rounded-3xl border p-6">
