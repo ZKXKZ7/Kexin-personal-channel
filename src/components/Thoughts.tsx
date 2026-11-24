@@ -1,3 +1,4 @@
+import { GrowthNoteText } from './GrowthNoteText';
 import { ArrowLeft, ArrowUpRight, Compass, Globe2, Sprout, Workflow } from 'lucide-react';
 import { DepthScene } from './DepthScene';
 
@@ -57,13 +58,7 @@ export function ThoughtDetail({ topic }: { topic: (typeof thoughtTopics)[number]
       {topic.id === 'growth' && (
         <article className="relative mt-6 max-w-xl rounded-sm bg-amber-100 px-6 py-7 text-stone-900 shadow-lg sm:px-8">
           <span aria-hidden="true" className="absolute -top-2 left-8 h-4 w-16 -rotate-3 bg-amber-300/80" />
-          <h2 className="text-xl font-bold">给未来的自己留点选择</h2>
-          <div className="mt-4 space-y-3 text-base leading-relaxed">
-            <p>想象一下，换一份工作、搬去另一座城市，我还能带走什么？</p>
-            <p><strong>体力。</strong>练出一点余力，忙完一天，还有精神去见喜欢的人、做喜欢的事。</p>
-            <p><strong>算力和品味。</strong>亲手用一流的 AI，才知道今天能做出什么。它能给我十个方案，哪个值得做、哪里还差一点，要靠自己的品味来判断。</p>
-            <p><strong>英语。</strong>能读原文，也敢直接开口，就多了认识一个人、问清一个问题、抓住一次机会的可能。</p>
-          </div>
+          <GrowthNoteText />
           <a className="mt-5 inline-block text-sm text-stone-700 underline underline-offset-4" href="https://www.xiaohongshu.com/explore/6b030edc0000000009020a3c?xsec_token=ABkVwEP4vW9vXxQkbo68OdGqgn7EBdoYZ5Dtx9UzEk4tA%3D&amp;xsec_source=pc_share">灵感来自「阿布布的思考笔记」↗</a>
         </article>
       )}
