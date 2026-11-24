@@ -68,8 +68,8 @@ export function BuptChapterDetails() {
           <ChapterCard icon={Globe2} title="国际交流">
             <ul>
               <li><strong>伦敦玛丽女王大学奖优交流</strong><p>入选菁英领袖学生代表。<span className="mt-2 block">单人面试轮排名 <span className={resultText}>1</span> / 680</span></p></li>
+              <li><strong>CET-4 649 · CET-6 611</strong></li>
               <li><strong>MIC 2023 模拟国际会议</strong><p>主会场第一名</p></li>
-              <li><p>CET-4 649 · CET-6 611</p></li>
             </ul>
           </ChapterCard>
           <div className="bupt-courses-card">
