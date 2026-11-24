@@ -1,0 +1,19 @@
+.reader-note { display: flex; align-items: flex-start; flex-wrap: wrap; gap: 1.2rem 1.5rem; margin-top: 2rem; }
+.reader-paper { flex: 1 1 30rem; max-width: 36rem; min-width: 0; }
+.reader-tools { padding-top: .4rem; max-width: 15rem; }
+.reader-pens { display: inline-flex; padding: .3rem; border-radius: 1rem; border: 1px solid #d3c4fb38;
+  background: linear-gradient(145deg,#45405a,#201f30 55%,#272535);
+  box-shadow: inset 0 1px 0 #ffffff1c, 0 5px 14px #09081245; }
+.reader-pens button { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: 44px;
+  padding: .5rem .8rem; border-radius: .7rem; font-size: .875rem; font-weight: 500; color: #eee8f5; }
+.reader-pens button:first-child { color: #ffdf9f; background: linear-gradient(140deg,#e9c57b22,#dab8790c); }
+.reader-pens button:hover { background-color: #ffffff12; }
+.reader-pens button:focus-visible { outline: 2px solid #dfc891; outline-offset: 1px; }
+.reader-pens button:active { transform: translateY(1px); }
+.reader-pens svg { width: 1.12rem; height: 1.12rem; stroke-width: 1.6; }
+.reader-tools p { min-height: 1.3em; margin: .6rem .35rem 0; color: #c7c0d6; font-size: .8125rem; }
+@media (max-width: 44rem) {
+  .reader-note { flex-direction: column; }
+  .reader-tools { order: -1; padding: 0; max-width: none; }
+  .reader-paper { flex: none; width: 100%; }
+}

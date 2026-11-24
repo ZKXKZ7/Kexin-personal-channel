@@ -1,47 +1,88 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { Eraser, Highlighter } from 'lucide-react';
+import lines from '../data/growth-note.json';
+import './GrowthNoteText.css';
 
-const lines = [
-  [
-    "给未来的自己留点选择",
-    ""
-  ],
-  [
-    "",
-    "想象一下，换一份工作、搬去另一座城市，我还能带走什么？"
-  ],
-  [
-    "体力。",
-    "练出一点余力，忙完一天，还有精神去见喜欢的人、做喜欢的事。"
-  ],
-  [
-    "算力和品味。",
-    "亲手用一流的 AI，才知道今天能做出什么。它能给我十个方案，哪个值得做、哪里还差一点，要靠自己的品味来判断。"
-  ],
-  [
-    "英语。",
-    "能读原文，也敢直接开口，就多了认识一个人、问清一个问题、抓住一次机会的可能。"
-  ]
-];
+const endpoint = import.meta.env.VITE_NOTE_MARKS_URL || 'https://kexin-note-marks.kexin-personal-channel.workers.dev/growth/v1';
+const empty = '0'.repeat(lines.flat().join('').length);
+const legacyKey = 'growth-note-highlights:' + lines.flat().join('');
+const colors = ['#d89213','#6f57ba','#168f80','#c55272','#4385bf','#bf673f',
+  '#729036','#ae5396','#248f9f','#847139','#5b72c2','#ab645b'];
+type Layer = { ink: number; bits: string };
+type Span = [number, number];
 
-const noteText = lines.flat().join('');
-const storageKey = 'growth-note-highlights:' + noteText;
-const empty = '0'.repeat(noteText.length);
+function visitorToken() {
+  const key = 'growth-note-visitor';
+  const existing = localStorage.getItem(key);
+  if (existing) return existing;
+  const token = crypto.randomUUID();
+  localStorage.setItem(key, token);
+  return token;
+}
 
-function readMarks() {
-  try {
-    const value = localStorage.getItem(storageKey);
-    if (value?.length === empty.length && /^[01]+$/.test(value)) return value;
-  } catch { /* Storage may be disabled. */ }
-  return empty;
+function brush(inks: number[]): CSSProperties {
+  const fills = inks.filter(ink => ink < 0 || ink % 2 === 0);
+  const waves = inks.filter(ink => ink >= 0 && ink % 2 === 1);
+  const images: string[] = [];
+  const sizes: string[] = [];
+  const positions: string[] = [];
+  waves.forEach((ink, i) => {
+    const color = colors[ink % colors.length];
+    const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="4"><path d="M-2.5 2Q0 -1 2.5 2T7.5 2T12.5 2" fill="none" stroke="'+color+'" stroke-width="1.3"/></svg>';
+    images.push('url("data:image/svg+xml,' + encodeURIComponent(svg) + '")');
+    sizes.push('10px 4px');
+    positions.push('left bottom ' + (i % 3) * 2 + 'px');
+  });
+  if (fills.length) {
+    const stops = fills.map((ink,i) => {
+      const color = ink < 0 ? '#fcd34d99' : colors[ink % colors.length] + '59';
+      return color + ' ' + 100*i/fills.length + '% ' + 100*(i+1)/fills.length + '%';
+    });
+    images.push('linear-gradient(to bottom,' + stops.join(',') + ')');
+    sizes.push('100% 65%');
+    positions.push('left bottom 12%');
+  }
+  return { backgroundImage: images.join(','), backgroundSize: sizes.join(','),
+    backgroundPosition: positions.join(','), backgroundRepeat: 'repeat-x' };
 }
 
 export function GrowthNoteText() {
   const body = useRef<HTMLDivElement>(null);
-  const [marks, setMarks] = useState(readMarks);
-  const [selection, setSelection] = useState<[number, number] | null>(null);
-  const [stored, setStored] = useState(true);
+  const busy = useRef(false);
+  const revision = useRef(0);
+  const [layers, setLayers] = useState<Layer[]>([]);
+  const [legacy, setLegacy] = useState(() => {
+    try {
+      const bits = localStorage.getItem(legacyKey);
+      if (bits?.length === empty.length && /^[01]+$/.test(bits)) return bits;
+    } catch { /* Public annotations remain readable. */ }
+    return empty;
+  });
+  const [selection, setSelection] = useState<Span | null>(null);
+  const [message, setMessage] = useState('');
+  const [offline, setOffline] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
+    const abort = new AbortController();
+    let reading = false;
+    async function refresh() {
+      if (reading || busy.current || document.hidden) return;
+      const version = revision.current;
+      reading = true;
+      try {
+        if (!endpoint) throw new Error();
+        const response = await fetch(endpoint, { signal: abort.signal, cache: 'no-store' });
+        if (!response.ok) throw new Error();
+        const data = await response.json();
+        if (version === revision.current && !abort.signal.aborted) {
+          setLayers(data);
+          setOffline(false);
+        }
+      } catch {
+        if (!abort.signal.aborted && version === revision.current) setOffline(true);
+      } finally { reading = false; }
+    }
     function updateSelection() {
       const selected = window.getSelection();
       const range = selected?.rangeCount ? selected.getRangeAt(0) : null;
@@ -54,55 +95,89 @@ export function GrowthNoteText() {
       before.setEnd(range.startContainer, range.startOffset);
       const start = before.toString().length;
       setSelection([start, start + range.toString().length]);
+      setMessage('');
     }
+    void refresh();
+    const timer = window.setInterval(refresh, 6000);
+    document.addEventListener('visibilitychange', refresh);
     document.addEventListener('selectionchange', updateSelection);
-    return () => document.removeEventListener('selectionchange', updateSelection);
+    return () => {
+      abort.abort();
+      clearInterval(timer);
+      document.removeEventListener('visibilitychange', refresh);
+      document.removeEventListener('selectionchange', updateSelection);
+    };
   }, []);
 
-  function apply() {
-    if (!selection) return;
+  async function apply(erase: boolean) {
+    if (busy.current) return;
+    if (!selection) {
+      setMessage(erase ? '选中要擦除的文字，再点橡皮擦。' : '选中便签文字，再点画重点。');
+      return;
+    }
     const [start, end] = selection;
-    const fill = marks.slice(start, end).includes('0') ? '1' : '0';
-    const next = marks.slice(0, start) + fill.repeat(end - start) + marks.slice(end);
-    setMarks(next);
+    busy.current = true;
+    revision.current++;
+    setSaving(true);
     try {
-      localStorage.setItem(storageKey, next);
-      setStored(true);
-    } catch { setStored(false); }
-    window.getSelection()?.removeAllRanges();
-    setSelection(null);
+      if (!endpoint) throw new Error();
+      const response = await fetch(endpoint, {
+        method: 'PUT', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + visitorToken() },
+        body: JSON.stringify({ start, end, erase }),
+      });
+      if (!response.ok) throw new Error();
+      setLayers(await response.json());
+      setOffline(false);
+      if (erase && legacy.slice(start,end).includes('1')) {
+        const next = legacy.slice(0,start) + '0'.repeat(end-start) + legacy.slice(end);
+        setLegacy(next);
+        localStorage.setItem(legacyKey,next);
+      }
+      window.getSelection()?.removeAllRanges();
+      setSelection(null);
+      setMessage(erase ? '已擦除选区内自己的笔迹。' : '已标记，其他访客也能看到。');
+    } catch { setMessage('未能保存，请检查网络及浏览器存储后重试。'); }
+    finally { busy.current = false; setSaving(false); }
   }
 
+  const visible = legacy.includes('1') ? [...layers, { ink: -1, bits: legacy }] : layers;
   let offset = 0;
   function decorate(text: string) {
-    const start = offset;
+    const pieces = [];
+    let i = 0;
+    while (i < text.length) {
+      const active = visible.filter(layer => layer.bits[offset+i] === '1').map(layer => layer.ink);
+      let end = i + 1;
+      while (end < text.length && visible.every(layer => layer.bits[offset+i] === layer.bits[offset+end])) end++;
+      pieces.push(active.length ? <span key={i} style={brush(active)}>{text.slice(i,end)}</span> : text.slice(i,end));
+      i = end;
+    }
     offset += text.length;
-    const runs = marks.slice(start, offset).match(/0+|1+/g) ?? [];
-    let index = 0;
-    return runs.map(run => {
-      const part = text.slice(index, index + run.length);
-      index += run.length;
-      return run[0] === '1' ? <mark key={index} className="rounded-sm bg-amber-300 text-inherit">{part}</mark> : part;
-    });
+    return pieces;
   }
-
   return (
-    <>
-      <div ref={body} className="select-text">
-        <h2 className="text-xl font-bold">{decorate(lines[0][0])}</h2>
-        <div className="mt-4 space-y-3 text-base leading-relaxed">
-          {lines.slice(1).map(([label, text]) => (
-            <p key={text}><strong>{decorate(label)}</strong>{decorate(text)}</p>
-          ))}
+    <section className="reader-note">
+      <article className="reader-paper relative rounded-sm bg-amber-100 px-6 py-7 text-stone-900 shadow-lg sm:px-8">
+        <span aria-hidden="true" className="absolute -top-2 left-8 h-4 w-16 -rotate-3 bg-amber-300/80" />
+        <div ref={body} className="select-text">
+          <h2 className="text-xl font-bold">{decorate(lines[0][0])}</h2>
+          <div className="mt-4 space-y-3 text-base leading-relaxed">
+            {lines.slice(1).map(([label,text]) => <p key={text}><strong>{decorate(label)}</strong>{decorate(text)}</p>)}
+          </div>
         </div>
-      </div>
-      <div className="mt-5 flex flex-wrap items-center gap-3 border-t border-amber-900/20 pt-3 text-sm">
-        <button type="button" disabled={!selection} onPointerDown={event => event.preventDefault()} onClick={apply}
-          className="rounded-md border border-amber-800/40 bg-amber-200 px-3 py-2 font-semibold disabled:opacity-60">
-          {selection && !marks.slice(...selection).includes('0') ? '擦除重点' : '画重点'}
-        </button>
-        <span className="text-stone-600">{stored ? '选中文字即可标记，仅保存在当前浏览器' : '浏览器无法保存，本次阅读仍可标记'}</span>
-      </div>
-    </>
+        <a className="mt-5 inline-block text-sm text-stone-700 underline underline-offset-4" href="https://www.xiaohongshu.com/explore/6b030edc0000000009020a3c?xsec_token=ABkVwEP4vW9vXxQkbo68OdGqgn7EBdoYZ5Dtx9UzEk4tA%3D&amp;xsec_source=pc_share">灵感来自「阿布布的思考笔记」↗</a>
+      </article>
+      <aside className="reader-tools" aria-label="便签标记工具">
+        <div className="reader-pens">
+          <button type="button" disabled={saving} onPointerDown={event => event.preventDefault()} onClick={() => apply(false)}>
+            <Highlighter aria-hidden="true" /><span>画重点</span>
+          </button>
+          <button type="button" disabled={saving} onPointerDown={event => event.preventDefault()} onClick={() => apply(true)}>
+            <Eraser aria-hidden="true" /><span>橡皮擦</span>
+          </button>
+        </div>
+        <p role="status">{saving ? '正在保存…' : message || (offline ? '共享笔迹暂时无法加载' : '选中文字，留下你的笔迹')}</p>
+      </aside>
+    </section>
   );
 }

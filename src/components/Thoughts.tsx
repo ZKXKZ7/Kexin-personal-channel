@@ -55,13 +55,7 @@ export function ThoughtDetail({ topic }: { topic: (typeof thoughtTopics)[number]
         <span className={`relief-emblem grid h-12 w-12 shrink-0 place-items-center ${topic.color}`}><Icon size={24} aria-hidden="true" /></span>
         <p className="relief-inset flex-1 p-4 leading-relaxed text-slate-200">{topic.summary}</p>
       </div>
-      {topic.id === 'growth' && (
-        <article className="relative mt-6 max-w-xl rounded-sm bg-amber-100 px-6 py-7 text-stone-900 shadow-lg sm:px-8">
-          <span aria-hidden="true" className="absolute -top-2 left-8 h-4 w-16 -rotate-3 bg-amber-300/80" />
-          <GrowthNoteText />
-          <a className="mt-5 inline-block text-sm text-stone-700 underline underline-offset-4" href="https://www.xiaohongshu.com/explore/6b030edc0000000009020a3c?xsec_token=ABkVwEP4vW9vXxQkbo68OdGqgn7EBdoYZ5Dtx9UzEk4tA%3D&amp;xsec_source=pc_share">灵感来自「阿布布的思考笔记」↗</a>
-        </article>
-      )}
+      {topic.id === 'growth' && <GrowthNoteText />}
     </article>
   );
 }
