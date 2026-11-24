@@ -1,0 +1,45 @@
+name: Verify shared note
+on: workflow_dispatch
+permissions: {}
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check published page and two anonymous readers
+        shell: python
+        run: |
+          import json, re, uuid
+          from urllib.parse import urljoin
+          from urllib.request import Request, urlopen
+
+          page = 'https://zkxkz7.github.io/Kexin-personal-channel/'
+          endpoint = 'https://kexin-note-marks.kexin-personal-channel.workers.dev/growth/v1'
+          html = urlopen(page + '?verify=' + str(uuid.uuid4()), timeout=30).read().decode()
+          script = re.search(r'<script[^>]+src="([^"]+)"', html)[1]
+          assert endpoint in urlopen(urljoin(page, script), timeout=30).read().decode()
+
+          def marks(token=None, start=0, end=0, erase=False):
+              headers = {'Origin': 'https://zkxkz7.github.io'}
+              body = None
+              if token:
+                  headers.update({'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json'})
+                  body = json.dumps(dict(start=start, end=end, erase=erase)).encode()
+              request = Request(endpoint, data=body, method='PUT' if token else 'GET', headers=headers)
+              with urlopen(request, timeout=30) as result:
+                  assert result.headers['Access-Control-Allow-Origin'] == headers['Origin']
+                  return {layer['ink']: layer['bits'] for layer in json.load(result)}
+
+          a, b = str(uuid.uuid4()), str(uuid.uuid4())
+          before = marks()
+          try:
+              after_a = marks(a, 0, 2)
+              after_b = marks(b, 1, 3)
+              a_ink = next(k for k in after_a if before.get(k) != after_a[k])
+              b_ink = next(k for k in after_b if after_a.get(k) != after_b[k])
+              shared = marks()
+              assert a_ink != b_ink and shared[a_ink][1] == shared[b_ink][1] == '1'
+              marks(a, 0, 2, True)
+              assert marks()[b_ink][1:3] == '11'
+          finally:
+              marks(a, 0, 2, True)
+              marks(b, 1, 3, True)
