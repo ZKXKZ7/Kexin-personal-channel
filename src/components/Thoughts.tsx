@@ -61,15 +61,15 @@ export function ThoughtDetail({ topic }: { topic: (typeof thoughtTopics)[number]
             <span aria-hidden="true" className="absolute -top-2 left-8 h-4 w-16 -rotate-3 bg-amber-300/80" />
             <h2 className="text-xl font-bold">三种值得提前积累的健康储备</h2>
             <div className="mt-4 space-y-3 leading-relaxed">
-              <p>作者把健康比作储蓄。今天爬楼、拎东西都很轻松，很容易把这种能力当成理所当然。把眼光放到几十年后，就能看见三种值得维护的身体能力。</p>
+              <p>健康也像储蓄。今天爬楼、拎东西都很轻松，很容易把这种能力当成理所当然。把眼光放到几十年后，就能看见三种值得维护的身体能力。</p>
               <ol className="list-decimal space-y-2 pl-6">
-                <li><strong>线粒体与供能。</strong>心脏、大脑和肌肉工作时都需要能量。线粒体参与细胞供能，这解释了作者为什么把它列为第一项。</li>
-                <li><strong>肌肉与独立生活。</strong>从椅子上站起来、提着菜上楼，都需要力量。作者强调抗阻训练，因为肌力会影响年长后能否自己完成这些日常动作。</li>
+                <li><strong>线粒体与供能。</strong>心脏、大脑和肌肉工作时都需要能量。线粒体把营养物质中的能量转化为细胞可以利用的形式，为这些活动提供支持。</li>
+                <li><strong>肌肉与独立生活。</strong>从椅子上站起来、提着菜上楼，都需要力量。抗阻训练有助于维持肌力，让人年长后仍有力量独立完成这些动作。</li>
                 <li><strong>骨密度与支撑。</strong>走路和负重还要靠骨骼承受压力。骨密度是影响骨骼强度的因素之一，也提醒人们把骨骼健康纳入长期考虑。</li>
               </ol>
-              <p><strong>落到日常：</strong>视频结尾提出每周安排两到三次力量训练，并留意饮食中的蛋白质。用未来想保有的活动能力，决定今天愿意坚持的习惯。</p>
+              <p><strong>日常练习。</strong>每周可安排两到三次力量训练，并留意饮食中的蛋白质。用未来想保有的活动能力，决定今天愿意坚持的习惯。</p>
             </div>
-            <a className="mt-5 inline-block text-sm text-stone-700 underline underline-offset-4" href="https://www.xiaohongshu.com/explore/6afebee50000000023013a44?xsec_token=AB1_mhXu0Myo6blLPnVyDS9qVNgjsz7Cb_8E2y8WenDhw%3D&amp;xsec_source=pc_user">灵感来自「治愈果（kakki在说啥）」↗</a>
+            <a className="mt-5 inline-block text-sm text-stone-700 underline underline-offset-4" href="https://www.xiaohongshu.com/explore/6afebee50000000023013a44?xsec_token=AB1_mhXu0Myo6blLPnVyDS9qVNgjsz7Cb_8E2y8WenDhw%3D&amp;xsec_source=pc_user">原视频 ·「治愈果（kakki在说啥）」↗</a>
           </article>
           <GrowthNoteText />
         </>
