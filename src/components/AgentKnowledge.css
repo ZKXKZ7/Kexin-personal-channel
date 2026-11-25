@@ -41,3 +41,9 @@
 .ak-route>div:nth-child(2)::after {content:'↓';bottom:-1.2rem;left:48%}
 .ak-route>div:nth-child(3)::after {content:'←';left:-1rem;top:.6rem}
 }
+.ak-question {font-size:1.05rem;font-weight:700;margin:1rem 0 .4rem}
+.ak-definition {padding:.7rem 0;border-bottom:1px solid #d2cadd}
+.ak-detail .ak-definition dt {display:flex;flex-wrap:wrap;align-items:baseline;gap:.2rem .65rem;margin:0}
+.ak-definition dt span {font-size:.82rem;color:#644e78}
+.ak-definition dd {margin-top:.25rem}
+.ak-relation {margin-top:.85rem;background:#e0d8eb;border-radius:8px;padding:.65rem .8rem}
