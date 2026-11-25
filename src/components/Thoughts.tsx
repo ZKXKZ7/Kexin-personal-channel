@@ -77,6 +77,22 @@ export function ThoughtDetail({ topic }: { topic: (typeof thoughtTopics)[number]
           </article>
           </EditableNote>
           <EditableNote id="growth"><GrowthNoteText /></EditableNote>
+          <article className="reader-paper relative mt-8 max-w-2xl rounded-sm bg-amber-100 px-6 py-7 text-stone-900 shadow-lg sm:px-8">
+            <span aria-hidden="true" className="absolute -top-2 left-8 h-4 w-16 -rotate-3 bg-amber-300/80" />
+            <h2 className="text-xl font-bold">创业第四年：先验证需求，再验证交付</h2>
+            <div className="mt-4 space-y-3 leading-relaxed">
+              <p>一门生意能不能做大，可以先看两件事：有没有人愿意买，买过的人还愿不愿意继续合作。</p>
+              <ol className="list-decimal space-y-2 pl-6">
+                <li><strong>先验证商品和买家。</strong>高校直播基地有资金、场地、设备和人手，商品却缺乏竞争力。投入这些资源前，先弄清楚卖给谁、对方为什么愿意买。</li>
+                <li><strong>用客户反馈判断交付。</strong>代运营团队收到了陪跑项目的钱，但交付没达到客户预期，后续大单也丢了。回款只说明这笔交易完成了付款，客户愿意续约才是交付获得认可的信号。</li>
+                <li><strong>验证通过后，再把交付做成流程。</strong>一个人可以先试出需求。业务量上来后，用小团队分担交付，并定期听取客户反馈，避免只凭自己的感觉判断做得好不好。</li>
+              </ol>
+              <p><strong>创业者要练什么？</strong>用认知选方向，用能力把计划做出来，用韧性撑过试错和调整的周期。</p>
+            </div>
+            <p className="mt-5 text-sm text-stone-700">
+              据视频页公开评论摘要整理 · <a className="underline underline-offset-4" href="https://www.xiaohongshu.com/discovery/item/6aad2310000000002901bdf4?source=webshare&amp;xhsshare=pc_web&amp;xsec_token=ABgJ7SUNnSh0WzYz838PdWNY3EMm-Nk6Bo2dXH0a0TfJ0=&amp;xsec_source=pc_share">原视频「阿布布的思考笔记」↗</a>
+            </p>
+          </article>
         </>
       )}
     </article>
