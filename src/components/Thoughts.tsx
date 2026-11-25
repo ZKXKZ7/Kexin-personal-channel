@@ -1,3 +1,4 @@
+import { EditableNote } from './EditableNote';
 import { GrowthNoteText } from './GrowthNoteText';
 import { ArrowLeft, ArrowUpRight, Compass, Globe2, Sprout, Workflow } from 'lucide-react';
 import { DepthScene } from './DepthScene';
@@ -57,6 +58,7 @@ export function ThoughtDetail({ topic }: { topic: (typeof thoughtTopics)[number]
       </div>
       {topic.id === 'growth' && (
         <>
+          <EditableNote id="health">
           <article className="reader-paper relative mt-8 max-w-2xl rounded-sm bg-amber-100 px-6 py-7 text-stone-900 shadow-lg sm:px-8">
             <span aria-hidden="true" className="absolute -top-2 left-8 h-4 w-16 -rotate-3 bg-amber-300/80" />
             <h2 className="text-xl font-bold">三种值得提前积累的健康储备</h2>
@@ -71,7 +73,8 @@ export function ThoughtDetail({ topic }: { topic: (typeof thoughtTopics)[number]
             </div>
             <a className="mt-5 inline-block text-sm text-stone-700 underline underline-offset-4" href="https://www.xiaohongshu.com/explore/6afebee50000000023013a44?xsec_token=AB1_mhXu0Myo6blLPnVyDS9qVNgjsz7Cb_8E2y8WenDhw%3D&amp;xsec_source=pc_user">原视频 ·「治愈果（kakki在说啥）」↗</a>
           </article>
-          <GrowthNoteText />
+          </EditableNote>
+          <EditableNote id="growth"><GrowthNoteText /></EditableNote>
         </>
       )}
     </article>
