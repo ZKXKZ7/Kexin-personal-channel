@@ -171,7 +171,7 @@ export function GrowthNoteText() {
           </div>
         </div>
         <p className="mt-4 leading-relaxed"><strong>日常练习。</strong>每周至少锻炼两次，亲手试用 Claude Code 等工具，找机会直接用英语交流。尤其在使用 AI 时，判断结果好在哪里、还缺什么，是人要练的本事。</p>
-        <a className="mt-5 inline-block text-sm text-stone-700 underline underline-offset-4" href="https://www.xiaohongshu.com/explore/6b030edc0000000009020a3c?xsec_token=ABkVwEP4vW9vXxQkbo68OdGqgn7EBdoYZ5Dtx9UzEk4tA%3D&amp;xsec_source=pc_share">原视频 ·「阿布布的思考笔记」↗</a>
+        <a className="mt-5 inline-block text-sm text-stone-700 underline underline-offset-4" href="https://www.xiaohongshu.com/discovery/item/6b05b034000000002a02aa1b?source=webshare&amp;xhsshare=pc_web&amp;xsec_token=ABH-zh9fc6h_FKohAadzLNlbteoh0N4sxcnTrWsRDycGQ=&amp;xsec_source=pc_share">灵感来自「阿布布的思考笔记」↗</a>
       </article>
       <aside className="reader-tools" aria-label="便签标记工具">
         <div className="reader-pens">
