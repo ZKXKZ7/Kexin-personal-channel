@@ -1,3 +1,5 @@
+import { BookOpen, Brain, CheckCheck, FileQuestion, Layers, RotateCcw, Wrench, ArrowDown, ArrowRight } from 'lucide-react';
+import './AgentKnowledge.css';
 import { useState } from 'react';
 
 const chapters = [
@@ -55,45 +57,43 @@ const stops = [
   { name: 'Harness', concept: '执行控制层', example: '从读第一段到查完附录，Harness 始终记录已读材料、调度工具、回传结果并判断何时停止。运行环境提供文件与算力，沙箱限制可访问的范围。', refs: [[3,0],[3,1],[3,2],[3,3],[2,0],[2,2]] },
 ];
 
+const icons = [FileQuestion, BookOpen, Brain, Wrench, CheckCheck, Layers];
+const outputs = ['一份明确的评审要求', '带出处的论文片段', '读取实验表的请求', '表格数据与页码', '逐项标注证据的评审结论', '可继续执行的任务状态'];
+
 export function AgentKnowledge() {
   const [selected, select] = useState(0);
   const stop = stops[selected];
-  function node(i: number) {
-    const item = stops[i];
-    return <button type="button" aria-pressed={selected === i} aria-controls="agent-map-detail" onClick={() => select(i)}
-      className={`w-full rounded-xl border px-3 py-3 text-left focus-visible:outline focus-visible:outline-2 ${selected === i ? 'border-violet-400 bg-violet-400/20' : 'border-slate-400/40 hover:border-violet-400'}`}>
-      <strong className="block">{item.name}</strong><span className="text-xs opacity-80">{item.concept}</span>
+  const Icon = icons[selected];
+  function node(index: number) {
+    const NodeIcon = icons[index];
+    return <button type="button" className="ak-node" aria-pressed={selected === index} aria-controls="agent-map-detail" onClick={() => select(index)}>
+      <NodeIcon size={19} aria-hidden="true" /><strong>{stops[index].name}</strong>
     </button>;
   }
-  return (
-    <section className="depth-panel relief-card mt-6 rounded-2xl border p-5 sm:p-8">
-      <h2 className="text-2xl font-semibold">AI Agent 技术体系知识地图</h2>
-      <p className="mb-6 mt-2">一篇论文的创新有证据吗？点选图中节点，看 Agent 怎样找到依据。</p>
-      <div className="mx-auto max-w-3xl">
+  return <section className="ak-map">
+    <header><h2>AI Agent 知识地图</h2><p>从「这篇论文的创新有证据吗？」到一份附有出处的评审结论。</p></header>
+    <div className="ak-layout">
+      <div className="ak-diagram" aria-label="任务执行流程">
         {node(0)}
-        <p className="my-2 text-center text-sm">↓ 目标和验收要求进入执行循环</p>
-        <div className="rounded-2xl border border-dashed border-violet-400/70 p-3 sm:p-5">
-          {node(5)}
-          <p className="my-3 text-center text-sm">↓ 组织每一轮推理与行动</p>
-          <div className="grid items-center gap-1 sm:grid-cols-[1fr_auto_1fr_auto_1fr]">
-            {node(1)}<span className="text-center" aria-label="提供信息"><i className="hidden not-italic sm:inline">→</i><i className="not-italic sm:hidden">↓</i></span>
-            {node(2)}<span className="text-center" aria-label="请求执行"><i className="hidden not-italic sm:inline">→</i><i className="not-italic sm:hidden">↓</i></span>{node(3)}
-          </div>
-          <p className="mx-4 mb-3 rounded-b-xl border-x border-b border-violet-400/60 px-2 py-2 text-center text-sm">↶ 工具返回的内容进入下一轮上下文</p>
-          {node(4)}
+        <div className="ak-edge"><ArrowDown size={16}/> 带入目标与验收要求</div>
+        <div className="ak-loop">
+          <div className="ak-frame">{node(5)}<span>管理整个执行循环</span></div>
+          <div className="ak-route">{[1,2,3,4].map((i) => <div key={i}>{node(i)}{i < 4 && <div className="ak-edge"><ArrowDown size={15}/>{['提供背景','发出请求','返回证据'][i-1]}</div>}</div>)}</div>
+          <button type="button" className="ak-return" onClick={() => select(1)}><RotateCcw size={15}/> 证据不足，补充上下文再判断</button>
         </div>
-        <p className="my-3 text-center text-sm">↻ 缺证据，继续查找　·　↓ 达到停止条件，交付结论</p>
+        <div className="ak-finish"><ArrowDown size={16}/> 完成核查，交付结论</div>
       </div>
-      <article id="agent-map-detail" aria-live="polite" className="mt-6 border-t border-slate-400/30 pt-5">
-        <h3 className="text-xl font-semibold">{stop.name} · 论文评审中的这一步</h3>
-        <p className="my-3 leading-relaxed">{stop.example}</p>
-        <details key={selected}><summary className="cursor-pointer">展开相关概念</summary>
-          <dl className="mt-3 space-y-3">{stop.refs.map(([chapter,row]) => {
-            const [term,description] = chapters[chapter].rows[row];
-            return <div key={term}><dt className="font-semibold">{term}</dt><dd className="leading-relaxed">{description}</dd></div>;
-          })}</dl>
-        </details>
+      <article id="agent-map-detail" className="ak-detail" aria-live="polite">
+        <Icon className="ak-symbol" size={32}/><h3>{stop.name}</h3>
+        <p className="ak-terms">{stop.concept}</p>
+        <p>{stop.example}</p>
+        <div className="ak-output"><span>这一步的产出</span><strong>{outputs[selected]}</strong></div>
+        <details key={selected}><summary>查看相关概念</summary><dl>{stop.refs.map(([chapter,row]) => {
+          const [term,description] = chapters[chapter].rows[row];
+          return <div key={term}><dt>{term}</dt><dd>{description}</dd></div>;
+        })}</dl></details>
+        <button type="button" className="ak-next" onClick={() => select(selected >= 4 ? 0 : selected + 1)}>{selected >= 4 ? '回到任务起点' : '下一步 · '+stops[selected+1].name}<ArrowRight size={16}/></button>
       </article>
-    </section>
-  );
+    </div>
+  </section>;
 }
