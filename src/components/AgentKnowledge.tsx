@@ -57,17 +57,6 @@ export function AgentKnowledge() {
           ))}</dl>
         </details>
       ))}
-      <h3 className="mt-5 text-xl font-semibold">案例 · 双活数据中心的模型一致性为何下降？</h3>
-      <ol className="my-4 list-decimal space-y-2 pl-6 leading-relaxed">
-        <li>界定目标。对照基线定位一致性下降的原因，约定复跑时同时比较模型一致性、通信开销与故障恢复表现。</li>
-        <li>准备证据。读取论文、架构文档、历史实验记录和代码。用实验分析 Skill 统一比较方法，在有相同依赖和数据的隔离环境中复现。</li>
-        <li>执行与纠错。Harness 调度文件、Shell 和 Python 工具，把每次运行的日志送回模型。模型据此修正假设、修改代码并重跑；触及受限配置时交由人确认。</li>
-        <li>验收与交付。用相同配置比较修复前后的指标，检查回归，随结论附上差异、日志和图表。证据不足时记录未解问题。</li>
-      </ol>
-      <h3 className="mt-6 text-xl font-semibold">学习与产品拆解</h3>
-      <p className="my-3 leading-relaxed">先用一篇论文练习 Token、窗口和 Prompt，再加入检索、记忆和函数调用；把重复步骤整理成 Skill 与工作流，再尝试执行循环和多角色协作。最后用 Harness、评估、可观测性和护栏检查系统能否稳定交付。</p>
-      <p className="leading-relaxed">用同一项任务拆解 Codex、Claude Code 或 Agents SDK：观察它们如何提供上下文、调用工具、处理失败和验收结果。也可以把这组问题带到研究助手、浏览器助手和企业流程中，考察哪些工作适合交给 Agent，哪些决定需要人参与。</p>
-      <a className="mt-5 inline-block underline underline-offset-4" href="https://chatgpt.com/share/6b066741-dd24-83ec-93f1-50368c257941">阅读原始对话《AI知识》 ↗</a>
     </section>
   );
 }
