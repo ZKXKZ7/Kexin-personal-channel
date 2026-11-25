@@ -151,11 +151,18 @@ export function Climbing({ standalone = false, communityGyms = emptyGyms }: { st
         const label = `${item.name} · ${count} 次到访`;
         const button = footprintIcon(count, label);
         const select = () => {
-          if (gym) { setError(''); map.current?.setZoomAndCenter(16, position); }
+          if (gym) { setError(''); setFocus({ ...gym }); map.current?.setZoomAndCenter(16, position); }
           else setCity({ ...item, lng: position[0], lat: position[1], coordinateSystem: 'gcj02' });
         };
         button.addEventListener('click', select);
-        const marker = new amap.Marker({ map: map.current, position, content: button, anchor: 'center', bubble: false, title: label });
+        const selected = Boolean(gym && focus && focus.name === gym.name && focus.lng === gym.lng && focus.lat === gym.lat);
+        if (selected) {
+          const caption = document.createElement('span');
+          caption.className = 'atlas-gym-label';
+          caption.textContent = label;
+          button.appendChild(caption);
+        }
+        const marker = new amap.Marker({ map: map.current, position, content: button, anchor: 'center', bubble: false, title: label, zIndex: selected ? 200 : 100 });
         markers.push(marker);
       });
       if (point) {
@@ -166,7 +173,7 @@ export function Climbing({ standalone = false, communityGyms = emptyGyms }: { st
     }
     drawMarkers().catch(error => { if (!cancelled) setError(error.message); });
     return () => { cancelled = true; markers.forEach(marker => marker.setMap(null)); };
-  }, [city, gyms, communityGyms, point, mapReady, useAMap]);
+  }, [city, gyms, communityGyms, point, focus, mapReady, useAMap]);
 
   function parseCoordinates(value: string) {
     const parts = value.trim().split(/[,，\s]+/);
@@ -198,6 +205,8 @@ export function Climbing({ standalone = false, communityGyms = emptyGyms }: { st
     try {
       const position: Position = gym.coordinateSystem === 'gcj02' ? [gym.lng, gym.lat]
         : (await convertLegacyPositions([[gym.lng, gym.lat]]))[0];
+      setFocus({ ...gym });
+      setError('');
       map.current?.setZoomAndCenter(16, position);
     } catch (error) { setError(error instanceof Error ? error.message : '定位失败'); }
   }
