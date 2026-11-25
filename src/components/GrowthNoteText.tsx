@@ -159,12 +159,18 @@ export function GrowthNoteText() {
     <section className="reader-note">
       <article className="reader-paper relative rounded-sm bg-amber-100 px-6 py-7 text-stone-900 shadow-lg sm:px-8">
         <span aria-hidden="true" className="absolute -top-2 left-8 h-4 w-16 -rotate-3 bg-amber-300/80" />
+        <h2 className="text-xl font-bold">AI 时代，哪些投入会让人有更多选择？</h2>
+        <p className="mt-4 leading-relaxed">作者用游戏“换版本”来解释优先级的变化。衡量一项投入，可以问三个问题：我还有多少精力做事？工具把我的能力扩展到了哪里？我能直接接触到哪些人和机会？</p>
         <div ref={body} className="select-text">
-          <h2 className="text-xl font-bold">{decorate(lines[0][0])}</h2>
+          <p className="mt-4 font-semibold">{decorate(lines[0][0])}</p>
           <div className="mt-4 space-y-3 text-base leading-relaxed">
-            {lines.slice(1).map(([label,text]) => <p key={text}><strong>{decorate(label)}</strong>{decorate(text)}</p>)}
+            <p>{decorate(lines[1][1])}</p>
+            <ol className="list-decimal space-y-2 pl-6">
+              {lines.slice(2).map(([label,text]) => <li key={label}><strong>{decorate(label)}</strong>{decorate(text)}</li>)}
+            </ol>
           </div>
         </div>
+        <p className="mt-4 leading-relaxed"><strong>作者给出的练习：</strong>每周至少锻炼两次，亲手试用 Claude Code 等工具，找机会直接用英语交流。尤其在使用 AI 时，判断结果好在哪里、还缺什么，是人要练的本事。</p>
         <a className="mt-5 inline-block text-sm text-stone-700 underline underline-offset-4" href="https://www.xiaohongshu.com/explore/6b030edc0000000009020a3c?xsec_token=ABkVwEP4vW9vXxQkbo68OdGqgn7EBdoYZ5Dtx9UzEk4tA%3D&amp;xsec_source=pc_share">灵感来自「阿布布的思考笔记」↗</a>
       </article>
       <aside className="reader-tools" aria-label="便签标记工具">
