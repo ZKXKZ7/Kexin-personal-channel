@@ -85,7 +85,7 @@
   text-shadow: 0 2px #080e18, 0 4px 10px var(--reflection);
 }
 
-main > article:has(.career-card) { max-width: 64rem; }
+main > article:has(.career-card) { max-width: 74rem; }
 
 main > article:has(.career-card) > .depth-stage {
   min-height: clamp(9rem, 19vw, 13rem);
@@ -102,4 +102,19 @@ main > article:has(.career-card) > .depth-stage {
 
 @media (max-width: 560px) {
   .career-highlights { grid-template-columns: minmax(0, 1fr); }
+}
+
+.career-highlight-title { font-size: 1.12rem; line-height: 1.45; }
+.career-points { margin-top: .75rem; }
+.career-points > div {
+  display: grid;
+  grid-template-columns: 4.2em minmax(0, 1fr);
+  gap: .75rem;
+  padding-block: .5rem;
+  border-top: 1px solid var(--edge);
+}
+.career-points dt { color: var(--metal); font-size: .85rem; line-height: 1.8; }
+.career-points dd { color: #d0dae6; font-size: .96rem; line-height: 1.65; }
+@media (max-width: 800px) {
+  .career-highlights { grid-template-columns: 1fr; }
 }
