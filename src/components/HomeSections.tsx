@@ -3,7 +3,7 @@ import { ArrowRight, Layers, Compass, PenLine } from 'lucide-react';
 const sections = [
   { href: '#/portfolio', number: '01', title: 'Portfolio', subtitle: '实践与探索', description: '从校园到职业探索，记录我的学习、实践与成长。', detail: 'BUPT · Career', icon: Layers, color: 'text-sky-300', background: 'from-sky-400/25' },
   { href: '#/life-log', number: '02', title: 'Life Log', subtitle: '生活的切片', description: '在旅途、音乐与运动之间，发现生活的不同节奏。', detail: 'Travel · Music · Sports · French', icon: Compass, color: 'text-emerald-300', background: 'from-emerald-400/25' },
-  { href: '#/thoughts', number: '03', title: 'Thoughts', subtitle: '观察与思考', description: '关于产品、AI 与人的观察，以及仍在探索的问题。', detail: 'Product · AI · Culture', icon: PenLine, color: 'text-violet-300', background: 'from-violet-400/25' },
+  { href: '#/thoughts', number: '03', title: 'Insights', subtitle: '观察与思考', description: '关于产品、AI 与人的观察，以及仍在探索的问题。', detail: 'Product · AI · Culture', icon: PenLine, color: 'text-violet-300', background: 'from-violet-400/25' },
 ];
 
 export function HomeSections() {
