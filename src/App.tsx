@@ -18,8 +18,15 @@ import { BuptChapter } from './components/BuptChapter';
 import { lifeInterestTrips, travelTrips, portfolioModules, portfolioModuleToTrip } from './data/content';
 
 // Hash routes also work on static hosts and under a GitHub Pages repository path.
-const sectionTitles: Record<string, string> = { portfolio: 'Portfolio', 'life-log': 'Life Log', thoughts: 'Insights', contact: 'Contact' };
-const readRoute = () => window.location.hash.replace(/^#\/?/, '').replace(/\/$/, '');
+const sectionTitles: Record<string, string> = { portfolio: 'Portfolio', 'life-log': 'Life Log', thoughts: 'Insights' };
+const readRoute = () => {
+  const route = window.location.hash.replace(/^#\/?/, '').replace(/\/$/, '');
+  if (route === 'contact') {
+    window.history.replaceState(window.history.state, '', '#/');
+    return '';
+  }
+  return route;
+};
 
 export default function App() {
   const [route, setRoute] = useState(readRoute);
@@ -43,9 +50,8 @@ export default function App() {
   const isDetail = Boolean(trip);
   const tone = moduleId === 'bupt' ? 'lime'
     : section === 'thoughts' || route === 'life-log/sports/dance' ? 'violet'
-    : section === 'contact' ? 'amber'
     : section === 'life-log' ? 'mint' : 'blue';
-  const knownRoute = !route || (!id && ['portfolio', 'life-log', 'thoughts', 'contact'].includes(section)) || isDetail || isTravelLog || Boolean(thought);
+  const knownRoute = !route || (!id && ['portfolio', 'life-log', 'thoughts'].includes(section)) || isDetail || isTravelLog || Boolean(thought);
   const title = thought?.title ?? (isTravelLog ? 'Travel' : undefined) ?? trip?.name ?? sectionTitles[section] ?? (knownRoute ? 'Home' : 'Page not found');
 
   useEffect(() => {
@@ -90,14 +96,13 @@ export default function App() {
             </div>
           ) : <>
             {!route && <><Hero /><HomeSections /></>}
-            {route && section !== 'contact' && <div className="mx-auto max-w-5xl px-4 pt-8 sm:px-6 lg:px-8"><a href="#/" className="inline-flex items-center gap-2 text-sm text-sky-300 hover:text-white"><ArrowLeft className="h-4 w-4" aria-hidden />返回首页</a></div>}
+            {route && <div className="mx-auto max-w-5xl px-4 pt-8 sm:px-6 lg:px-8"><a href="#/" className="inline-flex items-center gap-2 text-sm text-sky-300 hover:text-white"><ArrowLeft className="h-4 w-4" aria-hidden />返回首页</a></div>}
             {(section === 'portfolio') && <Portfolio />}
             {(section === 'life-log') && <LifeLog />}
             {(section === 'thoughts') && <Thoughts />}
-            {section === 'contact' && <Footer standalone />}
           </>}
         </main>
-        {section !== 'contact' && <Footer />}
+        <Footer />
       </div>
     </div>
   );
