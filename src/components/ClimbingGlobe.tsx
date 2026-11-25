@@ -87,6 +87,10 @@ export default function ClimbingGlobe({ city, point, pins, onPick, focus }: Prop
     if (point) {
       const element = document.createElement('span');
       element.className = 'atlas-globe-draft';
+      const caption = document.createElement('span');
+      caption.className = 'atlas-gym-label';
+      caption.textContent = point.name;
+      element.appendChild(caption);
       markers.push(new Marker({ element }).setLngLat([point.lng, point.lat]).addTo(instance));
     }
     return () => markers.forEach(marker => marker.remove());

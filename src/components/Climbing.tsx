@@ -88,6 +88,13 @@ export function Climbing({ standalone = false, communityGyms = emptyGyms }: { st
   const [mapReady, setMapReady] = useState(false);
   const [mapAttempt, setMapAttempt] = useState(0);
   const [cityLoading, setCityLoading] = useState(false);
+  const sidebar = useRef<HTMLElement>(null);
+  useEffect(() => {
+    if (point && sidebar.current) {
+      sidebar.current.scrollTop = 0;
+      if (window.matchMedia('(max-width: 1023px)').matches) sidebar.current.scrollIntoView({ block: 'nearest' });
+    }
+  }, [point]);
   const container = useRef<HTMLDivElement>(null);
   const map = useRef<AMapInstance | null>(null);
   const currentCity = useRef(city); currentCity.current = city;
@@ -117,6 +124,7 @@ export function Climbing({ standalone = false, communityGyms = emptyGyms }: { st
       instance.addControl(new amap.Scale());
       instance.addControl(new amap.ToolBar({ position: 'RB' }));
       instance.on('click', event => {
+        if (currentCity.current) setName('');
         if (currentCity.current) setPoint({ name: '', lat: event.lnglat.getLat(), lng: event.lnglat.getLng(), coordinateSystem: 'gcj02' });
       });
       setMapReady(true);
@@ -167,13 +175,17 @@ export function Climbing({ standalone = false, communityGyms = emptyGyms }: { st
       });
       if (point) {
         const button = footprintIcon(1, '待保存的位置');
+        const caption = document.createElement('span');
+        caption.className = 'atlas-gym-label';
+        caption.textContent = name.trim() || '待填写岩馆名称';
+        button.appendChild(caption);
         button.style.background = '#fbbf24'; button.style.borderColor = '#fde68a';
         markers.push(new amap.Marker({ map: map.current, position: [point.lng, point.lat], content: button, anchor: 'center', bubble: false }));
       }
     }
     drawMarkers().catch(error => { if (!cancelled) setError(error.message); });
     return () => { cancelled = true; markers.forEach(marker => marker.setMap(null)); };
-  }, [city, gyms, communityGyms, point, focus, mapReady, useAMap]);
+  }, [city, gyms, communityGyms, point, name, focus, mapReady, useAMap]);
 
   function parseCoordinates(value: string) {
     const parts = value.trim().split(/[,，\s]+/);
@@ -240,12 +252,17 @@ export function Climbing({ standalone = false, communityGyms = emptyGyms }: { st
           catch { setSyncStatus('浏览器无法保存同步设置'); }
         }}>开启单向同步</button>}
       {!syncToken && syncStatus && <p role="status">{syncStatus}</p>}
-    </div>}</div>}<header className="depth-stage mb-8 mt-8 gap-4"><DepthScene /><div><h1 className="depth-title font-semibold">{city ? city.name : standalone ? '共享攀岩地图' : <span className="font-serif font-normal tracking-[-0.045em]">The Climbing <em className="text-emerald-200">Atlas</em></span>}</h1></div><p className="text-sm text-slate-400"><b className="text-2xl text-emerald-200">{new Set(mappedGyms.map(g => g.city)).size}</b> 点亮城市 <span className="mx-4">/</span><b className="text-2xl text-emerald-200">{mappedGyms.length}</b> 岩馆足迹 <span className="mx-4">/</span><b className="text-2xl text-emerald-200">{mappedGyms.reduce((total, gym) => total + visitCount(gym), 0)}</b> 次到访</p></header><div className="depth-panel grid overflow-hidden rounded-3xl border border-white/10 bg-[#0b141b] lg:grid-cols-[1fr_320px]"><div className="relative min-w-0">{useAMap ? <><p className="pointer-events-none absolute left-14 top-3 z-10 rounded-lg bg-slate-950/85 px-3 py-2 text-xs text-emerald-100">亮点为已到访 · 点越大，到访越多</p><div ref={container} className="z-0 h-[55svh] min-h-96 lg:h-[70svh]" />{!mapReady && <div role="status" className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-slate-950/90 p-8 text-center text-sm text-slate-300">{mapError || '正在加载高德地图…'}{mapError && <button className="rounded-lg border border-emerald-300/40 px-4 py-2 text-emerald-200" onClick={() => setMapAttempt(value => value + 1)}>重新加载</button>}</div>}</> : <><Suspense fallback={<div className="grid h-[58svh] place-items-center">正在加载地图…</div>}><ClimbingGlobe city={city || undefined} pins={pins} point={point} focus={focus} onPick={position => { if (city) {
-        setPoint(position);
+    </div>}</div>}<header className="depth-stage mb-8 mt-8 gap-4"><DepthScene /><div><h1 className="depth-title font-semibold">{city ? city.name : standalone ? '共享攀岩地图' : <span className="font-serif font-normal tracking-[-0.045em]">The Climbing <em className="text-emerald-200">Atlas</em></span>}</h1></div><p className="text-sm text-slate-400"><b className="text-2xl text-emerald-200">{new Set(mappedGyms.map(g => g.city)).size}</b> 点亮城市 <span className="mx-4">/</span><b className="text-2xl text-emerald-200">{mappedGyms.length}</b> 岩馆足迹 <span className="mx-4">/</span><b className="text-2xl text-emerald-200">{mappedGyms.reduce((total, gym) => total + visitCount(gym), 0)}</b> 次到访</p></header><div className="depth-panel grid overflow-hidden rounded-3xl border border-white/10 bg-[#0b141b] lg:grid-cols-[1fr_320px]"><div className="relative min-w-0">{useAMap ? <><p className="pointer-events-none absolute left-14 top-3 z-10 rounded-lg bg-slate-950/85 px-3 py-2 text-xs text-emerald-100">亮点为已到访 · 点越大，到访越多</p><div ref={container} className="z-0 h-[55svh] min-h-96 lg:h-[70svh]" />{!mapReady && <div role="status" className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-slate-950/90 p-8 text-center text-sm text-slate-300">{mapError || '正在加载高德地图…'}{mapError && <button className="rounded-lg border border-emerald-300/40 px-4 py-2 text-emerald-200" onClick={() => setMapAttempt(value => value + 1)}>重新加载</button>}</div>}</> : <><Suspense fallback={<div className="grid h-[58svh] place-items-center">正在加载地图…</div>}><ClimbingGlobe city={city || undefined} pins={pins} point={point && { ...point, name: name.trim() || '待填写岩馆名称' }} focus={focus} onPick={position => { if (city) {
+        setName(''); setPoint(position);
       } else {
         setGlobalEntry(true);
         setCoordinates(`${position.lat.toFixed(5)}, ${position.lng.toFixed(5)}`);
-      } }} /></Suspense>{!city && <p className="pointer-events-none absolute left-4 top-4 rounded-lg bg-slate-950/80 px-3 py-2 text-xs text-emerald-100">拖动旋转 · 点击亮点查看岩馆 · 点地球选城市位置</p>}</>}</div><aside className="relief-sidebar p-6 lg:max-h-[70svh] lg:overflow-y-auto"><p className="text-xs tracking-[.2em] text-emerald-300">{city ? 'CITY EXPLORER' : 'YOUR FOOTPRINTS'}</p><h2 className="mt-3 text-xl font-semibold">{city ? '收藏一家岩馆' : '选择一座城市'}</h2><p className="mb-6 mt-3 text-sm leading-6 text-slate-400">{city ? (city.global ? '搜索附近岩馆，或在地图上手动选点。' : '搜索岩馆或在地图上选点。') : '添加第一家去过的岩馆，就能点亮这座城市。'}</p>{city ? <><button onClick={() => setCity(null)} className="mb-5 text-sm text-emerald-300">← 返回地球</button>{city.global ? <div className="mb-4 space-y-2">
+      } }} /></Suspense>{!city && <p className="pointer-events-none absolute left-4 top-4 rounded-lg bg-slate-950/80 px-3 py-2 text-xs text-emerald-100">{mappedGyms.length ? '拖动旋转 · 点击亮点查看岩馆 · 点地球选城市位置' : '先选一座城市，记录你去过的第一家岩馆。'}</p>}</>}</div><aside ref={sidebar} className="relief-sidebar p-6 lg:max-h-[70svh] lg:overflow-y-auto">{city && point && <form onSubmit={e => { e.preventDefault(); if (!point || !name.trim()) return; if (gyms.some(g => (point.placeId && g.placeId === point.placeId) || (g.name === name.trim() && Math.abs(g.lat - point.lat) < 0.00001 && Math.abs(g.lng - point.lng) < 0.00001))) { setError('这家岩馆已经保存过了。'); return; } const gym = { ...point, id: crypto.randomUUID(), city: city.name, global: city.global, cityCenter: city.global ? { lng: city.lng, lat: city.lat } : undefined, name: name.trim(), note: note.trim() }; if (save([...gyms, gym])) { setFocus(gym); setPoint(null); setName(''); setNote(''); } }} className="mb-4 space-y-2 rounded-xl border border-amber-200/40 bg-slate-950 p-3">
+      <label className="block text-sm">岩馆名称<input required className="atlas-input" maxLength={80} value={name} onChange={e => setName(e.target.value)} placeholder="待填写岩馆名称" /></label>
+      <p className="text-xs text-slate-300">{point.address || (!point.name && `已选位置 ${point.lat.toFixed(5)}, ${point.lng.toFixed(5)}`)}</p>
+      <button disabled={!name.trim()} className="w-full rounded-lg bg-emerald-300 p-2 font-semibold text-slate-950 disabled:opacity-40">记录首次到访</button>
+      <details><summary className="cursor-pointer text-sm">添加笔记</summary><textarea aria-label="笔记" className="atlas-input" maxLength={500} value={note} onChange={e => setNote(e.target.value)} /></details>
+    </form>}<p className="text-xs tracking-[.2em] text-emerald-300">{city ? 'CITY EXPLORER' : 'YOUR FOOTPRINTS'}</p><h2 className="mt-3 text-xl font-semibold">{city ? '记录岩馆到访' : '选择一座城市'}</h2><p className="mb-6 mt-3 text-sm leading-6 text-slate-400">{city ? (city.global ? '搜索附近岩馆，或在地图上手动选点。' : '搜索岩馆或在地图上选点。') : '添加第一家去过的岩馆，就能点亮这座城市。'}</p>{city ? <><button onClick={() => setCity(null)} className="mb-5 text-sm text-emerald-300">← 返回地球</button>{city.global ? <div className="mb-4 space-y-2">
       <OverseasGymSearch key={city.name} city={city} onSelect={gym => {
         setPoint(gym);
         setName(gym.name);
@@ -265,9 +282,9 @@ export function Climbing({ standalone = false, communityGyms = emptyGyms }: { st
         const position = parseCoordinates(gymCoordinates);
         if (!position) { setError('请输入有效的岩馆坐标。'); return; }
         const selected = { name: '', ...position };
-        setPoint(selected); setFocus(selected); setError('');
+        setName(overseasQuery); setPoint(selected); setFocus(selected); setError('');
       }}>定位坐标</button>
-    </div> : <PlaceSearch key={city.name} city={city} onSelect={place => { setPoint(place); setName(place.name); setError(''); map.current?.setZoomAndCenter(16, [place.lng, place.lat]); }} />}<form onSubmit={e => { e.preventDefault(); if (!point || !name.trim()) return; if (gyms.some(g => (point.placeId && g.placeId === point.placeId) || (g.name === name.trim() && Math.abs(g.lat - point.lat) < 0.00001 && Math.abs(g.lng - point.lng) < 0.00001))) { setError('这家岩馆已经保存过了。'); return; } if (save([...gyms, { ...point, id: crypto.randomUUID(), city: city.name, global: city.global, cityCenter: city.global ? { lng: city.lng, lat: city.lat } : undefined, name: name.trim(), note: note.trim() }])) { setPoint(null); setName(''); setNote(''); } }} className="space-y-4"><p className="text-xs text-amber-200">{point ? `已选位置 ${point.lat.toFixed(5)}, ${point.lng.toFixed(5)}` : '请选择搜索结果，或在地图上点击选点'}</p>{point?.address && <p className="text-xs leading-5 text-slate-400">{point.address}</p>}<label className="block text-sm">岩馆名称<input required maxLength={80} value={name} onChange={e => setName(e.target.value)} className="atlas-input" placeholder="例如：我的第一家岩馆" /></label><label className="block text-sm">笔记<textarea maxLength={500} value={note} onChange={e => setNote(e.target.value)} className="atlas-input" placeholder="日期、线路、难度，或当天的心情" /></label><button disabled={!point || !name.trim()} className="w-full rounded-xl bg-emerald-300 p-3 font-semibold text-slate-950 disabled:opacity-30">保存岩馆 · 点亮城市</button></form>{standalone && communityGyms.some(g => g.city === city.name) && <ul className="mt-4 space-y-2">
+    </div> : <PlaceSearch key={city.name} city={city} onSelect={place => { setPoint(place); setName(place.name); setError(''); map.current?.setZoomAndCenter(16, [place.lng, place.lat]); }} />}{standalone && communityGyms.some(g => g.city === city.name) && <ul className="mt-4 space-y-2">
       {communityGyms.filter(g => g.city === city.name).map((gym, index) => <li key={gym.id + ':' + index}>
         <button type="button" className="text-left text-sm text-emerald-200" onClick={() => void focusGym(gym)}>{gym.name} ↗</button>
       </li>)}
@@ -283,6 +300,6 @@ export function Climbing({ standalone = false, communityGyms = emptyGyms }: { st
                       </ul>
                     </details>
                   )}
-                  <button type="button" className="mt-3 block rounded-lg border border-emerald-300/30 px-3 py-2 text-xs text-emerald-200 hover:bg-emerald-300/10" onClick={() => logVisit(g)}>记录本次到访</button>{g.address && <p className="mt-2 text-xs text-slate-400">{g.address}</p>}<p className="mt-2 whitespace-pre-wrap break-words text-xs text-slate-400">{g.note}</p><button className="mt-3 text-xs text-slate-500" onClick={() => { if (window.confirm(`删除「${g.name}」的记录？`)) save(gyms.filter(x => x.id !== g.id)); }}>删除记录</button></li>)}</ul></> : <><div className="grid grid-cols-2 gap-2">{allCities.map(c => <button key={c.name} onClick={() => setCity(c)} className={`rounded-xl border p-3 text-sm ${mappedGyms.some(g => g.city === c.name) ? 'border-emerald-300/40 bg-emerald-300/10 text-emerald-200' : 'border-white/10 text-slate-400'}`}>{c.name}</button>)}</div><form className="mt-6 space-y-2" onSubmit={e => { e.preventDefault(); void openCity(); }}>
+                  <button type="button" className="mt-3 block rounded-lg border border-emerald-300/30 px-3 py-2 text-xs text-emerald-200 hover:bg-emerald-300/10" onClick={() => logVisit(g)}>再记一次到访</button>{g.address && <p className="mt-2 text-xs text-slate-400">{g.address}</p>}<p className="mt-2 whitespace-pre-wrap break-words text-xs text-slate-400">{g.note}</p><button className="mt-3 text-xs text-slate-500" onClick={() => { if (window.confirm(`删除「${g.name}」的记录？`)) save(gyms.filter(x => x.id !== g.id)); }}>删除记录</button></li>)}</ul></> : <><div className="grid grid-cols-2 gap-2">{allCities.map(c => <button key={c.name} onClick={() => setCity(c)} className={`rounded-xl border p-3 text-sm ${mappedGyms.some(g => g.city === c.name) ? 'border-emerald-300/40 bg-emerald-300/10 text-emerald-200' : 'border-white/10 text-slate-400'}`}>{c.name}</button>)}</div><form className="mt-6 space-y-2" onSubmit={e => { e.preventDefault(); void openCity(); }}>
     <label className="flex gap-2 text-sm text-slate-300"><input type="checkbox" checked={globalEntry} onChange={e => setGlobalEntry(e.target.checked)} /> 用坐标添加全球城市</label><label className="text-xs text-slate-400">{globalEntry ? '城市名称（可附国家）' : '查找中国城市'}<input className="atlas-input" required value={custom} onChange={e => setCustom(e.target.value)} placeholder={globalEntry ? '例如：东京，日本' : '输入城市名称'} maxLength={80} /></label>{globalEntry && <><a className="block text-sm text-emerald-300 underline" href="https://www.openstreetmap.org/" target="_blank" rel="noreferrer">在 OpenStreetMap 查找城市</a><label className="block text-xs text-slate-400">城市坐标（纬度, 经度）<input className="atlas-input" required value={coordinates} onChange={e => setCoordinates(e.target.value)} placeholder="35.68, 139.69" /></label></>}<button className="mt-3 text-sm text-emerald-300" disabled={cityLoading || !custom.trim()}>{cityLoading ? '查找中…' : '进入城市 →'}</button></form></>}{error && <p role="alert" className="mt-4 text-sm text-red-300">{error}</p>}<p className="mt-8 border-t border-white/10 pt-4 text-xs leading-5 text-slate-500">{standalone ? '新记录先存为草稿。点击发布后，其他人才能看到。' : '记录保存在当前浏览器，不会自动同步到其他设备。清除浏览器数据会移除记录。'}</p></aside></div></div></div>;
 }
