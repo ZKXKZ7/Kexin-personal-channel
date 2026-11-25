@@ -1,3 +1,4 @@
+import { AgentKnowledge } from './AgentKnowledge';
 import { EditableNote } from './EditableNote';
 import { GrowthNoteText } from './GrowthNoteText';
 import { ArrowLeft, ArrowUpRight, Compass, Globe2, Sprout, Workflow } from 'lucide-react';
@@ -56,6 +57,7 @@ export function ThoughtDetail({ topic }: { topic: (typeof thoughtTopics)[number]
         <span className={`relief-emblem grid h-12 w-12 shrink-0 place-items-center ${topic.color}`}><Icon size={24} aria-hidden="true" /></span>
         <p className="relief-inset flex-1 p-4 leading-relaxed text-slate-200">{topic.summary}</p>
       </div>
+      {topic.id === 'ai' && <AgentKnowledge />}
       {topic.id === 'growth' && (
         <>
           <EditableNote id="health">
