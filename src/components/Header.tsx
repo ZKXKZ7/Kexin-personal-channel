@@ -5,6 +5,7 @@ const nav = [
   { href: '#/portfolio', label: 'Portfolio' },
   { href: '#/life-log', label: 'Life Log' },
   { href: '#/thoughts', label: 'Insights' },
+  { href: '#/contact', label: 'Contact' },
 ];
 
 function subscribeToRoute(update: () => void) {
