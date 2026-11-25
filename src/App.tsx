@@ -18,7 +18,7 @@ import { BuptChapter } from './components/BuptChapter';
 import { lifeInterestTrips, travelTrips, portfolioModules, portfolioModuleToTrip } from './data/content';
 
 // Hash routes also work on static hosts and under a GitHub Pages repository path.
-const sectionTitles: Record<string, string> = { portfolio: 'Portfolio', 'life-log': 'Life Log', thoughts: 'Thoughts', contact: 'Contact' };
+const sectionTitles: Record<string, string> = { portfolio: 'Portfolio', 'life-log': 'Life Log', thoughts: 'Insights', contact: 'Contact' };
 const readRoute = () => window.location.hash.replace(/^#\/?/, '').replace(/\/$/, '');
 
 export default function App() {
