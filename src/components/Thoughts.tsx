@@ -6,7 +6,7 @@ export const thoughtTopics = [
   { id: 'product', title: '产品', label: 'Product', icon: Compass, color: 'text-sky-300', summary: '把“用户能完成什么任务”放在指标之前；增长是结果，不是起点。' },
   { id: 'ai', title: 'AI', label: '人机协作', icon: Workflow, color: 'text-violet-300', summary: '更关注人机协作界面与失败兜底；模型会升级，但责任边界要写得清楚。' },
   { id: 'internationalization', title: '国际化', label: 'Internationalization', icon: Globe2, color: 'text-emerald-300', summary: '文化差异藏在默认值里；用本地用户的“理所当然”反推你的产品假设。' },
-  { id: 'growth', title: '认知', label: 'insights', icon: Sprout, color: 'text-amber-300', summary: '记录值得长期练习的能力，以及它们怎样改变日常生活里的选择。' },
+  { id: 'growth', title: '思考', label: 'Thoughts', icon: Sprout, color: 'text-amber-300', summary: '记录值得长期练习的能力，以及它们怎样改变日常生活里的选择。' },
 ];
 
 export function Thoughts() {
@@ -15,7 +15,7 @@ export function Thoughts() {
       <header className="depth-stage mb-10 space-y-3">
         <DepthScene />
         <p className="depth-kicker text-sm font-semibold">思考洞察</p>
-        <h1 className="depth-title font-bold">Thoughts</h1>
+        <h1 className="depth-title font-bold">Insights</h1>
       </header>
       <ul className="grid gap-6 sm:grid-cols-2">
         {thoughtTopics.map(({ id, title, label, icon: Icon, color, summary }) => (
@@ -44,7 +44,7 @@ export function ThoughtDetail({ topic }: { topic: (typeof thoughtTopics)[number]
   return (
     <article className="mx-auto max-w-5xl px-4 py-10 sm:px-8">
       <a href="#/thoughts" className="depth-kicker inline-flex items-center gap-2 text-sm hover:underline">
-        <ArrowLeft size={16} aria-hidden="true" />返回 Thoughts
+        <ArrowLeft size={16} aria-hidden="true" />返回 Insights
       </a>
       <header className="depth-stage mb-8 mt-5 space-y-3">
         <DepthScene />
