@@ -21,10 +21,6 @@ import { lifeInterestTrips, travelTrips, portfolioModules, portfolioModuleToTrip
 const sectionTitles: Record<string, string> = { portfolio: 'Portfolio', 'life-log': 'Life Log', thoughts: 'Insights' };
 const readRoute = () => {
   const route = window.location.hash.replace(/^#\/?/, '').replace(/\/$/, '');
-  if (route === 'contact') {
-    window.history.replaceState(window.history.state, '', '#/');
-    return '';
-  }
   return route;
 };
 
@@ -37,6 +33,8 @@ export default function App() {
     return () => window.removeEventListener('hashchange', update);
   }, []);
 
+  const isContact = route === 'contact';
+  const isHome = !route || isContact;
   const [section, id] = route.split('/');
   const isLegacyMargin = section === 'portfolio' && id === 'margin';
   const moduleId = isLegacyMargin ? 'bupt' : id;
@@ -51,15 +49,16 @@ export default function App() {
   const tone = moduleId === 'bupt' ? 'lime'
     : section === 'thoughts' || route === 'life-log/sports/dance' ? 'violet'
     : section === 'life-log' ? 'mint' : 'blue';
-  const knownRoute = !route || (!id && ['portfolio', 'life-log', 'thoughts'].includes(section)) || isDetail || isTravelLog || Boolean(thought);
+  const knownRoute = isHome || (!id && ['portfolio', 'life-log', 'thoughts'].includes(section)) || isDetail || isTravelLog || Boolean(thought);
   const title = thought?.title ?? (isTravelLog ? 'Travel' : undefined) ?? trip?.name ?? sectionTitles[section] ?? (knownRoute ? 'Home' : 'Page not found');
 
   useEffect(() => {
     document.title = `${title} | Kexin`;
     window.scrollTo({ top: 0, behavior: 'instant' });
     mainRef.current?.focus({ preventScroll: true });
+    if (isContact) document.getElementById('contact')?.focus();
     if (isLegacyMargin) document.getElementById('bupt-volunteering')?.scrollIntoView({ behavior: 'instant' });
-  }, [route, title, isLegacyMargin]);
+  }, [route, title, isContact, isLegacyMargin]);
 
   return (
     <div className="depth-site relative" data-tone={tone}>
@@ -95,15 +94,15 @@ export default function App() {
               </section>
             </div>
           ) : <>
-            {!route && <><Hero /><HomeSections /></>}
-            {route && <div className="mx-auto max-w-5xl px-4 pt-8 sm:px-6 lg:px-8"><a href="#/" className="inline-flex items-center gap-2 text-sm text-sky-300 hover:text-white"><ArrowLeft className="h-4 w-4" aria-hidden />返回首页</a></div>}
+            {isHome && <><Hero /><HomeSections /></>}
+            {!isHome && <div className="mx-auto max-w-5xl px-4 pt-8 sm:px-6 lg:px-8"><a href="#/" className="inline-flex items-center gap-2 text-sm text-sky-300 hover:text-white"><ArrowLeft className="h-4 w-4" aria-hidden />返回首页</a></div>}
             {(section === 'portfolio') && <Portfolio />}
             {(section === 'life-log') && <LifeLog />}
             {(section === 'thoughts') && <Thoughts />}
           </>}
         </main>
-        {!route ? (
-          <footer className="border-t border-white/10 px-4 py-6 text-center text-sm text-slate-400">
+        {isHome ? (
+          <footer id="contact" tabIndex={-1} className="border-t border-white/10 px-4 py-6 text-center text-sm text-slate-400">
             保持联系 <span aria-hidden="true" className="mx-2 text-slate-500">·</span>
             <a href="https://github.com/ZKXKZ7" className="text-sky-200 underline-offset-4 hover:underline focus-visible:underline">GitHub</a>
           </footer>
