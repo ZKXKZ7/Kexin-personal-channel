@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 const chapters = [
   {
     title: '模型怎样理解任务？',
@@ -44,19 +46,54 @@ const chapters = [
   },
 ];
 
+const stops = [
+  { name: '明确任务', concept: 'Query · Prompt', example: '读者问「这篇论文的创新有证据吗？」这是 Query。要求逐项列出主张、实验和页码，就给出了可验收的 Prompt。', refs: [[0,1],[0,2]] },
+  { name: '准备证据', concept: 'Context · RAG · Memory', example: '系统检索与创新点有关的段落，把它们和读者之前约定的评审标准放入本轮上下文。模型据此判断还缺哪张实验表。', refs: [[1,3],[0,0]] },
+  { name: '选择行动', concept: 'LLM · Skill · Workflow', example: '模型沿用论文评审 Skill 的方法，把每项贡献与实验逐一配对。若主张缺少依据，下一步就请求读取对应表格。', refs: [[1,0],[1,1],[2,1]] },
+  { name: '调用工具', concept: 'Tool · Function Calling · MCP', example: '模型给出文件和页码，运行框架检查权限，再调用读取工具。若论文保存在外部资料库，也可以通过 MCP 接入。', refs: [[1,2],[3,1]] },
+  { name: '检验结果', concept: 'Feedback · Evaluation', example: '工具返回表格后，模型检查实验是否支持主张。缺少对照组就继续查附录；证据齐全或资料已查尽，就交付带页码和局限的结论。', refs: [[4,0],[4,1],[4,2],[4,3]] },
+  { name: 'Harness', concept: '执行控制层', example: '从读第一段到查完附录，Harness 始终记录已读材料、调度工具、回传结果并判断何时停止。运行环境提供文件与算力，沙箱限制可访问的范围。', refs: [[3,0],[3,1],[3,2],[3,3],[2,0],[2,2]] },
+];
+
 export function AgentKnowledge() {
+  const [selected, select] = useState(0);
+  const stop = stops[selected];
+  function node(i: number) {
+    const item = stops[i];
+    return <button type="button" aria-pressed={selected === i} aria-controls="agent-map-detail" onClick={() => select(i)}
+      className={`w-full rounded-xl border px-3 py-3 text-left focus-visible:outline focus-visible:outline-2 ${selected === i ? 'border-violet-400 bg-violet-400/20' : 'border-slate-400/40 hover:border-violet-400'}`}>
+      <strong className="block">{item.name}</strong><span className="text-xs opacity-80">{item.concept}</span>
+    </button>;
+  }
   return (
     <section className="depth-panel relief-card mt-6 rounded-2xl border p-5 sm:p-8">
       <h2 className="text-2xl font-semibold">AI Agent 技术体系知识地图</h2>
-      <p className="my-4 leading-relaxed">从一句「帮我分析这篇论文」出发，沿着信息输入、能力调用、任务执行和结果验证，理解一个 Agent 如何工作。</p>
-      {chapters.map(({ title, rows }, index) => (
-        <details key={title} open={index === 0} className="border-t border-slate-400/30 py-4">
-          <summary className="cursor-pointer text-lg font-semibold">{title}</summary>
-          <dl className="mt-4 space-y-4">{rows.map(([term, description]) => (
-            <div key={term}><dt className="font-semibold">{term}</dt><dd className="mt-1 leading-relaxed">{description}</dd></div>
-          ))}</dl>
+      <p className="mb-6 mt-2">一篇论文的创新有证据吗？点选图中节点，看 Agent 怎样找到依据。</p>
+      <div className="mx-auto max-w-3xl">
+        {node(0)}
+        <p className="my-2 text-center text-sm">↓ 目标和验收要求进入执行循环</p>
+        <div className="rounded-2xl border border-dashed border-violet-400/70 p-3 sm:p-5">
+          {node(5)}
+          <p className="my-3 text-center text-sm">↓ 组织每一轮推理与行动</p>
+          <div className="grid items-center gap-1 sm:grid-cols-[1fr_auto_1fr_auto_1fr]">
+            {node(1)}<span className="text-center" aria-label="提供信息"><i className="hidden not-italic sm:inline">→</i><i className="not-italic sm:hidden">↓</i></span>
+            {node(2)}<span className="text-center" aria-label="请求执行"><i className="hidden not-italic sm:inline">→</i><i className="not-italic sm:hidden">↓</i></span>{node(3)}
+          </div>
+          <p className="mx-4 mb-3 rounded-b-xl border-x border-b border-violet-400/60 px-2 py-2 text-center text-sm">↶ 工具返回的内容进入下一轮上下文</p>
+          {node(4)}
+        </div>
+        <p className="my-3 text-center text-sm">↻ 缺证据，继续查找　·　↓ 达到停止条件，交付结论</p>
+      </div>
+      <article id="agent-map-detail" aria-live="polite" className="mt-6 border-t border-slate-400/30 pt-5">
+        <h3 className="text-xl font-semibold">{stop.name} · 论文评审中的这一步</h3>
+        <p className="my-3 leading-relaxed">{stop.example}</p>
+        <details key={selected}><summary className="cursor-pointer">展开相关概念</summary>
+          <dl className="mt-3 space-y-3">{stop.refs.map(([chapter,row]) => {
+            const [term,description] = chapters[chapter].rows[row];
+            return <div key={term}><dt className="font-semibold">{term}</dt><dd className="leading-relaxed">{description}</dd></div>;
+          })}</dl>
         </details>
-      ))}
+      </article>
     </section>
   );
 }
