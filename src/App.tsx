@@ -101,12 +101,9 @@ export default function App() {
             {(section === 'thoughts') && <Thoughts />}
           </>}
         </main>
-        {isHome ? (
-          <footer id="contact" tabIndex={-1} className="border-t border-white/10 px-4 py-6 text-center text-sm text-slate-400">
-            保持联系 <span aria-hidden="true" className="mx-2 text-slate-500">·</span>
-            <a href="https://github.com/ZKXKZ7" className="text-sky-200 underline-offset-4 hover:underline focus-visible:underline">GitHub</a>
-          </footer>
-        ) : <Footer />}
+        <div id={isHome ? 'contact' : undefined} tabIndex={isHome ? -1 : undefined} className="outline-none">
+          <Footer />
+        </div>
       </div>
     </div>
   );
