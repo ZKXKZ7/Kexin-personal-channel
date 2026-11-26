@@ -93,6 +93,14 @@ export function ThoughtDetail({ topic }: { topic: (typeof thoughtTopics)[number]
               据原视频画面字幕整理 · <a className="underline underline-offset-4" href="https://www.xiaohongshu.com/discovery/item/6aad2310000000002901bdf4?source=webshare&amp;xhsshare=pc_web&amp;xsec_token=ABgJ7SUNnSh0WzYz838PdWNY3EMm-Nk6Bo2dXH0a0TfJ0=&amp;xsec_source=pc_share">原视频「阿布布的思考笔记」↗</a>
             </p>
           </article>
+          <article className="reader-paper relative mt-8 max-w-2xl rounded-sm bg-amber-100 px-6 py-7 text-stone-900 shadow-lg sm:px-8">
+            <span aria-hidden="true" className="absolute -top-2 left-8 h-4 w-16 -rotate-3 bg-amber-300/80" />
+            <h2 className="text-xl font-bold">生产工具必须拉满！！！</h2>
+            <div className="mt-4 space-y-3 leading-relaxed">
+              <p><strong>有算力才有审美。</strong>用好的工具多试几版，亲眼看见能做到什么程度。把结果摆在一起比较，才知道哪一版值得留下、哪里还可以做得更好。</p>
+              <p><strong>珍惜保护注意力。</strong>把重复的活交给工具，把完整的时间留给想问题、做取舍和打磨结果。</p>
+            </div>
+          </article>
         </>
       )}
     </article>
