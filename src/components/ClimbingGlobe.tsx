@@ -98,7 +98,8 @@ export default function ClimbingGlobe({ city, point, pins, onPick, focus }: Prop
 
   useEffect(() => {
     if (focus) map.current?.easeTo({ center: [focus.lng, focus.lat], zoom: 15 });
-  }, [focus]);
+    else if (lng !== undefined && lat !== undefined) map.current?.easeTo({ center: [lng, lat], zoom: 11 });
+  }, [focus, lng, lat]);
 
   return <div className="relative h-[58svh] min-h-80 lg:h-[70svh]">
     <div ref={container} className="h-full w-full" aria-label={city ? '城市地图' : '可旋转的全球攀岩地球'} />

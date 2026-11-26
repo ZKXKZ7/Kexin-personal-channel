@@ -164,10 +164,10 @@ export function Climbing({ standalone = false, communityGyms = emptyGyms }: { st
         };
         button.addEventListener('click', select);
         const selected = Boolean(gym && focus && focus.name === gym.name && focus.lng === gym.lng && focus.lat === gym.lat);
-        if (selected) {
+        if (gym) {
           const caption = document.createElement('span');
-          caption.className = 'atlas-gym-label';
-          caption.textContent = label;
+          caption.className = selected ? 'atlas-gym-label' : 'atlas-gym-label atlas-gym-label-overview';
+          caption.textContent = selected ? label : item.name;
           button.appendChild(caption);
         }
         const marker = new amap.Marker({ map: map.current, position, content: button, anchor: 'center', bubble: false, title: label, zIndex: selected ? 200 : 100 });
@@ -252,7 +252,10 @@ export function Climbing({ standalone = false, communityGyms = emptyGyms }: { st
           catch { setSyncStatus('浏览器无法保存同步设置'); }
         }}>开启单向同步</button>}
       {!syncToken && syncStatus && <p role="status">{syncStatus}</p>}
-    </div>}</div>}<header className="depth-stage mb-8 mt-8 gap-4"><DepthScene /><div><h1 className="depth-title font-semibold">{city ? city.name : standalone ? '共享攀岩地图' : <span className="font-serif font-normal tracking-[-0.045em]">The Climbing <em className="text-emerald-200">Atlas</em></span>}</h1></div><p className="text-sm text-slate-400"><b className="text-2xl text-emerald-200">{new Set(mappedGyms.map(g => g.city)).size}</b> 点亮城市 <span className="mx-4">/</span><b className="text-2xl text-emerald-200">{mappedGyms.length}</b> 岩馆足迹 <span className="mx-4">/</span><b className="text-2xl text-emerald-200">{mappedGyms.reduce((total, gym) => total + visitCount(gym), 0)}</b> 次到访</p></header><div className="depth-panel grid overflow-hidden rounded-3xl border border-white/10 bg-[#0b141b] lg:grid-cols-[1fr_320px]"><div className="relative min-w-0">{useAMap ? <><p className="pointer-events-none absolute left-14 top-3 z-10 rounded-lg bg-slate-950/85 px-3 py-2 text-xs text-emerald-100">亮点为已到访 · 点越大，到访越多</p><div ref={container} className="z-0 h-[55svh] min-h-96 lg:h-[70svh]" />{!mapReady && <div role="status" className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-slate-950/90 p-8 text-center text-sm text-slate-300">{mapError || '正在加载高德地图…'}{mapError && <button className="rounded-lg border border-emerald-300/40 px-4 py-2 text-emerald-200" onClick={() => setMapAttempt(value => value + 1)}>重新加载</button>}</div>}</> : <><Suspense fallback={<div className="grid h-[58svh] place-items-center">正在加载地图…</div>}><ClimbingGlobe city={city || undefined} pins={pins} point={point && { ...point, name: name.trim() || '待填写岩馆名称' }} focus={focus} onPick={position => { if (city) {
+    </div>}</div>}<header className="depth-stage mb-8 mt-8 gap-4"><DepthScene /><div><h1 className="depth-title font-semibold">{city ? city.name : standalone ? '共享攀岩地图' : <span className="font-serif font-normal tracking-[-0.045em]">The Climbing <em className="text-emerald-200">Atlas</em></span>}</h1></div><p className="text-sm text-slate-400"><b className="text-2xl text-emerald-200">{new Set(mappedGyms.map(g => g.city)).size}</b> 点亮城市 <span className="mx-4">/</span><b className="text-2xl text-emerald-200">{mappedGyms.length}</b> 岩馆足迹 <span className="mx-4">/</span><b className="text-2xl text-emerald-200">{mappedGyms.reduce((total, gym) => total + visitCount(gym), 0)}</b> 次到访</p></header><div className="depth-panel grid overflow-hidden rounded-3xl border border-white/10 bg-[#0b141b] lg:grid-cols-[1fr_320px]"><div className="relative min-w-0">{city && focus && <button type="button" className="absolute right-3 top-3 z-20 rounded-lg border border-emerald-300/60 bg-slate-950 px-3 py-2 text-sm font-semibold text-emerald-100" onClick={() => {
+      setFocus(null);
+      map.current?.setZoomAndCenter(11, [city.lng, city.lat]);
+    }}>← 返回{city.name}地图</button>}{useAMap ? <><p className="pointer-events-none absolute left-3 top-14 z-10 rounded-lg bg-slate-950/85 px-3 py-2 text-xs text-emerald-100">亮点为已到访 · 点越大，到访越多</p><div ref={container} className="z-0 h-[55svh] min-h-96 lg:h-[70svh]" />{!mapReady && <div role="status" className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-slate-950/90 p-8 text-center text-sm text-slate-300">{mapError || '正在加载高德地图…'}{mapError && <button className="rounded-lg border border-emerald-300/40 px-4 py-2 text-emerald-200" onClick={() => setMapAttempt(value => value + 1)}>重新加载</button>}</div>}</> : <><Suspense fallback={<div className="grid h-[58svh] place-items-center">正在加载地图…</div>}><ClimbingGlobe city={city || undefined} pins={pins} point={point && { ...point, name: name.trim() || '待填写岩馆名称' }} focus={focus} onPick={position => { if (city) {
         setName(''); setPoint(position);
       } else {
         setGlobalEntry(true);
