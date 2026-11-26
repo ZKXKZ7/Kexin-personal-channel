@@ -17,8 +17,15 @@ type Props = {
 const globeStyle: StyleSpecification = {
   version: 8,
   projection: { type: 'globe' },
-  sky: { 'atmosphere-blend': 0.32, 'sky-color': '#101e3a', 'horizon-color': '#406b96' },
+  sky: { 'atmosphere-blend': 0.48, 'sky-color': '#0b172b', 'horizon-color': '#6296cd' },
   sources: {
+    imagery: {
+      type: 'raster',
+      tiles: ['https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/BlueMarble_ShadedRelief/default/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpeg'],
+      tileSize: 256,
+      maxzoom: 8,
+      attribution: 'NASA Blue Marble / GIBS',
+    },
     night: { type: 'geojson', data: { type: 'FeatureCollection', features: [] }, tolerance: 0 },
     land: { type: 'geojson', data: import.meta.env.BASE_URL + 'maps/land.geojson', attribution: 'Natural Earth' },
   },
@@ -26,7 +33,8 @@ const globeStyle: StyleSpecification = {
     { id: 'ocean', type: 'background', paint: { 'background-color': '#195080' } },
     { id: 'land', type: 'fill', source: 'land', paint: { 'fill-color': '#527970' } },
     { id: 'coast', type: 'line', source: 'land', paint: { 'line-color': '#86aaa0', 'line-width': 0.65 } },
-    { id: 'night', type: 'fill', source: 'night', paint: { 'fill-color': '#040d22', 'fill-opacity': 0.56, 'fill-antialias': false } },
+    { id: 'imagery', type: 'raster', source: 'imagery', paint: { 'raster-fade-duration': 300 } },
+    { id: 'night', type: 'fill', source: 'night', paint: { 'fill-color': '#040d22', 'fill-opacity': 0.22, 'fill-antialias': false } },
   ],
 };
 
