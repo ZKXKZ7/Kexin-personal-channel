@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 type Location = { lat: number; lng: number };
 type Gym = Location & { name: string; placeId: string };
@@ -22,9 +22,7 @@ export default function OverseasGymSearch({ city, onSelect }: {
   const [status, setStatus] = useState('');
   const request = useRef<AbortController | null>(null);
 
-  useEffect(() => () => request.current?.abort(), []);
-
-  async function search() {
+  const search = useCallback(async () => {
     if (request.current) return;
     const controller = new AbortController();
     request.current = controller;
@@ -45,22 +43,29 @@ export default function OverseasGymSearch({ city, onSelect }: {
         if (!name || lat === undefined || lng === undefined || !Number.isFinite(lat) || !Number.isFinite(lng)) return [];
         return [{ name, lat, lng, placeId: 'osm:' + item.type + ':' + item.id }];
       });
+      if (request.current !== controller) return;
       setResults(gyms.sort((a, b) => a.name.localeCompare(b.name)));
       setStatus('');
     } catch {
+      if (request.current !== controller) return;
       setStatus('暂时无法查询岩馆，请稍后重试，或在地图上手动选点。');
     } finally {
       window.clearTimeout(timer);
-      request.current = null;
+      if (request.current === controller) request.current = null;
     }
-  }
+  }, [city.lat, city.lng]);
+
+  useEffect(() => {
+    void search();
+    return () => { request.current?.abort(); request.current = null; };
+  }, [search]);
 
   const matching = results?.filter(gym => gym.name.normalize('NFKC').toLowerCase()
     .includes(filter.trim().normalize('NFKC').toLowerCase()));
 
   return <div className="space-y-2 rounded-xl border border-white/10 p-3">
     <button type="button" disabled={Boolean(request.current)} onClick={() => void search()}
-      className="text-sm font-semibold text-emerald-300 disabled:opacity-50">查找 25 公里内的岩馆</button>
+      className="text-sm font-semibold text-emerald-300 disabled:opacity-50">重新查找附近岩馆</button>
     {status && <p role="status" className="text-xs text-slate-300">{status}</p>}
     {results && <label className="block text-xs text-slate-400">按岩馆名筛选
       <input className="atlas-input" value={filter} onChange={event => setFilter(event.target.value)} />
@@ -70,7 +75,7 @@ export default function OverseasGymSearch({ city, onSelect }: {
         <button type="button" onClick={() => onSelect(gym)}
           className="w-full rounded-lg bg-white/5 px-3 py-2 text-left text-sm hover:bg-white/10">{gym.name}</button>
       </li>)}
-    </ul> : <p className="text-xs text-slate-400">没有匹配的岩馆，可以手动选点。</p>)}
+    </ul> : <p className="text-xs text-slate-400">没有匹配的岩馆。可展开下方「手动添加」，在地图上选点。</p>)}
     <a className="text-xs text-slate-400 underline" href="https://www.openstreetmap.org/copyright"
       target="_blank" rel="noreferrer">© OpenStreetMap 贡献者</a>
   </div>;
