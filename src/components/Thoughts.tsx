@@ -79,18 +79,18 @@ export function ThoughtDetail({ topic }: { topic: (typeof thoughtTopics)[number]
           <EditableNote id="growth"><GrowthNoteText /></EditableNote>
           <article className="reader-paper relative mt-8 max-w-2xl rounded-sm bg-amber-100 px-6 py-7 text-stone-900 shadow-lg sm:px-8">
             <span aria-hidden="true" className="absolute -top-2 left-8 h-4 w-16 -rotate-3 bg-amber-300/80" />
-            <h2 className="text-xl font-bold">创业第四年：先验证需求，再验证交付</h2>
+            <h2 className="text-xl font-bold">创业第四年：从有人买单到客户愿意推荐</h2>
             <div className="mt-4 space-y-3 leading-relaxed">
-              <p>一门生意能不能做大，可以先看两件事：有没有人愿意买，买过的人还愿不愿意继续合作。</p>
+              <p>作者从两次创业失败走到持续盈利。他用两个信号复盘生意：目标客户愿不愿意付钱，老客户愿不愿意把你推荐给别人。</p>
               <ol className="list-decimal space-y-2 pl-6">
-                <li><strong>先验证商品和买家。</strong>高校直播基地有资金、场地、设备和人手，商品却缺乏竞争力。投入这些资源前，先弄清楚卖给谁、对方为什么愿意买。</li>
-                <li><strong>用客户反馈判断交付。</strong>代运营团队收到了陪跑项目的钱，但交付没达到客户预期，后续大单也丢了。回款只说明这笔交易完成了付款，客户愿意续约才是交付获得认可的信号。</li>
-                <li><strong>验证通过后，再把交付做成流程。</strong>一个人可以先试出需求。业务量上来后，用小团队分担交付，并定期听取客户反馈，避免只凭自己的感觉判断做得好不好。</li>
+                <li><strong>用真实付费验证需求。</strong>高校直播基地有资金、场地、设备和人手，商品却撑不起生意。先找到有竞争力的商品和匹配的买家，再看对方会不会真的掏钱。</li>
+                <li><strong>用转介绍检验交付。</strong>陪跑项目收了钱，交付却没达到客户预期，后续代运营大单也丢了。作者把这种损耗信任的回款叫作「假收入」。判断生意是否健康，可以看复购和转介绍。作者举例，自己销售额最高的一个月，超过六成销售额来自老客户转介绍。</li>
+                <li><strong>验证通过后，再把交付做成流程。</strong>作者单干时净利率一度超过 95%，但所有工作都压在一个人身上，也容易自己给自己的交付打分。他建议先用一人公司验证需求，再用十人以内的小团队分担交付，并向客户核实效果。</li>
               </ol>
               <p><strong>创业者要练什么？</strong>用认知选方向，用能力把计划做出来，用韧性撑过试错和调整的周期。</p>
             </div>
             <p className="mt-5 text-sm text-stone-700">
-              据视频页公开评论摘要整理 · <a className="underline underline-offset-4" href="https://www.xiaohongshu.com/discovery/item/6aad2310000000002901bdf4?source=webshare&amp;xhsshare=pc_web&amp;xsec_token=ABgJ7SUNnSh0WzYz838PdWNY3EMm-Nk6Bo2dXH0a0TfJ0=&amp;xsec_source=pc_share">原视频「阿布布的思考笔记」↗</a>
+              据原视频画面字幕整理 · <a className="underline underline-offset-4" href="https://www.xiaohongshu.com/discovery/item/6aad2310000000002901bdf4?source=webshare&amp;xhsshare=pc_web&amp;xsec_token=ABgJ7SUNnSh0WzYz838PdWNY3EMm-Nk6Bo2dXH0a0TfJ0=&amp;xsec_source=pc_share">原视频「阿布布的思考笔记」↗</a>
             </p>
           </article>
         </>
